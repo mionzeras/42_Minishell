@@ -9,16 +9,6 @@ git clone https://github.com/mionzeras/42_Minishell.git
 cd 42_Minishell
 ```
 
-## Built-in commands
-
-- echo
-- cd
-- pwd
-- export
-- unset
-- env
-- exit
-
 ## How to run
 
 ```bash
