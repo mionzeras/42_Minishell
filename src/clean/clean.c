@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:25:00 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/08/19 00:04:33 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/08/19 03:50:53 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,16 @@ void free_array(char **array)
 	free(array);
 }
 
-void free_redirection(t_redirection redirection)
+void free_redirection(t_redirection *redirection)
 {
-	free(redirection.input_file);
-	free(redirection.heredoc_file);
-	free(redirection.truncate_file);
-	free(redirection.append_file);
-	
+	if (redirection)
+	{
+		free(redirection->input_file);
+		free(redirection->heredoc_delimiter);
+		free(redirection->truncate_file);
+		free(redirection->append_file);
+		free(redirection);
+	}
 }
 
 void free_token(t_token *token)
@@ -50,6 +53,8 @@ void free_token(t_token *token)
 	{
 		if (token->cmds)
 			free_array(token->cmds);
+		if (token->types)
+			free(token->types);
 		free(token);
 	}
 }
@@ -57,9 +62,9 @@ void free_token(t_token *token)
 void free_program(t_program *mini)
 {
 	free_redirection(mini->redirection);
+	free_token(mini->token);
 	free(mini->user_input);
 	free(mini->pwd);
 	free(mini->old_pwd);
 	free_array(mini->path);
-	free_token(mini->token);
 }

@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:30:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/08/19 00:23:16 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/08/19 14:23:31 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,20 @@ void init_struct(t_program *mini, char **env)
 	mini->stop = 0;
 	mini->stdin_copy = dup(STDIN);
 	mini->stdout_copy = dup(STDOUT);
-}
-
-void init_redirection(t_redirection *redirection)
-{
-	redirection->input_file = NULL;
-	redirection->heredoc_file = NULL;
-	redirection->truncate_file = NULL;
-	redirection->append_file = NULL;
-}
-
-void init_token(t_token *token)
-{
-	t_token *tmp;
-	
-	tmp = token;
-	tmp = malloc(sizeof(t_token));
-	tmp->cmds = NULL;
-	tmp->next = NULL;
-	tmp->types = NULL;
-	free(tmp);
-}
-
-int init_program(t_program *mini, char **env)
-{
-	init_struct(mini, env);
-	init_redirection(&mini->redirection);
-	init_token(mini->token);
-	return (0);
+	mini->redirection = NULL;
+	mini->token = NULL;
+	//mini->redirection = malloc(sizeof(t_redirection));
+	/*if (mini->redirection)
+	{
+		mini->redirection->input_file = NULL;
+		mini->redirection->heredoc_delimiter = NULL;
+		mini->redirection->truncate_file = NULL;
+		mini->redirection->append_file = NULL;
+	}
+	mini->token = malloc(sizeof(t_token));
+	if (mini->token)
+	{
+		mini->token->cmds = NULL;
+		mini->token->types = NULL;
+	}*/
 }

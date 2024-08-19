@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/08/19 00:14:00 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/08/19 23:02:08 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int mini_loop(t_program *mini)
 {
-	while(mini->stop == 0)
+	while(!mini->stop)
 	{
 		mini->user_input = readline(MINI_MSG);	
 		if (!mini->user_input)

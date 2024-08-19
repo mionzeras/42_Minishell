@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:32:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/08/19 00:27:46 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:56:00 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main(int argc, char **argv, char **env)
 		ft_printf("Error: No arguments needed\n");
 		return (EXIT_FAILURE);
 	}
-	init_program(&mini, env);
+	init_struct(&mini, env);
 	mini_loop(&mini);
 	free_program(&mini);
 	return (0);

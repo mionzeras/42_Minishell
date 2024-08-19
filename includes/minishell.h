@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/08/19 00:42:57 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/08/19 23:30:14 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
+# define META_CHARS "<>|"
 # define MINI_MSG "\e[1;93mminishell\033[91m$ \033[0m"
 
 //types of commands
@@ -44,7 +45,7 @@ typedef enum e_type
 typedef struct s_redirection
 {
 	char			*input_file;
-	char			*heredoc_file;
+	char			*heredoc_delimiter;
 	char			*truncate_file;
 	char			*append_file;
 }	t_redirection;
@@ -53,7 +54,7 @@ typedef struct s_redirection
 typedef struct s_token
 {
 	char			**cmds;
-	struct s_token	*next;
+	//struct s_token	*next;
 	t_type			*types;
 }	t_token;
 
@@ -74,26 +75,24 @@ typedef struct s_program
 	int				stop;
 	int				stdin_copy;
 	int				stdout_copy;
-	t_redirection	redirection;
+	t_redirection	*redirection;
 	t_token			*token;
 	t_status		status;
 }	t_program;
 
 //parsing.c
+int		set_meta_chars(t_program *mini, int i);
 void	parse_input(t_program *mini);
 
 //clean.c
 //void	*ft_memdel(void *ptr);
 void	free_array(char **array);
-void	free_redirection(t_redirection redirection);
+void	free_redirection(t_redirection *redirection);
 void	free_token(t_token *token);
 void	free_program(t_program *mini);
 
 //init.c
 void	init_struct(t_program *mini, char **env);
-void	init_redirection(t_redirection *redirection);
-void	init_token(t_token *token);
-int		init_program(t_program *mini, char **env);
 
 //main.c
 
