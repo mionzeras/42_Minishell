@@ -30,14 +30,3 @@ make
 "env"
 "exit"
 ```
-
-
-## How to clean
-
-```bash
-make clean
-```
-
-## How to fclean
-
-```bash
