@@ -1,4 +1,5 @@
 *.o
 *.a
 *.json
+*.txt
 minishell
