@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/08/19 23:30:14 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:35:35 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 #include "libft.h"
 
 # define STDIN 0
@@ -41,65 +42,48 @@ typedef enum e_type
 	GREATER_GREATER,
 }	t_type;
 
-//redirections
-typedef struct s_redirection
+//commands struct
+typedef struct s_command
 {
-	char			*input_file;
-	char			*heredoc_delimiter;
-	char			*truncate_file;
-	char			*append_file;
-}	t_redirection;
-
-//commands
-typedef struct s_token
-{
-	char			**cmds;
-	//struct s_token	*next;
-	t_type			*types;
-}	t_token;
-
-//status of the last command
-typedef struct s_status
-{
-	int				last_exit_status;
-}	t_status;
+	char			*cmd;
+	char			*expansion;
+	char			**args;
+	t_type			token;
+	struct s_command	*next;
+}	t_command;
 
 //main struct
 typedef struct s_program
 {
 	char			**env;
+	char 			**path;
 	char			*user_input;
 	char			*pwd;
 	char			*old_pwd;
-	char 			**path;
 	int				stop;
-	int				stdin_copy;
-	int				stdout_copy;
-	t_redirection	*redirection;
-	t_token			*token;
-	t_status		status;
+	t_command		*commands;
 }	t_program;
 
-//parsing.c
-int		set_meta_chars(t_program *mini, int i);
-void	parse_input(t_program *mini);
-
-//clean.c
-//void	*ft_memdel(void *ptr);
+//clean/clean.c
 void	free_array(char **array);
-void	free_redirection(t_redirection *redirection);
-void	free_token(t_token *token);
 void	free_program(t_program *mini);
 
-//init.c
+//initialize/init.c
 void	init_struct(t_program *mini, char **env);
 
-//main.c
-
-//mini_loop.c
+//loop/loop.c
 int		mini_loop(t_program *mini);
-
-//utils.c
 int		*save_path(t_program *mini, char **envp);
+
+//parser/quotes.c
+//void 	simple_copy(char *result, char *input);
+char	*expand_variable(char *input, int *i);
+int		check_quotes(const char *input);
+
+//parser/parsing.c
+void	parse_input(t_program *mini);
+
+//utils/utils.c
+void	*ft_realloc(void *ptr, size_t size);
 
 #endif
