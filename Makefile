@@ -6,7 +6,7 @@
 #    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/08/23 13:55:35 by gcampos-         ###   ########.fr        #
+#    Updated: 2024/09/09 17:23:43 by gcampos-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ LIBFT_PATH = libft
 LIBFT = -Llibft -lft
 SRC =	src/clean/clean.c \
 		src/initialize/init.c \
+		src/lexer/parseline.c \
 		src/loop/mini_loop.c \
 		src/parser/quotes.c \
 		src/parser/parsing.c \
