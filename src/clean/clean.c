@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:25:00 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/09 19:49:52 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/11 19:10:40 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void free_array(char **array)
 	while (array[++i])
 	{
 		free(array[i]);
-		array[i] = NULL;
 	}
 	free(array);
 }
@@ -37,8 +36,8 @@ void free_organize(t_input_organize *program)
         free(program->append_file);
     if (program->heredoc_delimiter)
         free(program->heredoc_delimiter);
-    if (program->cmds)
-		free(program->cmds);	
+    if (program->cmd_split)
+		free_array(program->cmd_split);
 }
 
 void free_program(t_program *mini, t_input_organize *program)

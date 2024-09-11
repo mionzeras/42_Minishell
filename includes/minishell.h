@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/09 19:51:11 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/11 19:10:26 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_input_organize {
 	char *output_file;
 	char *append_file;
 	char *heredoc_delimiter;
-	char *cmds;
+	char **cmd_split;
 } t_input_organize;
 
 //commands struct
@@ -80,7 +80,7 @@ void	free_organize(t_input_organize *program);
 void	free_program(t_program *mini, t_input_organize *program);
 
 //initialize/init.c
-int		*save_path(t_program *mini, char **envp);
+char	**save_path(t_program *mini, char **envp);
 void	init_organize(t_input_organize *program);
 void	init_struct(t_program *mini, char **env);
 
@@ -101,6 +101,6 @@ int		check_quotes(const char *input);
 
 //utils/utils.c
 int		ft_strcmp(const char *s1, const char *s2);
-void	*ft_realloc(void *ptr, size_t size);
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 #endif

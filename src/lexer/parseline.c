@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/09 14:53:10 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/11 19:45:49 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,13 @@ int parseline(t_program *mini)
 		start_with_space = 1;
 	tmp = ft_strtrim(user_input, " ");
 	free(user_input);
-	user_input = tmp;
-	if (!user_input)
+	if (!tmp)
 		exit(EXIT_SUCCESS);
-	if (ft_strlen(user_input) > 0 && !start_with_space)
-		add_history(user_input);
+	if (ft_strlen(tmp) > 0 && !start_with_space)
+		add_history(tmp);
 	if (mini->user_input)
 		free(mini->user_input);	
-	mini->user_input = fix_redir_spaces(user_input);
+	mini->user_input = fix_redir_spaces(tmp);
 	free(tmp);
 	return (EXIT_SUCCESS);
 }
