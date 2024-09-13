@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/11 19:10:26 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/13 12:00:47 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@
 }	t_type;*/
 
 typedef struct s_input_organize {
-	char *input_file;
-	char *output_file;
-	char *append_file;
-	char *heredoc_delimiter;
-	char **cmd_split;
+	int		pipes;
+	char	*input_file;
+	char	*output_file;
+	char	*append_file;
+	char	*heredoc_delimiter;
+	char	**cmd_split;
 } t_input_organize;
 
 //commands struct
 /*typedef struct s_command
 {
 	char			*cmd;
-	char			*expansion;
 	char			**args;
 	t_type			token;
 	struct s_command	*next;

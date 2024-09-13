@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:50:38 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/03/01 16:34:12 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:45:59 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
+	char		*s3;
 	size_t		len1;
 	size_t		len2;
-	char		*s3;
 	size_t		soma;
 
 	if (!s1 || !s2)

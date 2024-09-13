@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:30:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/11 19:49:20 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/13 09:11:27 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	**save_path(t_program *mini, char **envp)
 }
 void	init_organize(t_input_organize *program)
 {
+	program->pipes = 0;
 	program->input_file = NULL;
 	program->output_file = NULL;
 	program->append_file = NULL;
