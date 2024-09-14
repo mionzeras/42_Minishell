@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: caliman <caliman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/13 12:17:21 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:57:33 by caliman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void  process_token(char *input, t_input_organize *program)
 	tmp = ft_split(input, ' ');
 	if (!tmp)
 		return ;
-	program->cmd_split = (char **)malloc(sizeof(char **) * 2);
+	program->cmd_split = (char **)malloc(sizeof(char *) * ft_strlen(input) + 1);
 	while (tmp[++i])
 	{
 		if (ft_strcmp(tmp[i], "<") == 0 && tmp[i + 1])
@@ -64,7 +64,7 @@ void  process_token(char *input, t_input_organize *program)
 			program->pipes++;
 		else
 		{
-			if (tmp[i + 1] && (tmp[i + 1][0] != '<' && tmp[i + 1][0] != '>' && tmp[i + 1][0] != '|'))
+			if (tmp[i + 1] && (!ft_strchr(META_CHARS, tmp[i + 1][0])))
 			{
 				program->cmd_split = ft_realloc(program->cmd_split, sizeof(char *) * j, sizeof(char *) * (j + 2));
 				char *joined = ft_strjoin(tmp[i], " ");

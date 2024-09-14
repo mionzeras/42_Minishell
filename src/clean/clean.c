@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: caliman <caliman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:25:00 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/11 19:10:40 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/14 19:51:40 by caliman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void free_program(t_program *mini, t_input_organize *program)
 	free_array(mini->path);
 	free(mini->pwd);
 	free(mini->old_pwd);
-	free(mini->user_input);
+	if (mini->user_input)
+		free(mini->user_input);
 	free_organize(program);
 }
