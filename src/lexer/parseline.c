@@ -6,7 +6,7 @@
 /*   By: caliman <caliman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/14 20:14:18 by caliman          ###   ########.fr       */
+/*   Updated: 2024/09/14 23:10:34 by caliman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ bool duplicates(char *str)
 	start_with_space = 0;
 	if (tmp[0] == ' ')
 			start_with_space = 1;
-	printf("tmp: %s\n", tmp);
 	if (ft_strnstr(tmp, "||", ft_strlen(tmp)) || ft_strnstr(tmp, "&&", ft_strlen(tmp)))
 	{
 		ft_putstr_fd("This program doesn't handle || or && \n", STDERR);
