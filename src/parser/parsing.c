@@ -3,32 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caliman <caliman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/14 23:12:59 by caliman          ###   ########.fr       */
+/*   Updated: 2024/09/16 17:02:13 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*char **copy_split(t_input_organize *dest, char **src)
+char *join_cmd_arg(char *cmd, char *arg)
 {
-	t_input_organize *program;
-	int i;
-	
-	program = dest;
-	i = 0;
-	while (src[i])
-	{
-		program->cmd_split[i] = ft_strdup(src[i]);
-		i++;
-	}
-	program->cmd_split[i] = NULL;
-	return (program->cmd_split);
-}*/
+	char *joined;
+	char *tmp;
 
-char *copy(char *dest, char *src)
+	tmp = ft_strjoin(cmd, " ");
+	joined = ft_strjoin(tmp, arg);
+	free(tmp);
+	free (cmd);
+	return (joined);
+}
+
+char *copy_redir(char *dest, char *src)
 {
 	if (!src)
 		return (NULL);
@@ -36,35 +32,18 @@ char *copy(char *dest, char *src)
 		free(dest);
 	dest = ft_strdup(src);
 	return (dest);
-	
-}
-
-char *ft_strcat(char *dest, char *src)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	while (dest[i])
-		i++;
-	while (src[j])
-		dest[i++] = src[j++];
-	dest[i] = '\0';
-	return (dest);
 }
 
 void  process_token(char *input, t_input_organize *program)
 {
 	int i;
 	int j;
-	int k;
 	char **tmp;
+	char *joined;
 	char **split;
 
 	i = -1;
 	j = 0;
-	k = 0;
 	tmp = ft_split(input, ' ');
 	if (!tmp)
 		return ;
@@ -72,50 +51,40 @@ void  process_token(char *input, t_input_organize *program)
 	while (tmp[++i])
 	{
 		if (ft_strcmp(tmp[i], "<") == 0 && tmp[i + 1])
-			program->input_file = copy(program->input_file, tmp[++i]);
+			program->input_file = copy_redir(program->input_file, tmp[++i]);
 		else if (ft_strcmp(tmp[i], "<<") == 0 && tmp[i + 1])
-			program->heredoc_delimiter = copy(program->heredoc_delimiter, tmp[++i]);
+			program->heredoc_delimiter = copy_redir(program->heredoc_delimiter, tmp[++i]);
 		else if (ft_strcmp(tmp[i], ">") == 0 && tmp[i + 1])
-			program->output_file = copy(program->output_file, tmp[++i]);
+			program->output_file = copy_redir(program->output_file, tmp[++i]);
 		else if (ft_strcmp(tmp[i], ">>") == 0 && tmp[i + 1])
-			program->append_file = copy(program->append_file, tmp[++i]);
+			program->append_file = copy_redir(program->append_file, tmp[++i]);
 		else if (ft_strcmp(tmp[i], "|") == 0)
 			program->pipes++;
 		else
 		{
 			if (tmp[i + 1] && (!ft_strchr(META_CHARS, tmp[i + 1][0])))
 			{
-				char *joined;
-				joined = ft_strjoin(tmp[i], " ");
+				joined = ft_strdup(tmp[i]);
 				while (tmp[i + 1] && (!ft_strchr(META_CHARS, tmp[i + 1][0])))
 				{
-					//joined = (char *)realloc(joined, sizeof(char) * (ft_strlen(joined) + ft_strlen(tmp[i + 1]) + 1));
-					joined = ft_strjoin(joined, tmp[i + 1]);
-					//joined = (char *)realloc(joined, sizeof(char) * (ft_strlen(joined) + 1));
-					joined = ft_strjoin(joined, " ");
+					joined = join_cmd_arg(joined, tmp[i + 1]);
 					printf("cmd_split[%d]: %s\n", j, joined);
 					i++;
 				}
-				split[j] = (char *)malloc(sizeof(char) * ft_strlen(joined) + 1);
 				split[j] = ft_strdup(joined);
 				free(joined);
 				j++;
-				k++;
 			}
 			else
 			{
-				split[j] = (char *)malloc(sizeof(char) * ft_strlen(tmp[i]) + 1);
 				split[j] = ft_strdup(tmp[i]);
 				printf("cmd_split[%d]: %s\n", j, split[j]);
 				j++;
-				k++;
 			}		
 		}
 	}
-	split[j] = 0;
-	program->cmd_split = (char **)malloc(sizeof(char *) * k + 1);
+	split[j] = NULL;
 	program->cmd_split = split;
-	//free_array(split);
 	free_array(tmp);
 }
 

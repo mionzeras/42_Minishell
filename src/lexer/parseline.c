@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parseline.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caliman <caliman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/14 23:10:34 by caliman          ###   ########.fr       */
+/*   Updated: 2024/09/16 17:23:26 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char *fix_redir_spaces(const char *input)
 	int i;
 	int j;
 
-	new_input = malloc(ft_strlen(input) * 2 + 1);
+	new_input = (char *)malloc(ft_strlen(input) * 2 + 1);
 	i = 0;
 	j = 0;
 	while (input[i])
