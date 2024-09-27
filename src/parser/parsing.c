@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/27 17:54:05 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:07:37 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,11 @@ void  process_token(char *input, t_input_organize *program)
 	int i;
 	int j;
 	char **tmp;
-	char *joined;
 	char **split;
 
 	i = -1;
 	j = 0;
-	tmp = ft_split(input, ' ');
+	tmp = ft_new_split(input, ' ');
 	if (!tmp)
 		return ;
 	split = (char **)malloc(sizeof(char *) * ft_strlen(input) + 1);
@@ -62,10 +61,12 @@ void  process_token(char *input, t_input_organize *program)
 			program->pipes++;
 		else
 		{
-			if (tmp[i + 1] && (!ft_strchr(META_CHARS, tmp[i + 1][0])))
+			if (tmp[i + 1] && (!is_token(tmp[i + 1][0])))
 			{
+				char *joined;
+				
 				joined = ft_strdup(tmp[i]);
-				while (tmp[i + 1] && (!ft_strchr(META_CHARS, tmp[i + 1][0])))
+				while (tmp[i + 1] && (!is_token(tmp[i + 1][0])))
 				{
 					joined = join_cmd_arg(joined, tmp[i + 1]);
 					printf("cmd_split[%d]: %s\n", j, joined);

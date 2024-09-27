@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/27 17:55:27 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:19:09 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,6 @@
 # define ON 0
 # define OFF 1
 
-//types of commands
-/*typedef enum e_type
-{
-	PIPE,
-	LESS,
-	LESS_LESS,
-	GREATER,
-	GREATER_GREATER,
-}	t_type;*/
-
 typedef struct s_input_organize
 {
 	int		pipes;
@@ -56,15 +46,6 @@ typedef struct s_input_organize
 	char	**cmd_split;
 } 		t_input_organize;
 
-//commands struct
-/*typedef struct s_command
-{
-	char			*cmd;
-	char			**args;
-	t_type			token;
-	struct s_command	*next;
-}	t_command;*/
-
 //main struct
 typedef struct s_program
 {
@@ -74,7 +55,6 @@ typedef struct s_program
 	char			*pwd;
 	char			*old_pwd;
 	int				loop;
-	//t_command		*commands;
 }		t_program;
 
 //clean/clean.c
@@ -87,13 +67,16 @@ char	**save_path(t_program *mini, char **envp);
 void	init_organize(t_input_organize *program);
 void	init_struct(t_program *mini, char **env);
 
-//lexer/parseline.c
+//loop/loop.c
+int		mini_loop(t_program *mini, t_input_organize *program);
+
+//parser/new_split.c
+char	**ft_new_split(char const *s, char c);
+
+//parser/parseline.c
 int		ft_isspaces(char c);
 char	*fix_redir_spaces(char *input);
 int		parseline(t_program *mini);
-
-//loop/loop.c
-int		mini_loop(t_program *mini, t_input_organize *program);
 
 //parser/parsing.c
 void	parse_input(t_program *mini, t_input_organize *program);

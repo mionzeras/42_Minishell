@@ -1,0 +1,106 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   new_split.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/27 18:49:09 by gcampos-          #+#    #+#             */
+/*   Updated: 2024/09/27 19:14:39 by gcampos-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+int insider_quotes(const char *input, int index)
+{
+	int i;
+	int quote;
+
+	i = -1;
+	quote = 0;
+	while (input[++i] && i != index)
+	{
+		if (i > 0 && input[i - 1] == '\\')
+			continue;
+		if (input[i] == '\'' && quote == 0)
+			quote = 1;
+		else if (input[i] == '\"' && quote == 0)
+			quote = 2;
+		else if ((input[i] == '\'' && quote == 1) || (input[i] == '\"' && quote == 2))
+			quote = 0;
+	}
+	return (quote);
+}
+
+//count words in string
+int	count_world(char const *s, char c)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (s[i] != '\0')
+	{
+		if (insider_quotes(s, i) != 0)
+		{
+			i++;
+			while (insider_quotes(s, i) != 0)
+				i++;
+			i++;
+			count++;
+		}
+		else if (s[i] != c && (i == 0 || s[i - 1] == c))
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+//count letters in words
+size_t	countliw(const char *str, char c)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] && str[i] != c)
+	{
+		if (insider_quotes(str, i) != 0)
+		{
+			i++;
+			while (insider_quotes(str, i) != 0)
+				i++;
+		}
+		else
+			i++;
+	}
+	return (i);
+}
+
+char	**ft_new_split(char const *s, char c)
+{
+	size_t	i;
+	size_t	str_size;
+	size_t	wrd_size;
+	char	**str_final;
+
+	i = 0;
+	if (!s)
+		return (NULL);
+	str_size = count_world(s, c);
+	str_final = malloc((str_size + 1) * sizeof(char *));
+	if (!str_final)
+		return (NULL);
+	while (i < str_size)
+	{
+		while (*s && *s == c)
+			s++;
+		wrd_size = countliw(s, c);
+		str_final[i] = ft_substr(s, 0, wrd_size);
+		s = (s + wrd_size) + 1;
+		i++;
+	}
+	str_final[str_size] = NULL;
+	return (str_final);
+}
