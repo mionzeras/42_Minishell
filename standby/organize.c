@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 18:20:36 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/09 16:26:36 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:20:48 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,22 @@ char *organize_input(const char *input)
 		free(program.cmds);
 
 	return result;
+}
+
+
+char *expand_variable(char *input, int *i)
+{
+	char var_name[100];
+	char *var_value;
+	int j = 0;
+	int k = *i + 1;
+
+	while (input[k] && (ft_isalnum(input[k])))
+	{
+		var_name[j++] = input[k++];
+	}
+	var_name[j] = '\0';
+	var_value = getenv(var_name);
+	*i = k;
+	return (var_value);
 }

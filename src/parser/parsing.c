@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/16 17:02:13 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:54:05 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,10 @@ void  process_token(char *input, t_input_organize *program)
 
 void	parse_input(t_program *mini, t_input_organize *program)
 {
-	if (!check_quotes(mini->user_input))
+
+	if (inside_quotes(mini->user_input, ft_strlen(mini->user_input)) != 0)
 	{
-		ft_printf("Error: minishell does not support unclosed quotes\n");
+		ft_putendl_fd("minishell: syntax error with open quotes", STDERR);
 		return ;
 	}
 	process_token(mini->user_input, program);

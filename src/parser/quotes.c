@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 11:52:40 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/08/29 19:09:05 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:53:35 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,29 +34,23 @@ char *expand_variable(char *input, int *i)
 	return (var_value);
 }
 
-int check_quotes(const char *input)
+int inside_quotes(char *input, int index)
 {
 	int i;
-	int single_quote;
-	int double_quote;
-	char *str;
+	int quote;
 
 	i = -1;
-	str = ft_strdup(input);
-	single_quote = 0;
-	double_quote = 0;
-	while (str[++i])
+	quote = 0;
+	while (input[++i] && i != index)
 	{
-		if (str[i] == '\'')
-			single_quote++;
-		else if (str[i] == '\"')
-			double_quote++;
+		if (i > 0 && input[i - 1] == '\\')
+			continue;
+		if (input[i] == '\'' && quote == 0)
+			quote = 1;
+		else if (input[i] == '\"' && quote == 0)
+			quote = 2;
+		else if ((input[i] == '\'' && quote == 1) || (input[i] == '\"' && quote == 2))
+			quote = 0;
 	}
-	if (single_quote % 2 == 0 && double_quote % 2 == 0)
-	{
-		free(str);
-		return (1);
-	}
-	free(str);
-	return (0);
+	return (quote);
 }

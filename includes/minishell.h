@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caliman <caliman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/14 19:27:57 by caliman          ###   ########.fr       */
+/*   Updated: 2024/09/27 17:55:27 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,15 @@
 	GREATER_GREATER,
 }	t_type;*/
 
-typedef struct s_input_organize {
+typedef struct s_input_organize
+{
 	int		pipes;
 	char	*input_file;
 	char	*output_file;
 	char	*append_file;
 	char	*heredoc_delimiter;
 	char	**cmd_split;
-} t_input_organize;
+} 		t_input_organize;
 
 //commands struct
 /*typedef struct s_command
@@ -74,7 +75,7 @@ typedef struct s_program
 	char			*old_pwd;
 	int				loop;
 	//t_command		*commands;
-}	t_program;
+}		t_program;
 
 //clean/clean.c
 void	free_array(char **array);
@@ -88,7 +89,7 @@ void	init_struct(t_program *mini, char **env);
 
 //lexer/parseline.c
 int		ft_isspaces(char c);
-char	*fix_redir_spaces(const char *input);
+char	*fix_redir_spaces(char *input);
 int		parseline(t_program *mini);
 
 //loop/loop.c
@@ -99,9 +100,10 @@ void	parse_input(t_program *mini, t_input_organize *program);
 
 //parser/quotes.c
 char	*expand_variable(char *input, int *i);
-int		check_quotes(const char *input);
+int		inside_quotes(char *input, int index);
 
 //utils/utils.c
+int		is_token(char c);
 int		ft_strcmp(const char *s1, const char *s2);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 

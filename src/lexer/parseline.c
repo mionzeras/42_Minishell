@@ -6,11 +6,30 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/16 17:23:26 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:04:52 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char *alloc_with_spaces(char *input)
+{
+	char *new_input;
+	int i;
+	int count;
+
+	i = -1;
+	count = 0;
+	while (input[++i])
+	{
+		if (is_token(input[i]))
+			count++;
+	}
+	new_input = (char *)malloc(sizeof(char) * (ft_strlen(input) + count + 1));
+	if (!new_input)
+		return (NULL);
+	return (new_input);
+}
 
 bool duplicates(char *str)
 {
@@ -40,23 +59,23 @@ int ft_isspaces(char c)
 	return 0;
 }
 
-char *fix_redir_spaces(const char *input)
+char *fix_redir_spaces(char *input)
 {
 	char *new_input;
 	int i;
 	int j;
 
-	new_input = (char *)malloc(ft_strlen(input) * 2 + 1);
+	new_input = alloc_with_spaces(input);
 	i = 0;
 	j = 0;
 	while (input[i])
 	{
-		if ((input[i] == '>' || input[i] == '<' || input[i] == '|')) // verifica se o char é um redirecionador e o proximo char não é um espaço
+		if (is_token(input[i]) && inside_quotes(input, i) == 0) // verifica se o char é um redirecionador e não está dentro de aspas
 		{
-			if (i > 0 && !ft_isspaces(input[i-1])) // verifica se o char anterior é um espaço, caso não seja, adiciona um espaço
-				new_input[j++] = ' ';
-			new_input[j++] = input[i];
-			if (input[i + 1] == '>' || input[i + 1] == '<') // verifica se o proximo char é um redirecionador
+			if (i > 0 && !ft_isspaces(input[i - 1])) // verifica se o char anterior não é um espaço
+				new_input[j++] = ' '; // adiciona um espaço
+			new_input[j++] = input[i];  // adiciona o redirecionador
+			if ((is_token(input[i + 1])) && input[i] != '|') // verifica se o proximo char é um redirecionador e o char atual não é um pipe
 				new_input[j++] = input[++i];
 			if (!ft_isspaces(input[i + 1]) && input[i + 1]) // verifica se o proximo char é um espaço, caso não seja, adiciona um espaço
 				new_input[j++] = ' ';
