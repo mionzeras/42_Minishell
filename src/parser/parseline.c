@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/27 18:04:52 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/02 09:40:45 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char *alloc_with_spaces(char *input)
 		if (is_token(input[i]))
 			count++;
 	}
-	new_input = (char *)malloc(sizeof(char) * (ft_strlen(input) + count + 1));
+	new_input = (char *)malloc(sizeof(char *) * (ft_strlen(input) + count + 1));
 	if (!new_input)
 		return (NULL);
 	return (new_input);

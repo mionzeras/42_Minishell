@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_loop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caliman <caliman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/14 19:51:23 by caliman          ###   ########.fr       */
+/*   Updated: 2024/09/27 19:35:22 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int mini_loop(t_program *mini, t_input_organize *program)
 	{
 		if (parseline(mini))
 			continue;
+		printf("mini->user_input: %s\n", mini->user_input);
 		init_organize(program);
 		parse_input(mini, program);
 		if(ft_strncmp(mini->user_input, "exit", 4) == 0)

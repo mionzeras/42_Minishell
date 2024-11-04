@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/27 19:07:37 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/02 08:55:45 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ void	parse_input(t_program *mini, t_input_organize *program)
 		return ;
 	}
 	process_token(mini->user_input, program);
-	printf("user_input: %s\n", mini->user_input);
 	printf("input_file: %s\n", program->input_file);
 	printf("output_file: %s\n", program->output_file);
 	printf("append_file: %s\n", program->append_file);

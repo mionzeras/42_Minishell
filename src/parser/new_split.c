@@ -6,13 +6,13 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 18:49:09 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/27 19:14:39 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/02 09:12:08 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int insider_quotes(const char *input, int index)
+/*int insider_quotes(const char *input, int index)
 {
 	int i;
 	int quote;
@@ -31,10 +31,10 @@ int insider_quotes(const char *input, int index)
 			quote = 0;
 	}
 	return (quote);
-}
+}*/
 
 //count words in string
-int	count_world(char const *s, char c)
+int	count_world(char *s, char c)
 {
 	int	i;
 	int	count;
@@ -43,10 +43,9 @@ int	count_world(char const *s, char c)
 	count = 0;
 	while (s[i] != '\0')
 	{
-		if (insider_quotes(s, i) != 0)
+		if (inside_quotes(s, i) != 0)
 		{
-			i++;
-			while (insider_quotes(s, i) != 0)
+			while (inside_quotes(s, i) != 0)
 				i++;
 			i++;
 			count++;
@@ -59,17 +58,16 @@ int	count_world(char const *s, char c)
 }
 
 //count letters in words
-size_t	countliw(const char *str, char c)
+size_t	countliw(char *str, char c)
 {
 	size_t	i;
 
 	i = 0;
 	while (str[i] && str[i] != c)
 	{
-		if (insider_quotes(str, i) != 0)
+		if (inside_quotes(str, i) != 0)
 		{
-			i++;
-			while (insider_quotes(str, i) != 0)
+			while (inside_quotes(str, i) != 0)
 				i++;
 		}
 		else
@@ -78,7 +76,7 @@ size_t	countliw(const char *str, char c)
 	return (i);
 }
 
-char	**ft_new_split(char const *s, char c)
+char	**ft_new_split(char *s, char c)
 {
 	size_t	i;
 	size_t	str_size;

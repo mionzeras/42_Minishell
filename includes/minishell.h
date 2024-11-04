@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/09/27 19:19:09 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/10/02 09:12:22 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	init_struct(t_program *mini, char **env);
 int		mini_loop(t_program *mini, t_input_organize *program);
 
 //parser/new_split.c
-char	**ft_new_split(char const *s, char c);
+char	**ft_new_split(char *s, char c);
 
 //parser/parseline.c
 int		ft_isspaces(char c);
