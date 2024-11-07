@@ -6,32 +6,11 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 18:49:09 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/02 09:12:08 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:43:37 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*int insider_quotes(const char *input, int index)
-{
-	int i;
-	int quote;
-
-	i = -1;
-	quote = 0;
-	while (input[++i] && i != index)
-	{
-		if (i > 0 && input[i - 1] == '\\')
-			continue;
-		if (input[i] == '\'' && quote == 0)
-			quote = 1;
-		else if (input[i] == '\"' && quote == 0)
-			quote = 2;
-		else if ((input[i] == '\'' && quote == 1) || (input[i] == '\"' && quote == 2))
-			quote = 0;
-	}
-	return (quote);
-}*/
 
 //count words in string
 int	count_world(char *s, char c)
@@ -45,14 +24,20 @@ int	count_world(char *s, char c)
 	{
 		if (inside_quotes(s, i) != 0)
 		{
-			while (inside_quotes(s, i) != 0)
+			count++;
+			printf("count++ from quote\n");
+			while (inside_quotes(s, i) != 0 && s[i] != '\0')
 				i++;
-			i++;
-			count++;
 		}
-		else if (s[i] != c && (i == 0 || s[i - 1] == c))
+		else if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
+		{
 			count++;
-		i++;
+			printf("count++ from c\n");
+			while (s[i] != '\0' && s[i] != c && inside_quotes(s, i) == 0)
+				i++;
+		}
+		else
+			i++;
 	}
 	return (count);
 }
@@ -67,6 +52,7 @@ size_t	countliw(char *str, char c)
 	{
 		if (inside_quotes(str, i) != 0)
 		{
+			i++;
 			while (inside_quotes(str, i) != 0)
 				i++;
 		}
@@ -87,6 +73,7 @@ char	**ft_new_split(char *s, char c)
 	if (!s)
 		return (NULL);
 	str_size = count_world(s, c);
+	printf("strzise %zu\n", str_size);
 	str_final = malloc((str_size + 1) * sizeof(char *));
 	if (!str_final)
 		return (NULL);
@@ -96,7 +83,9 @@ char	**ft_new_split(char *s, char c)
 			s++;
 		wrd_size = countliw(s, c);
 		str_final[i] = ft_substr(s, 0, wrd_size);
-		s = (s + wrd_size) + 1;
+		s += wrd_size;
+		while (*s && *s == c)
+			s++;
 		i++;
 	}
 	str_final[str_size] = NULL;

@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/02 09:12:22 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/07 19:58:30 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <errno.h>
-#include "libft.h"
+# include "libft.h"
 
 # define STDIN 0
 # define STDOUT 1
@@ -42,15 +42,15 @@ typedef struct s_input_organize
 	char	*input_file;
 	char	*output_file;
 	char	*append_file;
-	char	*heredoc_delimiter;
+	char	*heredoc_del;
 	char	**cmd_split;
-} 		t_input_organize;
+}		t_input_organize;
 
 //main struct
 typedef struct s_program
 {
 	char			**env;
-	char 			**path;
+	char			**path;
 	char			*user_input;
 	char			*pwd;
 	char			*old_pwd;
@@ -63,7 +63,7 @@ void	free_organize(t_input_organize *program);
 void	free_program(t_program *mini, t_input_organize *program);
 
 //initialize/init.c
-char	**save_path(t_program *mini, char **envp);
+void	save_path(t_program *mini, char **envp);
 void	init_organize(t_input_organize *program);
 void	init_struct(t_program *mini, char **env);
 
@@ -82,8 +82,9 @@ int		parseline(t_program *mini);
 void	parse_input(t_program *mini, t_input_organize *program);
 
 //parser/quotes.c
-char	*expand_variable(char *input, int *i);
 int		inside_quotes(char *input, int index);
+char	*expand_variable(char *input, int *i);
+char	*expander(char *input);
 
 //utils/utils.c
 int		is_token(char c);

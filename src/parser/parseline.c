@@ -6,17 +6,17 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/02 09:40:45 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/05 18:05:20 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *alloc_with_spaces(char *input)
+char	*alloc_with_spaces(char *input)
 {
-	char *new_input;
-	int i;
-	int count;
+	char	*new_input;
+	int		i;
+	int		count;
 
 	i = -1;
 	count = 0;
@@ -31,16 +31,17 @@ char *alloc_with_spaces(char *input)
 	return (new_input);
 }
 
-bool duplicates(char *str)
+bool	duplicates(char *str)
 {
-	char *tmp;
-	int start_with_space;
+	char	*tmp;
+	int		start_with_space;
 
 	tmp = ft_strdup(str);
 	start_with_space = 0;
 	if (tmp[0] == ' ')
-			start_with_space = 1;
-	if (ft_strnstr(tmp, "||", ft_strlen(tmp)) || ft_strnstr(tmp, "&&", ft_strlen(tmp)))
+		start_with_space = 1;
+	if (ft_strnstr(tmp, "||", ft_strlen(tmp))
+		|| ft_strnstr(tmp, "&&", ft_strlen(tmp)))
 	{
 		ft_putstr_fd("This program doesn't handle || or && \n", STDERR);
 		if (ft_strlen(tmp) > 0 && !start_with_space)
@@ -52,18 +53,19 @@ bool duplicates(char *str)
 	return (false);
 }
 
-int ft_isspaces(char c)
+int	ft_isspaces(char c)
 {
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
-		return 1;
-	return 0;
+	if (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r')
+		return (1);
+	return (0);
 }
 
-char *fix_redir_spaces(char *input)
+char	*fix_redir_spaces(char *input)
 {
-	char *new_input;
-	int i;
-	int j;
+	char	*new_input;
+	int		i;
+	int		j;
 
 	new_input = alloc_with_spaces(input);
 	i = 0;
@@ -85,13 +87,14 @@ char *fix_redir_spaces(char *input)
 		i++;
 	}
 	new_input[j] = '\0'; // adiciona o null no final da string
-	return new_input;
+	return (new_input);
 }
 
-int parseline(t_program *mini)
+int	parseline(t_program *mini)
 {
-	char *user_input;
-	int start_with_space;
+	char	*user_input;
+	char	*tmp;
+	int		start_with_space;
 
 	start_with_space = 0;
 	user_input = readline(MINI_MSG);
@@ -99,8 +102,6 @@ int parseline(t_program *mini)
 		exit(EXIT_SUCCESS);
 	if (!duplicates(user_input))
 	{
-		char *tmp;
-		
 		if (user_input[0] == ' ')
 			start_with_space = 1;
 		tmp = ft_strtrim(user_input, " ");
@@ -111,6 +112,7 @@ int parseline(t_program *mini)
 			add_history(tmp);
 		mini->user_input = fix_redir_spaces(tmp);
 		free(tmp);
+		mini->user_input = expander(mini->user_input);
 		return (EXIT_SUCCESS);
 	}
 	free(user_input);

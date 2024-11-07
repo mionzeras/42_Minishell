@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:16:05 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/08/16 11:43:52 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/07 19:10:58 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
+	if(!s)
+		return (0);
 	while (s[i] != '\0')
 		i++;
 	return (i);
