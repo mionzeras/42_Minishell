@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:32:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/08 20:43:01 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/09 14:38:06 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	main(int argc, char **argv, char **env)
 {
 	t_program			mini;
-	t_organize			*program;
+	t_organize			program;
 
 	if (argc != 1 || argv[1])
 	{
@@ -27,14 +27,8 @@ int	main(int argc, char **argv, char **env)
 		ft_printf("Error: No environment\n");
 		return (EXIT_FAILURE);
 	}
-	program = (t_organize *)malloc(sizeof(t_organize));
-	if (!program)
-	{
-		ft_printf("Error: Malloc failed\n");
-		return (EXIT_FAILURE);
-	}
 	init_struct(&mini, env);
-	mini_loop(&mini, program);
-	free_program(&mini, program);
+	mini_loop(&mini, &program);
+	free_program(&mini, &program);
 	return (0);
 }

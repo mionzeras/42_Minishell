@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 17:29:45 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/08 21:52:12 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/09 14:31:37 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	pipes_counter(t_program *mini)
 	pipe = 0;
 	while (mini->user_input[++i])
 	{
-		if (mini->user_input[i] == '|')
+		if (mini->user_input[i] == '|' && inside_quotes(mini->user_input, i) == 0)
 			pipe++;
 	}
 	mini->pipes = pipe;
