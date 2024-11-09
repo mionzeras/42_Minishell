@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 10:38:37 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/04 16:40:47 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/08 21:48:21 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,6 @@ int	is_token(char c)
 	if (c == '<' || c == '>' || c == '|')
 		return (1);
 	return (0);
-}
-
-char	*ft_strcpy(char *dest, const char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
 }
 
 int	ft_strcmp(const char *s1, const char *s2)

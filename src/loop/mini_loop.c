@@ -6,20 +6,20 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/04 16:28:37 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/08 20:46:57 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	mini_loop(t_program *mini, t_input_organize *program)
+int	mini_loop(t_program *mini, t_organize *program)
 {
 	while (mini->loop == ON)
 	{
 		if (parseline(mini))
 			continue ;
 		printf("mini->user_input: %s\n", mini->user_input);
-		init_organize(program);
+		init_organize(program, mini);
 		parse_input(mini, program);
 		if (ft_strncmp(mini->user_input, "exit", 4) == 0)
 			break ;

@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 18:49:09 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/07 17:43:37 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/08 22:01:20 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,12 @@ int	count_world(char *s, char c)
 		if (inside_quotes(s, i) != 0)
 		{
 			count++;
-			printf("count++ from quote\n");
 			while (inside_quotes(s, i) != 0 && s[i] != '\0')
 				i++;
 		}
 		else if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
 		{
 			count++;
-			printf("count++ from c\n");
 			while (s[i] != '\0' && s[i] != c && inside_quotes(s, i) == 0)
 				i++;
 		}

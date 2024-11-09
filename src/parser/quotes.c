@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 11:52:40 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/07 19:21:46 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:41:00 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int	expanded_size(char *input)
 	while (input[++i])
 	{
 		if (input[i] == '$' && (inside_quotes(input, i) == 0
-			|| inside_quotes(input, i) == 2) && (i == 0 || input[i - 1] != '\\'))
+				|| inside_quotes(input, i) == 2)
+			&& (i == 0 || input[i - 1] != '\\'))
 		{
 			size += ft_strlen(expand_variable(input, &i));
 		}
@@ -76,11 +77,11 @@ int	expanded_size(char *input)
 char	*expander(char *input)
 {
 	int		i;
-	int 	j;
+	int		j;
 	int		k;
 	int		new_len;
 	char	*env_value;
-	char 	*new_str;
+	char	*new_str;
 
 	i = -1;
 	j = -1;
@@ -90,7 +91,8 @@ char	*expander(char *input)
 	while (input[++i])
 	{
 		if (input[i] == '$' && (inside_quotes(input, i) == 0
-			|| inside_quotes(input, i) == 2) && (i == 0 || input[i - 1] != '\\'))
+				|| inside_quotes(input, i) == 2)
+			&& (i == 0 || input[i - 1] != '\\'))
 		{
 			env_value = expand_variable(input, &i);
 			if (!env_value)

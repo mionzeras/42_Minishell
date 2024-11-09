@@ -6,7 +6,7 @@
 #    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/09/27 19:17:13 by gcampos-         ###   ########.fr        #
+#    Updated: 2024/11/08 17:45:08 by gcampos-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC =	src/clean/clean.c \
 		src/parser/parsing.c \
 		src/parser/quotes.c \
 		src/utils/utils.c \
+		src/utils/utils2.c \
 		src/main.c
 
 # Regras
