@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/08 20:48:18 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/09 17:11:29 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	parseline(t_program *mini)
 	int		start_with_space;
 
 	start_with_space = 0;
-	user_input = readline(MINI_MSG);
+	user_input = readline("minishell$ ");
 	if (!user_input)
 		exit(EXIT_SUCCESS);
 	if (!duplicates(user_input))

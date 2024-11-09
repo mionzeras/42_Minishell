@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/08 21:51:31 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/09 17:13:47 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 # define STDOUT 1
 # define STDERR 2
 # define META_CHARS "<>|"
-# define MINI_MSG "\e[1;93mminishell\033[91m$ \033[0m"
 # define ON 0
 # define OFF 1
 
@@ -41,7 +40,7 @@ typedef struct s_organize
 	char				*input_file;
 	char				*output_file;
 	char				*append_file;
-	char				*heredoc_del;
+	char				*heredoc_dlm;
 	char				*cmds;
 	char				*args;
 	struct s_organize	*next;

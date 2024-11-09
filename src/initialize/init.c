@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:30:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/08 21:15:44 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/09 17:16:11 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_organize	*new_node(void)
 	new->append_file = NULL;
 	new->args = NULL;
 	new->cmds = NULL;
-	new->heredoc_del = NULL;
+	new->heredoc_dlm = NULL;
 	new->input_file = NULL;
 	new->output_file = NULL;
 	new->next = NULL;
@@ -89,5 +89,5 @@ void	init_struct(t_program *mini, char **env)
 	mini->user_input = NULL;
 	mini->pwd = getcwd(0, 0);
 	mini->old_pwd = NULL;
-	update_sh_lvl(mini);
+	//update_sh_lvl(mini);
 }

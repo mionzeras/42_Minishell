@@ -6,14 +6,14 @@
 #    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/11/08 17:45:08 by gcampos-         ###   ########.fr        #
+#    Updated: 2024/11/09 17:16:51 by gcampos-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Setup
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I includes -I libft
+CFLAGS = -Wall -Wextra -Werror -g -I includes -I libft #-fsanitize=address
 LIBFT_PATH = libft
 LIBFT = -Llibft -lft
 SRC =	src/clean/clean.c \

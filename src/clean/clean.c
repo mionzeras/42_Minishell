@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:25:00 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/09 14:37:11 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/09 17:21:34 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ void	free_organize(t_organize *program)
 
 	while (program)
 	{
-		tmp = program;
-		program = program->next;
-		free(tmp->input_file);
-		free(tmp->output_file);
-		free(tmp->append_file);
-		free(tmp->heredoc_del);
-		free(tmp->cmds);
-		free(tmp->args);
-		//free(tmp);
+		tmp = program->next;
+		free(program->input_file);
+		free(program->output_file);
+		free(program->append_file);
+		free(program->heredoc_dlm);
+		free(program->cmds);
+		free(program->args);
+		//free(program);
+		program = tmp;
 	}
 }
 

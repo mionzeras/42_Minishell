@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/08 22:08:42 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/09 17:19:47 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	process_input(t_organize *program, t_program *mini)
 		}
 		else if (ft_strcmp(input[i], "<<") == 0 && input[i + 1])
 		{
-			tmp->heredoc_del = copy_redir(tmp->heredoc_del, input[++i]);
-			printf("heredoc_del[%d]: %s\n", struct_pos, tmp->heredoc_del);
+			tmp->heredoc_dlm = copy_redir(tmp->heredoc_dlm, input[++i]);
+			printf("heredoc_dlm[%d]: %s\n", struct_pos, tmp->heredoc_dlm);
 		}
 		else if (ft_strcmp(input[i], ">") == 0 && input[i + 1])
 		{
@@ -82,6 +82,7 @@ void	process_input(t_organize *program, t_program *mini)
 			printf("args_split[%d]: %s\n", struct_pos, tmp->args);
 		}
 	}
+	free_array(input);
 }
 
 void	parse_input(t_program *mini, t_organize *program)
