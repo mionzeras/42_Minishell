@@ -6,15 +6,15 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:21:39 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/09 15:45:42 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/12 20:38:17 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h" 
 
-void    heredoc(t_org_inp *prog)
+void    heredoc(t_organize *prog)
 {
-    t_org_inp   *tmp;
+    t_organize   *tmp;
     char        *line;
     int         fd;
 

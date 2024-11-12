@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 17:29:45 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/09 14:31:37 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:27:53 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,19 @@ char    *ft_strcpy(char *src)
     return (dest);
 }
 
-void	pipes_counter(t_program *mini)
+int	pipes_counter(char *str)
 {
 	int i;
 	int pipe;
 
 	i = -1;
 	pipe = 0;
-	while (mini->user_input[++i])
+	while (str[++i])
 	{
-		if (mini->user_input[i] == '|' && inside_quotes(mini->user_input, i) == 0)
+		if (str[i] == '|' && inside_quotes(str, i) == 0)
 			pipe++;
 	}
-	mini->pipes = pipe;
+	return (pipe);
 }
 
 void	update_sh_lvl(t_program *mini)

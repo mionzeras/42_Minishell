@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 18:49:09 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/08 22:01:20 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/12 20:33:52 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ char	**ft_new_split(char *s, char c)
 	if (!s)
 		return (NULL);
 	str_size = count_world(s, c);
-	printf("strzise %zu\n", str_size);
 	str_final = malloc((str_size + 1) * sizeof(char *));
 	if (!str_final)
 		return (NULL);

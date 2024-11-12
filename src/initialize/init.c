@@ -6,11 +6,34 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:30:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/09 17:16:11 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/12 20:28:26 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_list(t_organize *program)
+{
+	t_organize	*tmp;
+	int			i;
+
+	i = 0;
+	tmp = program;
+	while (tmp)
+	{
+		printf("Node %d:\n", i);
+		printf("Node address: %p\n", (void*)tmp);
+		printf("input_file: %s\n", tmp->input_file);
+		printf("output_file: %s\n", tmp->output_file);
+		printf("append_file: %s\n", tmp->append_file);
+		printf("heredoc_dlm: %s\n", tmp->heredoc_dlm);
+		printf("cmds: %s\n", tmp->cmds);
+		printf("args: %s\n", tmp->args);
+		printf("next: %p\n", (void*)tmp->next);
+		tmp = tmp->next;
+		i++;
+	}
+}
 
 void	add_node(t_organize *node, t_organize *new)
 {
@@ -63,13 +86,12 @@ void	save_path(t_program *mini, char **envp)
 	}
 }
 
-void	init_organize(t_organize *program, t_program *mini)
+t_organize	*init_organize(t_program *mini)
 {
 	int			i;
 	t_organize	*list;
 
 	i = -1;
-	pipes_counter(mini);
 	while (++i <= mini->pipes)
 	{
 		if (i == 0)
@@ -77,7 +99,7 @@ void	init_organize(t_organize *program, t_program *mini)
 		else
 			add_node(list, new_node());
 	}
-	*program = *list;
+	return (list);
 }
 
 void	init_struct(t_program *mini, char **env)

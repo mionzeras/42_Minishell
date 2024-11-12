@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/11 19:44:20 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/12 20:33:09 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	process_input(t_organize *program, t_program *mini)
 		{
 			tmp = tmp->next;
 			struct_pos++;
+			printf("\n");
 			continue ;
 		}
 		else
