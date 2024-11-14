@@ -6,11 +6,64 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/09 17:11:29 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:34:28 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	size_without_quotes(char *input)
+{
+	t_var	var;
+	
+	var.i = -1;
+	var.size = 0;
+	var.c = 0;
+
+	while (input[++var.i])
+	{
+		if (input[var.i] == '\'' || input[var.i] == '\"')
+		{
+			var.c = input[var.i];
+			var.i++;
+			while (input[var.i++] && input[var.i] != var.c)
+				var.size++;
+			var.c = 0;
+		}
+		if (input[var.i] != var.c)
+			var.size++;
+	}
+	return (var.size);
+}
+
+char	*remove_quotes(char *input)
+{
+	t_var	var;
+	char	*new_input;
+
+	var.i = size_without_quotes(input);
+	var.j = 0;
+	new_input = (char *)malloc(sizeof(char) * (var.i + 1));
+	if (!new_input)
+		return (NULL);
+	var.i = -1;
+	while (input[++var.i])
+	{
+		var.c = 0;
+		if (input[var.i] == '\'' || input[var.i] == '\"')
+		{
+			var.c = input[var.i++];
+			while (input[var.i] && input[var.i] != var.c)
+				new_input[var.j++] = input[var.i++];
+		}
+		if (input[var.i] != var.c)
+			new_input[var.j++] = input[var.i];
+	}
+	new_input[var.j] = '\0';
+	printf("new_input: %s\n", new_input);
+	free(input);
+	return (new_input);
+}
 
 char	*alloc_with_spaces(char *input)
 {
@@ -33,23 +86,12 @@ char	*alloc_with_spaces(char *input)
 
 bool	duplicates(char *str)
 {
-	char	*tmp;
-	int		start_with_space;
-
-	tmp = ft_strdup(str);
-	start_with_space = 0;
-	if (tmp[0] == ' ')
-		start_with_space = 1;
-	if (ft_strnstr(tmp, "||", ft_strlen(tmp))
-		|| ft_strnstr(tmp, "&&", ft_strlen(tmp)))
+	if (ft_strnstr(str, "||", ft_strlen(str))
+		|| ft_strnstr(str, "&&", ft_strlen(str)))
 	{
 		ft_putstr_fd("This program doesn't handle || or && \n", STDERR);
-		if (ft_strlen(tmp) > 0 && !start_with_space)
-			add_history(tmp);
-		free(tmp);
 		return (true);
 	}
-	free(tmp);
 	return (false);
 }
 
@@ -68,9 +110,9 @@ char	*fix_redir_spaces(char *input)
 	int		j;
 
 	new_input = alloc_with_spaces(input);
-	i = 0;
+	i = -1;
 	j = 0;
-	while (input[i])
+	while (input[++i])
 	{
 		if (is_token(input[i]) && inside_quotes(input, i) == 0) // verifica se o char é um redirecionador e não está dentro de aspas
 		{
@@ -84,7 +126,6 @@ char	*fix_redir_spaces(char *input)
 		}
 		else
 			new_input[j++] = input[i]; // adiciona o char normal
-		i++;
 	}
 	new_input[j] = '\0'; // adiciona o null no final da string
 	return (new_input);
@@ -92,29 +133,24 @@ char	*fix_redir_spaces(char *input)
 
 int	parseline(t_program *mini)
 {
-	char	*user_input;
 	char	*tmp;
-	int		start_with_space;
 
-	start_with_space = 0;
-	user_input = readline("minishell$ ");
-	if (!user_input)
+	tmp = readline("minishell$ ");
+	add_history(tmp);
+	if (!tmp)
 		exit(EXIT_SUCCESS);
-	if (!duplicates(user_input))
+	if (duplicates(tmp))
 	{
-		if (user_input[0] == ' ')
-			start_with_space = 1;
-		tmp = ft_strtrim(user_input, " ");
-		if (!tmp)
-			exit(EXIT_SUCCESS);
-		free(user_input);
-		if (ft_strlen(tmp) > 0 && !start_with_space)
-			add_history(tmp);
-		mini->user_input = fix_redir_spaces(tmp);
 		free(tmp);
-		mini->user_input = expander(mini->user_input);
-		return (EXIT_SUCCESS);
+		return (EXIT_FAILURE);
 	}
-	free(user_input);
-	return (EXIT_FAILURE);
+	mini->user_input = ft_strtrim(tmp, " ");
+	if (!mini->user_input)
+		exit(EXIT_SUCCESS);
+	free(tmp);
+	tmp = fix_redir_spaces(mini->user_input);
+	free(mini->user_input);
+	mini->user_input = expander(tmp);
+	free(tmp);
+	return (EXIT_SUCCESS);
 }

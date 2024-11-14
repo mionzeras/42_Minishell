@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 11:52:40 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/08 16:41:00 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:22:14 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int	expanded_size(char *input)
 			&& (i == 0 || input[i - 1] != '\\'))
 		{
 			size += ft_strlen(expand_variable(input, &i));
+			if (!expand_variable(input, &i))
+				size++;
 		}
 		else
 			size++;
@@ -76,34 +78,29 @@ int	expanded_size(char *input)
 
 char	*expander(char *input)
 {
-	int		i;
-	int		j;
-	int		k;
-	int		new_len;
-	char	*env_value;
+	t_var	var;
 	char	*new_str;
 
-	i = -1;
-	j = -1;
-	k = -1;
-	new_len = expanded_size(input);
-	new_str = malloc(new_len + 1);
-	while (input[++i])
+	var.i = -1;
+	var.k = -1;
+	var.size = expanded_size(input);
+	new_str = malloc(var.size + 1);
+	while (input[++var.i])
 	{
-		if (input[i] == '$' && (inside_quotes(input, i) == 0
-				|| inside_quotes(input, i) == 2)
-			&& (i == 0 || input[i - 1] != '\\'))
+		if (input[var.i] == '$' && (inside_quotes(input, var.i) == 0
+				|| inside_quotes(input, var.i) == 2)
+			&& (var.i == 0 || input[var.i - 1] != '\\'))
 		{
-			env_value = expand_variable(input, &i);
-			if (!env_value)
-				continue ;
-			while (env_value[++j])
-				new_str[++k] = env_value[j];
+			var.str = expand_variable(input, &var.i);
+			if (!var.str)
+				var.str = "$";
+			var.j = -1;
+			while (var.str[++var.j])
+				new_str[++var.k] = var.str[var.j];
 		}
 		else
-			new_str[++k] = input[i];
+			new_str[++var.k] = input[var.i];
 	}
-	new_str[++k] = '\0';
-	free(input);
+	new_str[++var.k] = '\0';
 	return (new_str);
 }

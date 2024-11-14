@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/14 16:32:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/13 18:25:50 by gcampos-         ###   ########.fr       */
+/*   Created: 2024/11/13 16:55:43 by gcampos-          #+#    #+#             */
+/*   Updated: 2024/11/13 17:17:17 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **env)
+void	signal_handler(int signum)
 {
-	t_program	*mini;
-	//int			*fd;
+    if (signum == SIGINT)
+    {
+        rl_replace_line("", 0);
+        write(STDOUT, "\n", 1);
+        rl_on_new_line();
+        rl_redisplay();
+    }
+}
 
-	mini = calloc(sizeof(t_program), 1);
-	if (argc != 1 || argv[1])
-	{
-		ft_printf("Error: No arguments needed\n");
-		return (EXIT_FAILURE);
-	}
-	if (!env || !*env)
-	{
-		ft_printf("Error: No environment\n");
-		return (EXIT_FAILURE);
-	}
-	init_struct(mini, env);
-	mini_loop(mini);
-	free_program(mini);
-	return (0);
+void	signal_handler2(int signum)
+{
+    if (signum == SIGQUIT)
+    {
+        write(STDOUT, "Quit: 3\n", 8);
+        rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay();
+    }
 }

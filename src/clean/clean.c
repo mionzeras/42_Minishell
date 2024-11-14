@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:25:00 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/12 20:46:43 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/13 18:30:49 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ void	free_array(char **array)
 		return ;
 	i = -1;
 	while (array[++i])
-	{
 		free(array[i]);
-	}
 	free(array);
 }
 
@@ -54,11 +52,12 @@ void	free_organize(t_organize *program)
 void	free_program(t_program *mini)  
 {
 	free_array(mini->path);
+	free_array(mini->env);
+	free_array(mini->export);
 	free(mini->pwd);
 	free(mini->old_pwd);
 	if (mini->user_input)
 		free(mini->user_input);
 	if (mini)
 		free(mini);
-	//free_organize(program);
 }

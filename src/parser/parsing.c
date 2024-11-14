@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/12 20:33:09 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:53:58 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,12 @@ void	process_input(t_organize *program, t_program *mini)
 	input = ft_new_split(mini->user_input, ' ');
 	while (input[++i])
 	{
+		printf("input[%d]: %s\n", i, input[i]);
+		input[i] = remove_quotes(input[i]);
+	}
+	i = -1;
+	while (input[++i])
+	{	
 		if (ft_strcmp(input[i], "<") == 0 && input[i + 1])
 		{
 			tmp->input_file = copy_redir(tmp->input_file, input[++i]);
@@ -94,5 +100,7 @@ void	parse_input(t_program *mini, t_organize *program)
 		ft_putendl_fd("minishell: syntax error with open quotes", STDERR);
 		return ;
 	}
+	printf("user_input: %s\n", mini->user_input);
+	// mini->user_input = remove_quotes(mini->user_input);
 	process_input(program, mini);
 }

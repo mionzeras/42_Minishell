@@ -6,27 +6,26 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/12 20:44:55 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:50:53 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <sys/wait.h>
-# include <sys/stat.h>
-# include <signal.h>
-# include <limits.h>
-# include <fcntl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <signal.h>
-# include <stdbool.h>
-# include <errno.h>
-# include "libft.h"
+# include <unistd.h> //functions: read, write, close, fork, execve, chdir, pipe, dup2, dup, waitpid, wait, wait3, wait4, signal, kill, exit	
+# include <stdlib.h> //functions: malloc, free, exit, execve, getenv, realpath, system
+# include <stdio.h> //functions: printf, perror, strerror
+# include <sys/wait.h> //functions: waitpid, wait, wait3, wait4
+# include <sys/stat.h> //functions: stat, lstat, fstat
+# include <signal.h> //functions: signal, kill
+# include <limits.h> //functions: PATH_MAX
+# include <fcntl.h> //functions: open, close, read, write
+# include <readline/readline.h> //functions: readline, add_history
+# include <readline/history.h> //functions: using_history
+# include <stdbool.h> //types: bool
+# include <errno.h> //variables: errno
+# include "libft.h" //libft functions
 
 # define STDIN 0
 # define STDOUT 1
@@ -34,6 +33,17 @@
 # define META_CHARS "<>|"
 # define ON 0
 # define OFF 1
+
+typedef struct s_var
+{
+	int		i;
+	int 	j;
+	int		k;
+	int		inside;
+	int		size;
+	char 	c;
+	char 	*str;
+} t_var;
 
 typedef struct s_organize
 {
@@ -52,6 +62,7 @@ typedef struct s_program
 	int				pipes;
 	int				loop;
 	char			**env;
+	char			**export;
 	char			**path;
 	char			*user_input;
 	char			*pwd;
@@ -62,7 +73,7 @@ typedef struct s_program
 void		free_array(char **array);
 void		free_organize(t_organize *program);
 void		free_program(t_program *mini); //old -> free_program(t_program *mini, t_organize *program);
-
+int			size_without_quotes(char *input);
 //initialize/init.c
 void		print_list(t_organize *program);
 void		save_path(t_program *mini, char **envp);
@@ -76,6 +87,8 @@ int			mini_loop(t_program *mini); // old -> int mini_loop(t_program *mini, t_org
 char		**ft_new_split(char *s, char c);
 
 //parser/parseline.c
+int			size_without_quotes(char *input);
+char		*remove_quotes(char *input);
 int			ft_isspaces(char c);
 char		*fix_redir_spaces(char *input);
 int			parseline(t_program *mini);

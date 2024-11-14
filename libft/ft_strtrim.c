@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:30:08 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/10/02 09:01:43 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:19:08 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (i && ft_strchr(set, s1[i]))
 		i--;
 	strdone = ft_substr(s1, j, (i - j) + 1);
+	if (!strdone)
+		return (0);
 	return (strdone);
 }
