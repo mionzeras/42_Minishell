@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/14 16:34:28 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:50:36 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ char	*remove_quotes(char *input)
 			new_input[var.j++] = input[var.i];
 	}
 	new_input[var.j] = '\0';
-	printf("new_input: %s\n", new_input);
 	free(input);
 	return (new_input);
 }

@@ -6,36 +6,34 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 18:49:09 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/14 17:35:33 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:45:52 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //count words in string
-int	count_world(char *s, char c)
+size_t	count_world(char *s, char c)
 {
-	int	i;
-	int	count;
+	int		i;
+	int		count;
+	char	quote;
 
 	i = 0;
 	count = 0;
-	while (s[i] != '\0')
+	quote = 0;
+	while (s[i])
 	{
-		if (inside_quotes(s, i) != 0)
-		{
+		if (s[i] != c && ((i == 0) || s[i - 1] == c))
 			count++;
-			while (inside_quotes(s, i) != 0 && s[i] != '\0')
+		if (s[i] == '\'' || s[i] == '\"')
+		{
+			quote = s[i++];
+			while (s[i] && s[i] != quote)
 				i++;
 		}
-		else if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
-		{
-			count++;
-			while (s[i] != '\0' && s[i] != c && inside_quotes(s, i) == 0)
-				i++;
-		}
-		else
-			i++;
+		i++;
+
 	}
 	return (count);
 }
@@ -44,18 +42,18 @@ int	count_world(char *s, char c)
 size_t	countliw(char *str, char c)
 {
 	size_t	i;
+	char	quote;
 
 	i = 0;
 	while (str[i] && str[i] != c)
 	{
-		if (inside_quotes(str, i) != 0)
+		if (str[i] == '\'' || str[i] == '\"')
 		{
-			i++;
-			while (inside_quotes(str, i) != 0)
+			quote = str[i++];
+			while (str[i] && str[i] != quote)
 				i++;
 		}
-		else
-			i++;
+		i++;
 	}
 	return (i);
 }
