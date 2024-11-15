@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/15 20:02:30 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:27:01 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ typedef struct s_program
 {
 	int				pipes;
 	int				loop;
-	// char			**env;
-	// char			**export;
 	char			**path;
 	char			*user_input;
 	char			*pwd;
@@ -126,6 +124,5 @@ void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 //utils/utils2.c
 char		*ft_strcpy(char *src);
 int			pipes_counter(char *str);
-void		update_sh_lvl(t_program *mini);
-
+void		update_sh_lvl(t_env *env);
 #endif

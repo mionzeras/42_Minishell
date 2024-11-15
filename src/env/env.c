@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 18:00:51 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/15 20:01:09 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:21:09 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,16 @@ t_env	*init_env(char **env)
 	while (env[++i])
 		env_size++;
 	i = -1;
-	while (++i <= env_size)
+	while (++i < env_size)
 	{
 		if (i == 0)
 			list = new_env_node();
 		else
 			add_env_node(list, new_env_node());
 	}
-	i = 0;
+	i = -1;
 	head = list;
-	while (env[i++])
+	while (env[++i])
 	{
 		list->content = ft_strdup(env[i]);
 		list = list->next;

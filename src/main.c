@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:32:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/13 18:25:50 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:31:59 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1 || argv[1])
 	{
 		ft_printf("Error: No arguments needed\n");
+		free(mini);
 		return (EXIT_FAILURE);
 	}
 	if (!env || !*env)
