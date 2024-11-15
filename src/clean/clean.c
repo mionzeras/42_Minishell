@@ -6,11 +6,24 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:25:00 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/13 18:30:49 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:02:48 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	delete_list(t_env *list)
+{
+	t_env	*tmp;
+
+	while (list)
+	{
+		tmp = list;
+		list = list->next;
+		free(tmp->content);
+		free(tmp);
+	}
+}
 
 void	free_array(char **array)
 {
@@ -52,10 +65,12 @@ void	free_organize(t_organize *program)
 void	free_program(t_program *mini)  
 {
 	free_array(mini->path);
-	free_array(mini->env);
-	free_array(mini->export);
+	// free_array(mini->env);
+	// free_array(mini->export);
 	free(mini->pwd);
 	free(mini->old_pwd);
+	delete_list(mini->env_list);
+	delete_list(mini->export_list);
 	if (mini->user_input)
 		free(mini->user_input);
 	if (mini)

@@ -6,38 +6,38 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:30:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/13 17:34:36 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:06:28 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**copy_env(char **env)
-{
-	int		i;
-	char	**new_env;
+// char	**copy_env(char **env)
+// {
+// 	int		i;
+// 	char	**new_env;
 
-	i = -1;
-	while (env[++i])
-		;
-	new_env = malloc(sizeof(char *) * (i + 1));
-	if (!new_env)
-		return (NULL);
-	i = -1;
-	while (env[++i])
-		new_env[i] = ft_strdup(env[i]);
-	new_env[i] = NULL;
-	return (new_env);
-}
+// 	i = -1;
+// 	while (env[++i])
+// 		;
+// 	new_env = malloc(sizeof(char *) * (i + 1));
+// 	if (!new_env)
+// 		return (NULL);
+// 	i = -1;
+// 	while (env[++i])
+// 		new_env[i] = ft_strdup(env[i]);
+// 	new_env[i] = NULL;
+// 	return (new_env);
+// } comentada pois nao precisa mais, caso nao use apagar.
 
-void print_env(t_program *mini)
+/*void print_env(t_program *mini)
 {
 	int i;
 
 	i = -1;
 	while (mini->env[++i])
 		printf("env[%d]: %s\n", i, mini->env[i]);
-}
+}*/
 
 void	print_list(t_organize *program)
 {
@@ -133,12 +133,15 @@ void	init_struct(t_program *mini, char **env)
 {
 	mini->pipes = 0;
 	mini->loop = ON;
-	mini->env = copy_env(env);
-	mini->export = copy_env(env);
+	// mini->env = copy_env(env);
+	// mini->export = copy_env(env);
 	save_path(mini, env);
 	mini->user_input = NULL;
 	mini->pwd = getcwd(0, 0);
 	mini->old_pwd = NULL;
-	update_sh_lvl(mini);
+	mini->env_list = init_env(env);
+	print_env_list(mini->env_list);
+	mini->export_list = init_env(env);
+	//update_sh_lvl(mini);
 	//print_env(mini);
 }

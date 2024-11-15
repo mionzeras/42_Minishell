@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 17:29:45 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/13 16:21:17 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:58:17 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,25 @@ void	update_sh_lvl(t_program *mini)
 	int		i;
 	char	*sh_lvl;
 	char	*new_lvl;
+	t_env	*tmp;
 
 	i = -1;
-	while (mini->env[++i] && mini->export[i])
+	tmp = mini->env_list;
+	while (tmp)
 	{
-		if (ft_strnstr(mini->env[i], "SHLVL=", 6))
+		if (ft_strnstr(tmp->content, "SHLVL=", 6))
 		{
-			sh_lvl = ft_substr(mini->env[i], 6, ft_strlen(mini->env[i]) - 6);
+			sh_lvl = ft_substr(tmp->content, 6, ft_strlen(tmp->content) - 6);
 			new_lvl = ft_itoa(ft_atoi(sh_lvl) + 1);
-			free(mini->env[i]);
-			free(mini->export[i]);
+			free(tmp->content);
+			// free(tmp->content);
 			free(sh_lvl);
 			sh_lvl = ft_strjoin("SHLVL=", new_lvl);
 			free(new_lvl);
-			mini->env[i] = sh_lvl;
-			mini->export[i] = ft_strdup(sh_lvl);
-			printf("%s\n", mini->env[i]);
+			tmp->content = sh_lvl;
+			// tmp->content = ft_strdup(sh_lvl);
+			printf("%s\n", tmp->content);
 		}
+		tmp = tmp->next;
 	}
 }

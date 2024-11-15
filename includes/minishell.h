@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/14 16:50:53 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:02:30 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,24 +56,41 @@ typedef struct s_organize
 	struct s_organize	*next;
 }		t_organize;
 
+typedef struct s_env
+{
+	char			*content;
+	struct s_env	*next;
+	struct s_env	*prev;
+}		t_env;
+
 //main struct
 typedef struct s_program
 {
 	int				pipes;
 	int				loop;
-	char			**env;
-	char			**export;
+	// char			**env;
+	// char			**export;
 	char			**path;
 	char			*user_input;
 	char			*pwd;
 	char			*old_pwd;
+	struct s_env	*env_list;
+	struct s_env	*export_list;
 }		t_program;
 
 //clean/clean.c
+void		delete_list(t_env *list);
 void		free_array(char **array);
 void		free_organize(t_organize *program);
 void		free_program(t_program *mini); //old -> free_program(t_program *mini, t_organize *program);
 int			size_without_quotes(char *input);
+
+//env/env.c
+void		print_env_list(t_env *list);
+void		add_env_node(t_env *node, t_env *new);
+t_env		*new_env_node(void);
+t_env		*init_env(char **env);
+
 //initialize/init.c
 void		print_list(t_organize *program);
 void		save_path(t_program *mini, char **envp);

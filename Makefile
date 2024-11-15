@@ -6,7 +6,7 @@
 #    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/11/13 15:54:32 by gcampos-         ###   ########.fr        #
+#    Updated: 2024/11/15 19:22:00 by gcampos-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ CFLAGS = -Wall -Wextra -Werror -g -I includes -I libft #-fsanitize=address
 LIBFT_PATH = libft
 LIBFT = -Llibft -lft
 SRC =	src/clean/clean.c \
+		src/env/env.c \
 		src/initialize/init.c \
 		src/loop/mini_loop.c \
 		src/parser/new_split.c \
