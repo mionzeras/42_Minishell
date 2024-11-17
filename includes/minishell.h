@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/17 17:03:45 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/17 18:40:42 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ char		*fix_redir_spaces(char *input);
 int			parseline(t_program *mini);
 
 //parser/parsing.c
-void		parse_input(t_program *mini, t_organize *program);
+void		parse_input(char *str, t_organize *program);
+void		process_input(t_organize *program, char *str);
 
 //parser/quotes.c
 int			inside_quotes(char *input, int index);

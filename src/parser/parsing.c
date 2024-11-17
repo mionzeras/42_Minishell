@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/17 18:09:12 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/17 18:54:48 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*copy_redir(char *dest, char *src)
 	return (dest);
 }
 
-void	process_input(t_organize *program, t_program *mini)
+void	process_input(t_organize *program, char *str)
 {
 	int			i;
 	int			struct_pos;
@@ -73,7 +73,7 @@ void	process_input(t_organize *program, t_program *mini)
 	i = -1;
 	struct_pos = 0;
 	tmp = program;
-	input = ft_new_split(mini->user_input, ' ');
+	input = ft_new_split(str, ' ');
 	if (check_empty_redir(input) == 1)
 	{
 		free_array(input);
@@ -109,6 +109,12 @@ void	process_input(t_organize *program, t_program *mini)
 		}
 		else if (ft_strcmp(input[i], "|") == 0)
 		{
+			if (input[i + 1] == NULL)
+			{
+				ft_putendl_fd("minishell: syntax error near unexpected token `|'", STDERR);
+				free_array(input);
+				return ;
+			}
 			tmp = tmp->next;
 			struct_pos++;
 			printf("\n");
@@ -126,14 +132,14 @@ void	process_input(t_organize *program, t_program *mini)
 	free_array(input);
 }
 
-void	parse_input(t_program *mini, t_organize *program)
+void	parse_input(char *str, t_organize *program)
 {
-	if (inside_quotes(mini->user_input, ft_strlen(mini->user_input)) != 0)
+	if (inside_quotes(str, ft_strlen(str)) != 0)
 	{
 		ft_putendl_fd("minishell: syntax error with open quotes", STDERR);
 		return ;
 	}
-	printf("user_input: %s\n", mini->user_input);
-	process_input(program, mini);
+	printf("user_input: %s\n", str);
+	process_input(program, str);
 	
 }
