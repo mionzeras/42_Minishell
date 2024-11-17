@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:25:00 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/15 20:27:54 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/17 17:52:49 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,6 @@ void	free_program(t_program *mini)
 	delete_list(mini->export_list);
 	if (mini->user_input)
 		free(mini->user_input);
-	if (mini)
-		free(mini);
+	// if (mini)
+	// 	free(mini);
 }

@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/14 16:36:04 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/17 17:42:32 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int	mini_loop(t_program *mini)
 	{
 		if (parseline(mini))
 			continue ;
-		mini->pipes = pipes_counter(mini->user_input);
-		printf("pipes: %d\n", mini->pipes);
 		program = init_organize(mini);
 		parse_input(mini, program);
 		if (ft_strncmp(mini->user_input, "exit", 4) == 0)

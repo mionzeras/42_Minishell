@@ -6,11 +6,39 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/14 19:52:22 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/17 18:09:12 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_empty_redir(char **input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		if ((ft_strncmp(input[i], ">", 1) == 0 && !input[i + 1])
+			|| (ft_strncmp(input[i], ">>", 2) == 0 && !input[i + 1])
+			|| (ft_strncmp(input[i], "<", 1) == 0 && !input[i + 1])
+			|| (ft_strncmp(input[i], "<<", 2) == 0 && !input[i + 1]))
+		{
+			ft_putendl_fd("minishell: syntax error near unexpected token `newline'", STDERR);
+			return (1);
+		}
+		if ((ft_strncmp(input[i], ">", 1) == 0 && is_token(input[i + 1][0]))
+			|| (ft_strncmp(input[i], ">>", 2) == 0 && is_token(input[i + 1][0]))
+			|| (ft_strncmp(input[i], "<", 1) == 0 && is_token(input[i + 1][0]))
+			|| (ft_strncmp(input[i], "<<", 2) == 0 && is_token(input[i + 1][0])))
+		{
+			ft_printf("minishell: syntax error near unexpected token `%s'\n", input[i + 1]);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
 
 char	*copy_args(char *dest, char *src)
 {
@@ -46,6 +74,11 @@ void	process_input(t_organize *program, t_program *mini)
 	struct_pos = 0;
 	tmp = program;
 	input = ft_new_split(mini->user_input, ' ');
+	if (check_empty_redir(input) == 1)
+	{
+		free_array(input);
+		return ;
+	}
 	while (input[++i])
 	{
 		input[i] = remove_quotes(input[i]);
@@ -102,4 +135,5 @@ void	parse_input(t_program *mini, t_organize *program)
 	}
 	printf("user_input: %s\n", mini->user_input);
 	process_input(program, mini);
+	
 }
