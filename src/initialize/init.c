@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:30:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/17 17:42:11 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:10:38 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ t_organize	*new_node(void)
 	new = malloc(sizeof(t_organize));
 	if (!new)
 		return (NULL);
+	new->fd_in = -1;
+	new->fd_out = -1;
+	new->list_pos = 0;
 	new->append_file = NULL;
 	new->args = NULL;
 	new->cmds = NULL;

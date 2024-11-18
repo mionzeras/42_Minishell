@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/17 18:40:42 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:10:29 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ typedef struct s_var
 
 typedef struct s_organize
 {
+	int					fd_in;
+	int					fd_out;
+	int					list_pos;
 	char				*input_file;
 	char				*output_file;
 	char				*append_file;
