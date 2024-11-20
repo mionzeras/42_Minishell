@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parseline.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 19:13:26 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 21:51:48 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*remove_quotes(char *input)
 			new_input[var.j++] = input[var.i];
 	}
 	new_input[var.j] = '\0';
-	free(input);
+	free_ptr(input);
 	return (new_input);
 }
 
@@ -148,16 +148,16 @@ int	parseline(t_program *mini)
 	}
 	if (duplicates(tmp))
 	{
-		free(tmp);
+		free_ptr(tmp);
 		return (2);
 	}
 	mini->user_input = ft_strtrim(tmp, " ");
 	if (!mini->user_input)
 		exit(EXIT_SUCCESS);
-	free(tmp);
+	free_ptr(tmp);
 	tmp = fix_redir_spaces(mini->user_input);
-	free(mini->user_input);
+	free_ptr(mini->user_input);
 	mini->user_input = expander(tmp);
-	free(tmp);
+	free_ptr(tmp);
 	return (EXIT_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 16:35:55 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:14:18 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ char	*copy_args(char *dest, char *src)
 	if (!dest)
 		return (ft_strdup(src));
 	tmp = ft_strjoin(dest, " ");
-	free(dest);
+	free_ptr(dest);
 	dest = ft_strjoin(tmp, src);
-	free(tmp);
+	free_ptr(tmp);
 	return (dest);
 }
 
@@ -58,7 +58,7 @@ char	*copy_redir(char *dest, char *src)
 	if (!src)
 		return (NULL);
 	if (dest)
-		free(dest);
+		free_ptr(dest);
 	dest = ft_strdup(src);
 	return (dest);
 }
@@ -66,10 +66,12 @@ char	*copy_redir(char *dest, char *src)
 void	process_input(t_organize *program, char *str)
 {
 	int			i;
+	int			list_size;
 	char		**input;
 	t_organize *tmp;
 
 	i = -1;
+	list_size = 0;
 	tmp = program;
 	input = ft_new_split(str, ' ');
 	if (check_empty_redir(input) == 1)
@@ -118,7 +120,8 @@ void	process_input(t_organize *program, char *str)
 				return ;
 			}
 			tmp = tmp->next;
-			tmp->list_pos++;
+			list_size++;
+			tmp->list_pos = list_size;
 			printf("\n");
 			continue ;
 		}

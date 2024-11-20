@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_loop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 19:24:50 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 21:45:26 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	mini_loop(t_program *mini, int fd1, int fd2)
 		}
 		executor(program, mini);
 		free_organize(program);
-		free(mini->user_input);
+		free_ptr(mini->user_input);
 	}
 	rl_clear_history();
 	return (EXIT_SUCCESS);

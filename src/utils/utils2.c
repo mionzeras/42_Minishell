@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 17:29:45 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/15 20:25:38 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 21:50:03 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ void	update_sh_lvl(t_env *env)
 		{
 			sh_lvl = ft_substr(tmp->content, 6, ft_strlen(tmp->content) - 6);
 			new_lvl = ft_itoa(ft_atoi(sh_lvl) + 1);
-			free(tmp->content);
-			free(sh_lvl);
+			free_ptr(tmp->content);
+			free_ptr(sh_lvl);
 			sh_lvl = ft_strjoin("SHLVL=", new_lvl);
-			free(new_lvl);
+			free_ptr(new_lvl);
 			tmp->content = sh_lvl;
 		}
 		tmp = tmp->next;

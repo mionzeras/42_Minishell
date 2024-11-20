@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 20:26:28 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:01:15 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,15 @@ void		ft_cd(t_program *mini, t_organize *program);
 //builtin/echo.c
 void		ft_echo(t_organize *program);
 
+//builtin/env00.c
+
+void		ft_env(t_program *mini, t_organize *program);
+void		print_env_list(t_env *list);
+
 //builtin/export.c
-//void		ft_export(t_program *mini, t_organize *program);
+void		ft_export(t_program *mini);
+
+//builtin/exit.c
 
 //builtin/pwd.c
 void		ft_pwd(t_organize *program);
@@ -111,7 +118,6 @@ void		free_program(t_program *mini); //old -> free_program(t_program *mini, t_or
 int			size_without_quotes(char *input);
 
 //env/env.c
-void		print_env_list(t_env *list);
 void		add_env_node(t_env *node, t_env *new);
 t_env		*new_env_node(void);
 t_env		*init_env(char **env);

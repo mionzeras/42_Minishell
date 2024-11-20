@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
+#    By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/11/20 19:41:45 by gcampos-         ###   ########.fr        #
+#    Updated: 2024/11/20 22:02:17 by fgomes-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,8 @@ LIBFT_PATH = libft
 LIBFT = -Llibft -lft
 SRC =	src/builtin/cd.c \
 		src/builtin/echo.c \
+		src/builtin/env00.c \
+		src/builtin/export.c \
 		src/builtin/pwd.c \
 		src/builtin/unset.c \
 		src/clean/clean.c \

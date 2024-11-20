@@ -6,7 +6,7 @@
 /*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:32:32 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/11/18 21:24:54 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/20 21:33:54 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,11 @@ void	print_sorted_env_list(t_env *env_list)
 
     sort_env_array(env_array, count);
     print_env_array(env_array);
-    free(env_array);
+    if (env_array)
+    {
+        free_array(env_array);
+        env_array = NULL;
+    }
 }
 
 int	get_var_len(char *var)
@@ -135,7 +139,7 @@ int	get_var_len(char *var)
 
 void	update_env_node(t_env *tmp, char *var)
 {
-    free(tmp->content);
+    free_ptr(tmp->content);
     tmp->content = var;
 }
 
@@ -152,8 +156,6 @@ void	update_or_add_env_node(t_env **env_list, char *var, int replace)
         {
             if (replace)
                 update_env_node(tmp, var);
-            else
-                free(var);
             return;
         }
         tmp = tmp->next;
@@ -175,6 +177,7 @@ void	handle_export_args(t_program *mini, char **args)
         update_or_add_env_node(&(mini->export_list), var, replace);
         if (replace)
             update_or_add_env_node(&(mini->env_list), var, replace);
+        free_ptr(var);
         i++;
     }
 }
@@ -187,9 +190,17 @@ void	ft_export(t_program *mini)
     if (args[1] == NULL)
     {
         print_sorted_env_list(mini->export_list);
-        free_array(args);
+        if (args)
+        {
+            free_array(args);
+            args = NULL;
+        }
         return ;
     }
     handle_export_args(mini, args);
-    free_array(args);
+    if (args)
+    {
+        free_array(args);
+        args = NULL;
+    }
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 18:00:51 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/15 20:21:09 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:00:35 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,22 @@ void	delete_node(t_env *node)
 	free(node);
 }
 
-void	print_env_list(t_env *list)
-{
-	int		i;
+// void	print_env_list(t_env *list)
+// {
+// 	int		i;
 
-	i = 0;
-	while (list)
-	{
-		printf("Node %d:\n", i);
-		printf("Node address: %p\n", (void *)list);
-		printf("content: %s\n", list->content);
-		printf("next: %p\n", (void *)list->next);
-		printf("prev: %p\n", (void *)list->prev);
-		list = list->next;
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (list)
+// 	{
+// 		printf("Node %d:\n", i);
+// 		printf("Node address: %p\n", (void *)list);
+// 		printf("content: %s\n", list->content);
+// 		printf("next: %p\n", (void *)list->next);
+// 		printf("prev: %p\n", (void *)list->prev);
+// 		list = list->next;
+// 		i++;
+// 	}
+// }
 
 void	add_env_node(t_env *node, t_env *new)
 {

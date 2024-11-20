@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:38:43 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 20:52:47 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 21:56:37 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void ft_exec_builtin(t_organize *program, t_program *mini)
 		ft_unset(mini, program);
 	else if (ft_strcmp(program->cmds, "env") == 0)
 		print_env_list(mini->env_list);
+	else if (ft_strcmp(program->cmds, "export") == 0)
+		ft_export(mini);
 
 }
 
@@ -94,8 +96,8 @@ void executor(t_organize *program, t_program *mini)
 			else if (tmp->next)
 				dup2(fd[1], STDOUT);
 
-			close(fd[0]); // Fecha leitura do pipe no filho
-			close(fd[1]);
+			// close(fd[0]); // Fecha leitura do pipe no filho
+			// close(fd[1]);
 	
 			if (is_builtin(tmp->cmds))
 			{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:30:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/18 21:10:38 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 21:44:08 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	save_path(t_program *mini, char **envp)
 	while (mini->path[++i])
 	{
 		tmp = ft_strjoin(mini->path[i], "/");
-		free (mini->path[i]);
+		free_ptr(mini->path[i]);
 		mini->path[i] = tmp;
 	}
 }
