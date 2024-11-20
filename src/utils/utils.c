@@ -6,11 +6,18 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 10:38:37 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/08 21:48:21 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:26:32 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_ptr(char *ptr)
+{
+	if (ptr)
+		free(ptr);
+	ptr = NULL;
+}
 
 int	is_token(char c)
 {

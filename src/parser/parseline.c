@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/17 18:14:04 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:13:26 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,12 +137,15 @@ char	*fix_redir_spaces(char *input)
 int	parseline(t_program *mini)
 {
 	char	*tmp;
-
 	tmp = readline("minishell$>");
+	ft_printf("entrei no parseline\n");
 	if (tmp && tmp[0])
 		add_history(tmp);
 	if (!tmp)
+	{
+		ft_printf("exit\n");
 		exit(EXIT_SUCCESS);
+	}
 	if (duplicates(tmp))
 	{
 		free(tmp);

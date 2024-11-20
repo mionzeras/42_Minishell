@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/18 21:15:21 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:35:55 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,10 @@ char	*copy_redir(char *dest, char *src)
 void	process_input(t_organize *program, char *str)
 {
 	int			i;
-	int			struct_pos;
 	char		**input;
 	t_organize *tmp;
 
 	i = -1;
-	tmp->list_pos = 0;
 	tmp = program;
 	input = ft_new_split(str, ' ');
 	if (check_empty_redir(input) == 1)

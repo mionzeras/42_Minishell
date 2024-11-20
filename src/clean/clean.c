@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:25:00 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/17 17:52:49 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:41:52 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ void	free_organize(t_organize *program)
 		tmp = program;
 		program = program->next;
 		if (tmp->input_file)
-			free(tmp->input_file);
+			free_ptr(tmp->input_file);
 		if (tmp->output_file)
-			free(tmp->output_file);
+			free_ptr(tmp->output_file);
 		if (tmp->append_file)
-			free(tmp->append_file);
+			free_ptr(tmp->append_file);
 		if (tmp->heredoc_dlm)
-			free(tmp->heredoc_dlm);
+			free_ptr(tmp->heredoc_dlm);
 		if (tmp->cmds)
-			free(tmp->cmds);
+			free_ptr(tmp->cmds);
 		if (tmp->args)
-			free(tmp->args);
+			free_ptr(tmp->args);
 		if (tmp)
 			free(tmp);
 	}

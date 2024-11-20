@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/18 21:10:29 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:26:28 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@
 # define META_CHARS "<>|"
 # define ON 0
 # define OFF 1
+
+# define ERROR_PWD_ARGUMENTS "pwd: too many arguments"
+# define ERROR_PWD_DIRECTORY "pwd: couldn't get current directory"
+# define ERROR_CD_ARGS "cd: too many arguments"
+# define ERROR_CD_HOME "cd: HOME not set"
+# define ERROR_CD_OLDPWD "cd: OLDPWD not set"
+# define ERROR_CD_DIRECTORY "cd: no such file or directory"
+# define ERROR_EXIT_ARGS "exit: too many arguments"	
+# define ERROR_EXIT_DIGIT "exit: numeric argument required"
 
 typedef struct s_var
 {
@@ -79,6 +88,21 @@ typedef struct s_program
 	struct s_env	*export_list;
 }		t_program;
 
+//builtin/cd.c
+void		ft_cd(t_program *mini, t_organize *program);
+
+//builtin/echo.c
+void		ft_echo(t_organize *program);
+
+//builtin/export.c
+//void		ft_export(t_program *mini, t_organize *program);
+
+//builtin/pwd.c
+void		ft_pwd(t_organize *program);
+
+//builtin/unset.c
+void		ft_unset(t_program *mini, t_organize *program);
+
 //clean/clean.c
 void		delete_list(t_env *list);
 void		free_array(char **array);
@@ -92,6 +116,20 @@ void		add_env_node(t_env *node, t_env *new);
 t_env		*new_env_node(void);
 t_env		*init_env(char **env);
 
+//error/error.c
+void		print_error(char *cmd);
+void		ft_error_cmds(t_organize *program);
+void		ft_error_args();
+
+//exec/execution.c
+void		ft_exec_builtin(t_organize *program, t_program *mini);
+int			is_builtin(char *command);
+void		redir_pipes(t_organize *program);
+void		executor(t_organize *program, t_program *mini);
+
+//exec/exec_utils.c
+int			exec_cmd(char *cmd, char *args, t_env *envp);
+
 //initialize/init.c
 void		print_list(t_organize *program);
 void		save_path(t_program *mini, char **envp);
@@ -99,7 +137,7 @@ t_organize	*init_organize(t_program *mini);
 void		init_struct(t_program *mini, char **env);
 
 //loop/loop.c
-int			mini_loop(t_program *mini); // old -> int mini_loop(t_program *mini, t_organize *program);
+int	mini_loop(t_program *mini, int fd1, int fd2); // old -> int mini_loop(t_program *mini, t_organize *program);
 
 //parser/new_split.c
 char		**ft_new_split(char *s, char c);
@@ -121,6 +159,7 @@ char		*expand_variable(char *input, int *i);
 char		*expander(char *input);
 
 //utils/utils.c
+void		free_ptr(char *ptr);
 int			is_token(char c);
 int			ft_strcmp(const char *s1, const char *s2);
 void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);

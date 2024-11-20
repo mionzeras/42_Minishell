@@ -6,11 +6,26 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:38:43 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/18 21:30:00 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:52:47 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void ft_exec_builtin(t_organize *program, t_program *mini)
+{
+	if (ft_strcmp(program->cmds, "echo") == 0)
+		ft_echo(program);
+	else if (ft_strcmp(program->cmds, "cd") == 0)
+		ft_cd(mini, program);
+	else if (ft_strcmp(program->cmds, "pwd") == 0)
+		ft_pwd(program);
+	else if (ft_strcmp(program->cmds, "unset") == 0)
+		ft_unset(mini, program);
+	else if (ft_strcmp(program->cmds, "env") == 0)
+		print_env_list(mini->env_list);
+
+}
 
 int is_builtin(char *command)
 {
@@ -45,27 +60,62 @@ void	redir_pipes(t_organize *program)
 	}
 }
 	
-executor(t_organize *program, t_program *mini)
+
+void executor(t_organize *program, t_program *mini)
 {
-	t_organize	*tmp;
-	int			fd[2];
+    t_organize *tmp = program;
+    int fd[2];
+    int in_fd = STDIN; // Entrada inicial, geralmente stdin
+    pid_t pid;
 
-	if (pipe(fd) == -1)
-		ft_error("Pipe");
+    while (tmp)
+    {
+        if (tmp->next && pipe(fd) == -1)
+        {
+            perror("pipe");
+            exit(EXIT_FAILURE);
+        }
 
-	tmp = program;
+        pid = fork();
+        if (pid < 0)
+        {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
 
-	while(tmp)
-	{
-		if (tmp->next && (tmp->append_file == -1 || !tmp->output_file == -1))
-			dup2(fd[1], STDOUT);
-		if (tmp->list_pos != 0 && tmp->fd_in == -1)
-			dup2(fd[0], STDIN);
-		redir_pipes(tmp);
-		if (is_builtin(tmp->cmds))
-			ft_exec_builtin(tmp, mini);
-		else
-			ft_execve(tmp, mini);
-		tmp = tmp->next;
-	}
+		if (pid == 0) // Processo filho
+		{
+			if (tmp->fd_in != -1)
+				dup2(tmp->fd_in, STDIN);
+			else if (in_fd != STDIN)
+			 	dup2(in_fd, STDIN);
+			if (tmp->fd_out != -1)
+				dup2(tmp->fd_out, STDOUT);
+			else if (tmp->next)
+				dup2(fd[1], STDOUT);
+
+			close(fd[0]); // Fecha leitura do pipe no filho
+			close(fd[1]);
+	
+			if (is_builtin(tmp->cmds))
+			{
+				ft_exec_builtin(tmp, mini);
+				exit(0); // Encerra o processo filho após executar o builtin
+			}
+			else
+				exec_cmd(tmp->cmds, tmp->args, mini->env_list);
+		}
+		else // Processo pai
+		{
+			waitpid(pid, NULL, 0); // Aguarda o término do filho
+			close(fd[1]); // Fecha escrita do pipe no pai
+			if (in_fd != STDIN)
+				close(in_fd);
+
+			in_fd = fd[0]; // Configura a entrada para o próximo comando
+		}
+        tmp = tmp->next; // Avança para o próximo comando
+    }
 }
+
+
