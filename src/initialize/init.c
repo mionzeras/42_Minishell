@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:30:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 21:44:08 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/21 21:55:05 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,15 @@ void	save_path(t_program *mini, char **envp)
 	}
 }
 
-t_organize	*init_organize(t_program *mini)
+t_organize	*init_organize(char *input)
 {
 	int			i;
+	int			pipes;
 	t_organize	*list;
 
 	i = -1;
-	mini->pipes = pipes_counter(mini->user_input);
-	printf("pipes: %d\n", mini->pipes);
-	while (++i <= mini->pipes)
+	pipes = pipes_counter(input);
+	while (++i <= pipes)
 	{
 		if (i == 0)
 			list = new_node();
@@ -116,7 +116,6 @@ void	init_struct(t_program *mini, char **env)
 	mini->pwd = getcwd(0, 0);
 	mini->old_pwd = NULL;
 	mini->env_list = init_env(env);
-	//print_env_list(mini->env_list);
 	mini->export_list = init_env(env);
 	update_sh_lvl(mini->env_list);
 	update_sh_lvl(mini->export_list);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_loop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 21:45:26 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/23 11:49:51 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,36 @@ void	reset_fd_signals(int const fd, int const fd1)
 int	mini_loop(t_program *mini, int fd1, int fd2)
 {
 	t_organize	*program;
-	//char		*input;
+	char		*input;
 
 	while (mini->loop == 0)
 	{
-		reset_fd_signals(fd1, fd2);
 		program = NULL;
-		//input = readline("minishell$ ");
-		if (parseline(mini))
-			continue ;
-		program = init_organize(mini);
-		parse_input(mini->user_input, program);
-		if (ft_strncmp(mini->user_input, "exit", 4) == 0)
+		reset_fd_signals(fd1, fd2);
+		input = readline("minishell$ ");
+		if (parse_readline(&input) == 0)
 		{
+			program = init_organize(input);
+			parse_organize(program, input);
+			if (ft_strncmp(input, "exit", 4) == 0)
+			{
+				free_organize(program);
+				free_ptr(input);
+				break ;
+			}
+			printf("cmds: %s\n", program->cmds);
+			if (ft_strncmp(program->cmds, "unset", 5) == 0)
+				ft_unset(mini->env_list, program);
+			else if (ft_strncmp(program->cmds, "export", 6) == 0)
+				ft_export(mini->env_list, program->args);
+			else if (ft_strncmp(program->cmds, "env", 3) == 0)
+				ft_env(mini->env_list, program);
+			else if (ft_strcmp(program->cmds, "echo") == 0)
+				ft_echo(program);
+			//executor(program, mini);
 			free_organize(program);
-			break ;
+			free_ptr(input);
 		}
-		executor(program, mini);
-		free_organize(program);
-		free_ptr(mini->user_input);
 	}
 	rl_clear_history();
 	return (EXIT_SUCCESS);

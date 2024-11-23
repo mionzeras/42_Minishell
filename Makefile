@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+         #
+#    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/11/20 22:02:17 by fgomes-c         ###   ########.fr        #
+#    Updated: 2024/11/23 11:40:57 by gcampos-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,15 +18,12 @@ LIBFT_PATH = libft
 LIBFT = -Llibft -lft
 SRC =	src/builtin/cd.c \
 		src/builtin/echo.c \
-		src/builtin/env00.c \
+		src/builtin/env.c \
 		src/builtin/export.c \
 		src/builtin/pwd.c \
 		src/builtin/unset.c \
 		src/clean/clean.c \
-		src/env/env.c \
 		src/error/error.c \
-		src/exec/execution.c \
-		src/exec/exec_utils.c \
 		src/initialize/init.c \
 		src/loop/mini_loop.c \
 		src/parser/new_split.c \
@@ -79,6 +76,9 @@ fclean: clean
 	@$(RM) $(NAME)
 
 re: fclean all
+
+leak: all
+	valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=yes --suppressions=supp.supp ./$(NAME)
 
 # Declaração de dependências adicionais
 .PHONY: all clean fclean re

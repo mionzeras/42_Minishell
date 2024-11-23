@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 22:14:18 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/23 11:50:07 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void remove_quotes_list(t_organize **program)
+{
+	t_organize *tmp;
+	int i;
+
+	tmp = *program;
+	while (tmp)
+	{
+		if (tmp->cmds)
+			tmp->cmds = remove_quotes(tmp->cmds);
+		i = ft_strlen(tmp->cmds);
+		printf("size of cmds: %d\n", i);
+		printf("cmds[%d]rmq: %s\n", tmp->list_pos, tmp->cmds);
+		if (tmp->args)	
+			tmp->args = remove_quotes(tmp->args);
+		if (tmp->input_file)
+			tmp->input_file = remove_quotes(tmp->input_file);
+		if (tmp->output_file)
+			tmp->output_file = remove_quotes(tmp->output_file);
+		if (tmp->append_file)
+			tmp->append_file = remove_quotes(tmp->append_file);
+		if (tmp->heredoc_dlm)
+			tmp->heredoc_dlm = remove_quotes(tmp->heredoc_dlm);
+		tmp = tmp->next;
+	}
+}
 
 int	check_empty_redir(char **input)
 {
@@ -45,7 +72,10 @@ char	*copy_args(char *dest, char *src)
 	char	*tmp;
 	
 	if (!dest)
-		return (ft_strdup(src));
+	{
+		dest = ft_strdup(src);
+		return (dest);
+	}
 	tmp = ft_strjoin(dest, " ");
 	free_ptr(dest);
 	dest = ft_strjoin(tmp, src);
@@ -63,7 +93,7 @@ char	*copy_redir(char *dest, char *src)
 	return (dest);
 }
 
-void	process_input(t_organize *program, char *str)
+void	process_input(t_organize *program, char **str)
 {
 	int			i;
 	int			list_size;
@@ -73,16 +103,11 @@ void	process_input(t_organize *program, char *str)
 	i = -1;
 	list_size = 0;
 	tmp = program;
-	input = ft_new_split(str, ' ');
+	input = ft_new_split(*str, ' ');
 	if (check_empty_redir(input) == 1)
 	{
 		free_array(input);
 		return ;
-	}
-	while (input[++i])
-	{
-		input[i] = remove_quotes(input[i]);
-		printf("new_input: %s\n", input[i]);
 	}
 	i = -1;
 	while (input[++i])
@@ -137,7 +162,7 @@ void	process_input(t_organize *program, char *str)
 	free_array(input);
 }
 
-void	parse_input(char *str, t_organize *program)
+void	parse_organize(t_organize *program, char *str)
 {
 	if (inside_quotes(str, ft_strlen(str)) != 0)
 	{
@@ -145,6 +170,6 @@ void	parse_input(char *str, t_organize *program)
 		return ;
 	}
 	printf("user_input: %s\n", str);
-	process_input(program, str);
-	
+	process_input(program, &str);
+	remove_quotes_list(&program);
 }

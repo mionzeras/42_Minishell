@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:32:32 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/11/20 21:33:54 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/23 11:16:58 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,20 @@ char	**create_env_array(t_env *env_list, int count)
 
     env_array = (char **)malloc(sizeof(char *) * (count + 1));
     if (!env_array)
+    {
+        free(env_array);
         return (NULL);
-
+    }
     i = 0;
     tmp = env_list;
     while (tmp)
     {
-        env_array[i++] = tmp->content;
+        env_array[i++] = ft_strdup(tmp->content);
+        if (!env_array[i - 1])
+        {
+            free_array(env_array);
+            return (NULL);
+        }
         tmp = tmp->next;
     }
     env_array[i] = NULL;
@@ -140,7 +147,7 @@ int	get_var_len(char *var)
 void	update_env_node(t_env *tmp, char *var)
 {
     free_ptr(tmp->content);
-    tmp->content = var;
+    tmp->content = ft_strdup(var);
 }
 
 void	update_or_add_env_node(t_env **env_list, char *var, int replace)
@@ -163,33 +170,33 @@ void	update_or_add_env_node(t_env **env_list, char *var, int replace)
     add_env_node(*env_list, new_env_node_with_content(var));
 }
 
-void	handle_export_args(t_program *mini, char **args)
+void	handle_export_args(t_env *env_list, char **args)
 {
     int		i;
     char	*var;
     int		replace;
 
-    i = 1;
+    i = 0;
     while (args[i])
     {
         var = ft_strdup(args[i]);
         replace = ft_strchr(var, '=') != NULL;
-        update_or_add_env_node(&(mini->export_list), var, replace);
-        if (replace)
-            update_or_add_env_node(&(mini->env_list), var, replace);
+        update_or_add_env_node(&(env_list), var, replace);
+        // if (replace)
+        //     update_or_add_env_node(&(env_list), var, replace);
         free_ptr(var);
         i++;
     }
 }
 
-void	ft_export(t_program *mini)
+void	ft_export(t_env *env_list, char *input)
 {
     char	**args;
 
-    args = ft_split(mini->user_input, ' ');
-    if (args[1] == NULL)
+    args = ft_split(input, ' ');
+    if (!args)
     {
-        print_sorted_env_list(mini->export_list);
+        print_sorted_env_list(env_list);
         if (args)
         {
             free_array(args);
@@ -197,7 +204,7 @@ void	ft_export(t_program *mini)
         }
         return ;
     }
-    handle_export_args(mini, args);
+    handle_export_args(env_list, args);
     if (args)
     {
         free_array(args);

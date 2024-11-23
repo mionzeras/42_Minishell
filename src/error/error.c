@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:40:54 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/14 18:49:44 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/22 20:41:17 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	ft_error_cmds(t_organize *program)
 	return ;
 }
 
-void	ft_error_args()
+void	ft_error_args(char *str)
 {
-	ft_putstr_fd("command 'env' doesn't accept arguments", STDERR);
+	ft_printf("minishell: %s: invalid argument\n", str);
 	ft_putstr_fd("\n", STDERR);
 	return ;
 }

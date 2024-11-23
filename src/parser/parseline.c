@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parseline.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 21:51:48 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/23 11:46:01 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,21 @@ char	*alloc_with_spaces(char *input)
 
 bool	duplicates(char *str)
 {
-	if (ft_strnstr(str, "||", ft_strlen(str)))
+	int i;
+
+	i = -1;
+	while (str[++i])
 	{
-		ft_printf("minishell: syntax error near unexpected token `||'\n");
-		return (true);
-	}
-	else if (ft_strnstr(str, "&&", ft_strlen(str)))
-	{
-		ft_printf("minishell: syntax error near unexpected token `&&'\n");
-		return (true);
+		if (str[i] == '|' && str[i + 1] == '|' && inside_quotes(str, i) == 0)
+		{
+			ft_printf("minishell: syntax error near unexpected token `||'\n");
+			return (true);
+		}
+		if (str[i] == '&' && str[i + 1] == '&' && inside_quotes(str, i) == 0)
+		{
+			ft_printf("minishell: syntax error near unexpected token `&&'\n");
+			return (true);
+		}
 	}
 	return (false);
 }
@@ -131,33 +137,27 @@ char	*fix_redir_spaces(char *input)
 			new_input[j++] = input[i]; // adiciona o char normal
 	}
 	new_input[j] = '\0'; // adiciona o null no final da string
+	free_ptr(input); // libera a string original
 	return (new_input);
 }
 
-int	parseline(t_program *mini)
+int	parse_readline(char **input)
 {
 	char	*tmp;
-	tmp = readline("minishell$>");
+	
 	ft_printf("entrei no parseline\n");
-	if (tmp && tmp[0])
-		add_history(tmp);
+	if (*input && input[0])
+		add_history(*input);
+	if (!*input)
+		exit(EXIT_SUCCESS);
+	if (duplicates(*input))
+		return (EXIT_FAILURE);
+	tmp = ft_strtrim(*input, " ");
 	if (!tmp)
-	{
-		ft_printf("exit\n");
-		exit(EXIT_SUCCESS);
-	}
-	if (duplicates(tmp))
-	{
-		free_ptr(tmp);
-		return (2);
-	}
-	mini->user_input = ft_strtrim(tmp, " ");
-	if (!mini->user_input)
-		exit(EXIT_SUCCESS);
-	free_ptr(tmp);
-	tmp = fix_redir_spaces(mini->user_input);
-	free_ptr(mini->user_input);
-	mini->user_input = expander(tmp);
+		return (EXIT_FAILURE);
+	free_ptr(*input);
+	tmp = fix_redir_spaces(tmp);
+	*input = expander(tmp);
 	free_ptr(tmp);
 	return (EXIT_SUCCESS);
 }

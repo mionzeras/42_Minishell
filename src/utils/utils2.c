@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 17:29:45 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 21:50:03 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:29:17 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ int	pipes_counter(char *str)
 
 void	update_sh_lvl(t_env *env)
 {
-	int		i;
+	// int		i;
 	char	*sh_lvl;
 	char	*new_lvl;
 	t_env	*tmp;
 
-	i = -1;
+	//i = -1;
 	tmp = env;
 	while (tmp)
 	{

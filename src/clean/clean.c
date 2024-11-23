@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:25:00 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 22:11:44 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/22 20:03:07 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	delete_node(t_env *node)
+{
+	if (node->content)
+	{
+		free(node->content);
+		node->content = NULL;
+	}
+	if (node)
+	{
+		free(node);
+		node = NULL;
+	}
+}
 
 void	delete_list(t_env *list)
 {
@@ -20,10 +34,9 @@ void	delete_list(t_env *list)
 		return ;
 	while (list)
 	{
-		tmp = list;
-		list = list->next;
-		free(tmp->content);
-		free(tmp);
+		tmp = list->next;
+		delete_node(list);
+		list = tmp;
 	}
 }
 
@@ -69,10 +82,9 @@ void	free_program(t_program *mini)
 	free_array(mini->path);
 	free_ptr(mini->pwd);
 	free_ptr(mini->old_pwd);
-	delete_list(mini->env_list);
-	delete_list(mini->export_list);
+	 delete_list(mini->env_list);
+	 delete_list(mini->export_list);
 	if (mini->user_input)
 		free_ptr(mini->user_input);
-	// if (mini)
-	// 	free(mini);
 }
+
