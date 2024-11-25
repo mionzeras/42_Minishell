@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:33:26 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/20 20:39:40 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:35:31 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,32 @@ void	msg(char *msg, int check, int output)
 		exit(1);
 }
 
-char **ft_getenv(t_env *env)
+char	**ft_getenv(t_env *env)
 {
-    char    **ret;
-    int     i;
-    t_env   *tmp;
+	char	**ret;
+	int		i;
+	t_env	*tmp;
 
-    tmp = env;
-    i = 0;
-    while (tmp->next)
-    {
-        i++;
-        tmp = tmp->next;
-    }
-    ret = (char **)malloc(sizeof(char *) * (i + 1));
-    if (!ret)
-        return (NULL);
-    i = 0;
-    tmp = env;
-    while (tmp->next)
-    {
-        ret[i] = ft_strdup(tmp->content);
-        tmp = tmp->next;
-        i++;
-    }
-    ret[i] = NULL;
-    return (ret);
+	tmp = env;
+	i = 0;
+	while (tmp->next)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	ret = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!ret)
+		return (NULL);
+	i = 0;
+	tmp = env;
+	while (tmp->next)
+	{
+		ret[i] = ft_strdup(tmp->content);
+		tmp = tmp->next;
+		i++;
+	}
+	ret[i] = NULL;
+	return (ret);
 }
 
 char	*find_path(char *cmd, char **envp, int count)
@@ -78,24 +78,24 @@ char	*find_path(char *cmd, char **envp, int count)
 int	exec_cmd(char *cmd, char *args, t_env *envp)
 {
 	char	*path;
-    char    *cmd_arg;
-    char    *tmp;
-    char    **cmd_split;
-    char    **env;
-    
-    tmp = ft_strjoin(cmd, " ");
-    cmd_arg = ft_strjoin(tmp, args);
-    free_ptr(tmp);
-    cmd_split = ft_split(cmd_arg, ' ');
-    free_ptr(cmd_arg);
-    env = ft_getenv(envp);
-    path = find_path(cmd, env, -1);
-    if (!path)
-        free_ptr(path);
-    ft_printf("cmd: %s\n", cmd);
-    if (execve(path, cmd_split, env) == -1)
-        free_ptr(path);
-    free_ptr(path);
-    free_array(cmd_split);
-    return (0);
+	char	*cmd_arg;
+	char	*tmp;
+	char	**cmd_split;
+	char	**env;
+	
+	tmp = ft_strjoin(cmd, " ");
+	cmd_arg = ft_strjoin(tmp, args);
+	free_ptr(tmp);
+	cmd_split = ft_split(cmd_arg, ' ');
+	free_ptr(cmd_arg);
+	env = ft_getenv(envp);
+	path = find_path(cmd, env, -1);
+	if (!path)
+		free_ptr(path);
+	ft_printf("cmd: %s\n", cmd);
+	if (execve(path, cmd_split, env) == -1)
+		free_ptr(path);
+	free_ptr(path);
+	free_array(cmd_split);
+	return (0);
 }

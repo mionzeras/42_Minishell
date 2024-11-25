@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:28:50 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/25 19:56:13 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:49:03 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@ void	print_args(char *args, int n)
 	int		i;
 	char	**str;
 
-	printf("ENTREI args: %s\n", args);
 	i = 0;
 	str = ft_split(args, ' ');
 	if (str[1] == NULL && n == 1)
 	{
-		printf("ENTREI NO IF\n");
 		free_array(str);
 		return ;
 	}

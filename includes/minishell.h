@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/25 20:17:38 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/25 21:12:55 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ typedef struct s_env
 	struct s_env	*prev;
 }		t_env;
 
-//main struct
 typedef struct s_program
 {
 	int				pipes;
@@ -136,7 +135,6 @@ void		print_sorted_env_list(t_env *env_list);
 //builtin/export02.c
 t_env		*new_env_node_with_content(char *content);
 
-
 //builtin/pwd.c
 void		ft_pwd(t_organize *program);
 
@@ -157,7 +155,6 @@ void		ft_error_cmds(t_organize *program);
 void		ft_error_args(char *str);
 
 //exec/execution.c
-void		ft_exec_builtin(t_organize *program, t_program *mini);
 int			is_builtin(char *command);
 void		redir_pipes(t_organize *program);
 void		executor(t_organize *program, t_program *mini);
@@ -172,7 +169,8 @@ t_organize	*init_organize(char *input);
 void		init_struct(t_program *mini, char **env);
 
 //loop/loop.c
-int	mini_loop(t_program *mini, int fd1, int fd2); // old -> int mini_loop(t_program *mini, t_organize *program);
+int			run_builtin(t_program *mini, t_organize *program, char *input);
+int			mini_loop(t_program *mini, int fd1, int fd2);
 
 //parser/new_split.c
 char		**ft_new_split(char *s, char c);
