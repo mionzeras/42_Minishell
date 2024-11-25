@@ -6,7 +6,7 @@
 /*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:38:25 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/17 16:56:42 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/24 17:07:09 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,32 @@ int	check_exit_args(char **args)
 {
     int	i;
 
-	if (!args[1])
+    printf("entrou na check_exit_args\n");
+	if (!args[0])
 		return (EXIT_SUCCESS);
-    if (args[2])
+    if (args[1])
     {
         print_error(ERROR_EXIT_ARGS);
         return (EXIT_FAILURE);
     }
-    if (args[1])
+    if (args[0])
     {
         i = 0;
-        while (args[1][i])
+        while (args[0][i])
         {
-            if (args[1][0] == '-' || args[1][0] == '+')
+            if (args[0][0] == '-' || args[0][0] == '+')
                 i++;
-            if (!ft_isnumber(args[1][i]))
+            else
             {
-                print_error(ERROR_EXIT_DIGIT);
-                return (EXIT_SUCCESS);
+                printf("args[0][%d]: %c\n", i, args[0][i]);
+                if (!ft_isnumber(args[0][i]))
+                {
+                    print_error(ERROR_EXIT_DIGIT);
+                    return (EXIT_SUCCESS);   
+                }
+                else
+                    i++;
             }
-            i++;
         }
     }
     return (EXIT_SUCCESS);

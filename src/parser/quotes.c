@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 11:52:40 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/14 16:22:14 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/25 18:50:49 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,27 @@ int	inside_quotes(char *input, int index)
 	return (quote);
 }
 
-char	*expand_variable(char *input, int *i)
+char *new_getenv(const char *str, t_env *env)
+{
+	t_env *current;
+	char *value;
+
+	current = env;
+	while (current)
+	{
+		if (ft_strncmp(current->content, str, ft_strlen(str)) == 0
+			&& current->content[ft_strlen(str)] == '=')
+		{
+			value = ft_strdup(current->content + ft_strlen(str) + 1);
+			return (value);
+		}
+		current = current->next;
+	}
+	return NULL;
+}
+
+
+char	*expand_variable(char *input, int *i, t_env *env)
 {
 	char	var_name[100];
 	char	*var_value;
@@ -43,20 +63,36 @@ char	*expand_variable(char *input, int *i)
 
 	j = 0;
 	k = *i + 1;
-	while (input[k] && (ft_isalnum(input[k])))
+	if (input[k] == '?')
+	{
+		*i = k;
+		return (ft_itoa(g_exit_status));
+	}
+	else if (input[k] == '0')
+	{
+		*i = k;
+		return (ft_strdup("minishell"));
+	}
+	else if (ft_isdigit(input[k]))
+	{
+		*i = k;
+		return (ft_strdup(""));
+	}
+	while (input[k] && (ft_isalnum(input[k])) && input[k] != '_')
 	{
 		var_name[j++] = input[k++];
 	}
 	var_name[j] = '\0';
-	var_value = getenv(var_name);
+	var_value = new_getenv(var_name, env);
 	*i = k - 1;
 	return (var_value);
 }
 
-int	expanded_size(char *input)
+int	expanded_size(char *input, t_env *env)
 {
-	int	i;
-	int	size;
+	int		i;
+	int		size;
+	char	*str;
 
 	i = -1;
 	size = 0;
@@ -66,9 +102,9 @@ int	expanded_size(char *input)
 				|| inside_quotes(input, i) == 2)
 			&& (i == 0 || input[i - 1] != '\\'))
 		{
-			size += ft_strlen(expand_variable(input, &i));
-			if (!expand_variable(input, &i))
-				size++;
+			str = expand_variable(input, &i, env);
+			size += ft_strlen(str);
+			free_ptr(str);
 		}
 		else
 			size++;
@@ -76,14 +112,14 @@ int	expanded_size(char *input)
 	return (size);
 }
 
-char	*expander(char *input)
+char	*expander(char *input, t_env *env)
 {
 	t_var	var;
 	char	*new_str;
 
 	var.i = -1;
 	var.k = -1;
-	var.size = expanded_size(input);
+	var.size = expanded_size(input, env);
 	new_str = malloc(var.size + 1);
 	while (input[++var.i])
 	{
@@ -91,12 +127,13 @@ char	*expander(char *input)
 				|| inside_quotes(input, var.i) == 2)
 			&& (var.i == 0 || input[var.i - 1] != '\\'))
 		{
-			var.str = expand_variable(input, &var.i);
+			var.str = expand_variable(input, &var.i, env);
 			if (!var.str)
-				var.str = "$";
+				continue ;
 			var.j = -1;
 			while (var.str[++var.j])
 				new_str[++var.k] = var.str[var.j];
+			free_ptr(var.str);
 		}
 		else
 			new_str[++var.k] = input[var.i];

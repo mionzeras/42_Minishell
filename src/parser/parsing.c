@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/23 11:50:07 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:14:47 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*copy_redir(char *dest, char *src)
 	return (dest);
 }
 
-void	process_input(t_organize *program, char **str)
+int	process_input(t_organize *program, char **str)
 {
 	int			i;
 	int			list_size;
@@ -107,34 +107,38 @@ void	process_input(t_organize *program, char **str)
 	if (check_empty_redir(input) == 1)
 	{
 		free_array(input);
-		return ;
+		return (1);
 	}
+	ft_printf("cheguei aqui\n");
 	i = -1;
 	while (input[++i])
 	{	
 		if (ft_strcmp(input[i], "<") == 0 && input[i + 1])
 		{
-			tmp->input_file = copy_redir(tmp->input_file, input[++i]);
-			tmp->fd_in = open(tmp->input_file, O_RDONLY);
-			printf("input_file[%d]: %s\n", tmp->list_pos, tmp->input_file);
+			i++;
+			input[i] = remove_quotes(input[i]);
+			tmp->fd_in = open(input[i], O_RDONLY);
+			printf("input_file[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], "<<") == 0 && input[i + 1])
 		{
 			tmp->heredoc_dlm = copy_redir(tmp->heredoc_dlm, input[++i]);
-			//tmp->fd_in = //heredoc function
+			// tmp->fd_in = //heredoc function
 			printf("heredoc_dlm[%d]: %s\n", tmp->list_pos, tmp->heredoc_dlm);
 		}
 		else if (ft_strcmp(input[i], ">") == 0 && input[i + 1])
 		{
-			tmp->output_file = copy_redir(tmp->output_file, input[++i]);
-			tmp->fd_out = open(tmp->output_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
-			printf("output_file[%d]: %s\n", tmp->list_pos, tmp->output_file);
+			i++;
+			input[i] = remove_quotes(input[i]);
+			tmp->fd_out = open(input[i], O_RDWR | O_CREAT | O_TRUNC, 0644);
+			printf("output_file[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], ">>") == 0 && input[i + 1])
 		{
-			tmp->append_file = copy_redir(tmp->append_file, input[++i]);
-			tmp->fd_out = open(tmp->append_file, O_RDWR | O_CREAT | O_APPEND, 0644);
-			printf("append_file[%d]: %s\n", tmp->list_pos, tmp->append_file);
+			i++;
+			input[i] = remove_quotes(input[i]);
+			tmp->fd_out = open(input[i], O_RDWR | O_CREAT | O_APPEND, 0644);
+			printf("append_file[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], "|") == 0)
 		{
@@ -142,7 +146,7 @@ void	process_input(t_organize *program, char **str)
 			{
 				ft_putendl_fd("minishell: syntax error near unexpected token `|'", STDERR);
 				free_array(input);
-				return ;
+				return (1);
 			}
 			tmp = tmp->next;
 			list_size++;
@@ -152,24 +156,29 @@ void	process_input(t_organize *program, char **str)
 		}
 		else
 		{
+			input[i] = remove_quotes(input[i]);
 			tmp->cmds = ft_strdup(input[i]);
 			printf("cmd_split[%d]: %s\n", tmp->list_pos, tmp->cmds);
 			while (input[i + 1] && !is_token(input[i + 1][0]))
-				tmp->args = copy_args(tmp->args, input[++i]);
+			{
+				i++;
+				input[i] = remove_quotes(input[i]);
+				tmp->args = copy_args(tmp->args, input[i]);
+			}
 			printf("args_split[%d]: %s\n", tmp->list_pos, tmp->args);
 		}
 	}
 	free_array(input);
+	return (0);
 }
 
-void	parse_organize(t_organize *program, char *str)
+int	parse_organize(t_organize *program, char *str)
 {
 	if (inside_quotes(str, ft_strlen(str)) != 0)
 	{
 		ft_putendl_fd("minishell: syntax error with open quotes", STDERR);
-		return ;
+		return (1);
 	}
 	printf("user_input: %s\n", str);
-	process_input(program, &str);
-	remove_quotes_list(&program);
+	return (process_input(program, &str));
 }

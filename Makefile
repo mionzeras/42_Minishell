@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
+#    By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/11/23 11:40:57 by gcampos-         ###   ########.fr        #
+#    Updated: 2024/11/24 16:17:18 by fgomes-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,11 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -I includes -I libft #-fsanitize=address
 LIBFT_PATH = libft
 LIBFT = -Llibft -lft
-SRC =	src/builtin/cd.c \
+SRC =	src/builtin/cd00.c \
+		src/builtin/cd01.c \
 		src/builtin/echo.c \
 		src/builtin/env.c \
+		src/builtin/exit.c \
 		src/builtin/export.c \
 		src/builtin/pwd.c \
 		src/builtin/unset.c \

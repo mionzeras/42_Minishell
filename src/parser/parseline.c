@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/23 11:46:01 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:43:20 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ char	*fix_redir_spaces(char *input)
 	return (new_input);
 }
 
-int	parse_readline(char **input)
+int	parse_readline(char **input, t_env *env)
 {
 	char	*tmp;
 	
@@ -157,7 +157,10 @@ int	parse_readline(char **input)
 		return (EXIT_FAILURE);
 	free_ptr(*input);
 	tmp = fix_redir_spaces(tmp);
-	*input = expander(tmp);
+	*input = expander(tmp, env);
+	ft_printf("sai do expander\n");
 	free_ptr(tmp);
+	if (!*input)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/23 11:50:13 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/25 18:43:17 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@
 # define ON 0
 # define OFF 1
 
+# define PATH_MAX 4096
+# define EXIT_SUCCESS 0
+# define EXIT_FAILURE 1
+
 # define ERROR_PWD_ARGUMENTS "pwd: too many arguments"
 # define ERROR_PWD_DIRECTORY "pwd: couldn't get current directory"
 # define ERROR_CD_ARGS "cd: too many arguments"
@@ -43,6 +47,8 @@
 # define ERROR_CD_DIRECTORY "cd: no such file or directory"
 # define ERROR_EXIT_ARGS "exit: too many arguments"	
 # define ERROR_EXIT_DIGIT "exit: numeric argument required"
+
+extern int	g_exit_status;
 
 typedef struct s_var
 {
@@ -89,8 +95,14 @@ typedef struct s_program
 	struct s_env	*export_list;
 }		t_program;
 
-//builtin/cd.c
-void		ft_cd(t_program *mini, t_organize *program);
+//builtin/cd00.c
+void		ft_cd(t_env *env_list, t_organize *program);
+t_env		*ft_get_env(t_env *env_list, char *name);
+void		ft_update_env(t_env *env_list, char *name, char *value, int replace);
+
+//builtin/cd01.c
+void		update_env_vars(t_env *env_list, char *dir, int size);
+void		handle_home_directory(t_env *env_list);
 
 //builtin/echo.c
 void		ft_echo(t_organize *program);
@@ -102,11 +114,13 @@ t_env		*init_env(char **env);
 void		ft_env(t_env *env_list, t_organize *program);
 void		print_env_list(t_env *list);
 
-
 //builtin/export.c
 void		ft_export(t_env *env_list, char *input);
 
 //builtin/exit.c
+void		free_and_exit(t_organize *pgr, int status);
+int			check_exit_args(char **args);
+int			ft_exit(t_organize *program, char *str);
 
 //builtin/pwd.c
 void		ft_pwd(t_organize *program);
@@ -158,16 +172,16 @@ int			size_without_quotes(char *input);
 char		*remove_quotes(char *input);
 int			ft_isspaces(char c);
 char		*fix_redir_spaces(char *input);
-int			parse_readline(char **input);
+int			parse_readline(char **input, t_env *env);
 
 //parser/parsing.c
-void		parse_organize(t_organize *program, char *str);
-void		process_input(t_organize *program, char **str);
+int			parse_organize(t_organize *program, char *str);
+int			process_input(t_organize *program, char **str);
 
 //parser/quotes.c
 int			inside_quotes(char *input, int index);
-char		*expand_variable(char *input, int *i);
-char		*expander(char *input);
+char		*expand_variable(char *input, int *i, t_env *env);
+char		*expander(char *input, t_env *env);
 
 //utils/utils.c
 void		free_ptr(char *ptr);

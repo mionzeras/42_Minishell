@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:28:50 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/22 22:00:38 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:43:49 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	ft_echo(t_organize *program)
 	n = 0;
 	if (program->cmds[4])
 		ft_error_cmds(program);
+	else if (!program->args)
+		write(1, "\n", 1);
 	else
 	{
 		if (str[0] == '-' && str[1] == 'n')
