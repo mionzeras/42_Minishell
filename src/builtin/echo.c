@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:28:50 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/25 17:43:49 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/25 19:56:13 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,15 @@ void	print_args(char *args, int n)
 	int		i;
 	char	**str;
 
+	printf("ENTREI args: %s\n", args);
 	i = 0;
 	str = ft_split(args, ' ');
+	if (str[1] == NULL && n == 1)
+	{
+		printf("ENTREI NO IF\n");
+		free_array(str);
+		return ;
+	}
 	if (n == 1)
 		i = 1;
 	while (str[i])
@@ -44,20 +51,20 @@ void	ft_echo(t_organize *program)
 	n = 0;
 	if (program->cmds[4])
 		ft_error_cmds(program);
-	else if (!program->args)
+	else if (!str)
 		write(1, "\n", 1);
 	else
 	{
 		if (str[0] == '-' && str[1] == 'n')
-        {
-            i = 1;
-            while (str[i] == 'n')
-                i++;
-            if (str[i] == ' ' || str[i] == '\t')
-                n = 1;
-        }
-        print_args(str, n);
-        if (n == 0)
-            write(1, "\n", 1);
+		{
+			i = 1;
+			while (str[i] == 'n')
+				i++;
+			if (str[i] == ' ' || str[i] == '\t' || str[i] == '\0')
+				n = 1;
+		}
+		print_args(str, n);
+		if (n == 0)
+			write(1, "\n", 1);
 	}
 }

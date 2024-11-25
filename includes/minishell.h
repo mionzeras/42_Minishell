@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/25 18:43:17 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:03:11 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,20 @@ t_env		*init_env(char **env);
 void		ft_env(t_env *env_list, t_organize *program);
 void		print_env_list(t_env *list);
 
-//builtin/export.c
-void		ft_export(t_env *env_list, char *input);
+//builtin/export00.c
+void		ft_export(t_env *env_list, t_organize *program);
+void		print_sorted_env_list(t_env *env_list);
+void		sort_env_list(t_env *env_list);
+void		swap_nodes(t_env *a, t_env *b);
+
+//builtin/export01.c
+int			get_var_len(char *var);
+void		update_env_node(t_env *tmp, char *var);
+void		update_or_add_env_node(t_env **env_list, char *var, int replace);
+void		handle_export_args(t_env *env_list, char **args);
+
+//builtin/export02.c
+t_env		*new_env_node_with_content(char *content);
 
 //builtin/exit.c
 void		free_and_exit(t_organize *pgr, int status);
