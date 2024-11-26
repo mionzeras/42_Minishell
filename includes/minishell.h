@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/25 21:12:55 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 00:32:21 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,9 @@ void		executor(t_organize *program, t_program *mini);
 //exec/exec_utils.c
 int			exec_cmd(char *cmd, char *args, t_env *envp);
 
+//heredoc/heredoc.c
+int			heredoc(char *input, t_env *env);
+
 //initialize/init.c
 void		print_list(t_organize *program);
 void		save_path(t_program *mini, char **envp);
@@ -183,8 +186,8 @@ char		*fix_redir_spaces(char *input);
 int			parse_readline(char **input, t_env *env);
 
 //parser/parsing.c
-int			parse_organize(t_organize *program, char *str);
-int			process_input(t_organize *program, char **str);
+int			parse_organize(t_organize *program, char *str, t_env *env);
+int			process_input(t_organize *program, char **str, t_env *env);
 
 //parser/quotes.c
 int			inside_quotes(char *input, int index);

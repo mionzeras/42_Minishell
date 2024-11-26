@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+         #
+#    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/11/25 20:02:23 by fgomes-c         ###   ########.fr        #
+#    Updated: 2024/11/26 00:32:09 by gcampos-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC =	src/builtin/cd00.c \
 		src/builtin/unset.c \
 		src/clean/clean.c \
 		src/error/error.c \
+		src/heredoc/heredoc.c \
 		src/initialize/init.c \
 		src/loop/mini_loop.c \
 		src/parser/new_split.c \

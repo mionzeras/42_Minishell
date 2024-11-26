@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/25 17:44:12 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/25 23:19:34 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	mini_loop(t_program *mini, int fd1, int fd2)
 		if (parse_readline(&input, mini->env_list) == 0)
 		{
 			program = init_organize(input);
-			if (parse_organize(program, input) == 1)
+			if (parse_organize(program, input, mini->env_list) == 1)
 			{
 				free_organize(program);
 				free_ptr(input);

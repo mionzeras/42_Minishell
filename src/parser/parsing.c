@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/25 17:14:47 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/25 23:19:07 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*copy_redir(char *dest, char *src)
 	return (dest);
 }
 
-int	process_input(t_organize *program, char **str)
+int	process_input(t_organize *program, char **str, t_env *env)
 {
 	int			i;
 	int			list_size;
@@ -122,9 +122,9 @@ int	process_input(t_organize *program, char **str)
 		}
 		else if (ft_strcmp(input[i], "<<") == 0 && input[i + 1])
 		{
-			tmp->heredoc_dlm = copy_redir(tmp->heredoc_dlm, input[++i]);
-			// tmp->fd_in = //heredoc function
-			printf("heredoc_dlm[%d]: %s\n", tmp->list_pos, tmp->heredoc_dlm);
+			i++;
+			tmp->fd_in = heredoc(input[i], env);
+			printf("heredoc_dlm[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], ">") == 0 && input[i + 1])
 		{
@@ -172,7 +172,7 @@ int	process_input(t_organize *program, char **str)
 	return (0);
 }
 
-int	parse_organize(t_organize *program, char *str)
+int	parse_organize(t_organize *program, char *str, t_env *env)
 {
 	if (inside_quotes(str, ft_strlen(str)) != 0)
 	{
@@ -180,5 +180,5 @@ int	parse_organize(t_organize *program, char *str)
 		return (1);
 	}
 	printf("user_input: %s\n", str);
-	return (process_input(program, &str));
+	return (process_input(program, &str, env));
 }
