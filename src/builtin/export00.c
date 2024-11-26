@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   export00.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:32:32 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/11/25 20:04:44 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:25:46 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -41,11 +40,12 @@ void	update_or_add_env_node(t_env **env_list, char *var, int replace)
 	tmp = *env_list;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->content, var, var_len) == 0 && (tmp->content[var_len] == '=' || tmp->content[var_len] == '\0'))
+		if (ft_strncmp(tmp->content, var, var_len) == 0
+			&& (tmp->content[var_len] == '=' || tmp->content[var_len] == '\0'))
 		{
 			if (replace)
 				update_env_node(tmp, var);
-			return;
+			return ;
 		}
 		tmp = tmp->next;
 	}
@@ -64,8 +64,6 @@ void	handle_export_args(t_env *env_list, char **args)
 		var = ft_strdup(args[i]);
 		replace = ft_strchr(var, '=') != NULL;
 		update_or_add_env_node(&(env_list), var, replace);
-		// if (replace)
-		//     update_or_add_env_node(&(env_list), var, replace);
 		free_ptr(var);
 		i++;
 	}

@@ -6,34 +6,11 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:30:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/21 21:55:05 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:31:54 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_list(t_organize *program)
-{
-	t_organize	*tmp;
-	int			i;
-
-	i = 0;
-	tmp = program;
-	while (tmp)
-	{
-		printf("Node %d:\n", i);
-		printf("Node address: %p\n", (void*)tmp);
-		printf("input_file: %s\n", tmp->input_file);
-		printf("output_file: %s\n", tmp->output_file);
-		printf("append_file: %s\n", tmp->append_file);
-		printf("heredoc_dlm: %s\n", tmp->heredoc_dlm);
-		printf("cmds: %s\n", tmp->cmds);
-		printf("args: %s\n", tmp->args);
-		printf("next: %p\n", (void*)tmp->next);
-		tmp = tmp->next;
-		i++;
-	}
-}
 
 void	add_node(t_organize *node, t_organize *new)
 {
@@ -54,7 +31,7 @@ void	add_node(t_organize *node, t_organize *new)
 
 t_organize	*new_node(void)
 {
-	t_organize *new;
+	t_organize	*new;
 
 	new = malloc(sizeof(t_organize));
 	if (!new)

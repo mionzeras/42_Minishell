@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export01.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:34:31 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/11/25 18:35:05 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:26:10 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ void	print_sorted_env_list(t_env *env_list)
 	env_array = create_env_array(env_list, count);
 	if (!env_array)
 		return ;
-
 	sort_env_array(env_array, count);
 	print_env_array(env_array);
 	if (env_array)

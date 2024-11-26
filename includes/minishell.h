@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 00:32:21 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:37:02 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_var
 	int		inside;
 	int		size;
 	char 	c;
+	char	*new_str;
 	char 	*str;
 } t_var;
 
@@ -178,9 +179,12 @@ int			mini_loop(t_program *mini, int fd1, int fd2);
 //parser/new_split.c
 char		**ft_new_split(char *s, char c);
 
-//parser/parseline.c
+//parser/parseline_utils.c
 int			size_without_quotes(char *input);
 char		*remove_quotes(char *input);
+char		*alloc_with_spaces(char *input);
+
+//parser/parseline.c
 int			ft_isspaces(char c);
 char		*fix_redir_spaces(char *input);
 int			parse_readline(char **input, t_env *env);

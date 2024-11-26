@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/25 23:19:34 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:18:25 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ int	run_builtin(t_program *mini, t_organize *program, char *input)
 		if (exit_return == EXIT_SUCCESS)
 		{
 			free_ptr(input);
-			return 1;
+			return (1);
 		}
 	}
-	return 0;
+	return (0);
 }
 
 void	reset_fd_signals(int const fd, int const fd1)
@@ -55,6 +55,7 @@ int	mini_loop(t_program *mini, int fd1, int fd2)
 
 	while (mini->loop == 0)
 	{
+		
 		program = NULL;
 		reset_fd_signals(fd1, fd2);
 		input = readline("minishell$ ");
@@ -69,7 +70,7 @@ int	mini_loop(t_program *mini, int fd1, int fd2)
 			}
 			printf("cmds: %s\n", program->cmds);
 			if (run_builtin(mini, program, input))
-				break;
+				break ;
 			//executor(program, mini);
 			free_organize(program);
 			free_ptr(input);
@@ -78,4 +79,3 @@ int	mini_loop(t_program *mini, int fd1, int fd2)
 	rl_clear_history();
 	return (EXIT_SUCCESS);
 }
-

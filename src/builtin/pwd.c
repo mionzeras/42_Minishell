@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:39:16 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/20 21:38:35 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:24:09 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ completo do diretório de trabalho atual.
 
 void	ft_pwd(t_organize *program)
 {
-	char *path;
+	char	*path;
 
 	if (program->args)
 	{

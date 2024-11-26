@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 11:52:40 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/25 18:50:49 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:20:41 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ int	inside_quotes(char *input, int index)
 	return (quote);
 }
 
-char *new_getenv(const char *str, t_env *env)
+char	*new_getenv(const char *str, t_env *env)
 {
-	t_env *current;
-	char *value;
+	t_env	*current;
+	char	*value;
 
 	current = env;
 	while (current)
@@ -50,9 +50,8 @@ char *new_getenv(const char *str, t_env *env)
 		}
 		current = current->next;
 	}
-	return NULL;
+	return (NULL);
 }
-
 
 char	*expand_variable(char *input, int *i, t_env *env)
 {
@@ -63,20 +62,15 @@ char	*expand_variable(char *input, int *i, t_env *env)
 
 	j = 0;
 	k = *i + 1;
-	if (input[k] == '?')
+	if (input[k] == '?' || input[k] == '0' || ft_isdigit(input[k]))
 	{
 		*i = k;
-		return (ft_itoa(g_exit_status));
-	}
-	else if (input[k] == '0')
-	{
-		*i = k;
-		return (ft_strdup("minishell"));
-	}
-	else if (ft_isdigit(input[k]))
-	{
-		*i = k;
-		return (ft_strdup(""));
+		if (input[k] == '?')
+			return (ft_itoa(g_exit_status));
+		else if (input[k] == '0')
+			return (ft_strdup("minishell"));
+		else
+			return (ft_strdup(""));
 	}
 	while (input[k] && (ft_isalnum(input[k])) && input[k] != '_')
 	{
@@ -115,12 +109,11 @@ int	expanded_size(char *input, t_env *env)
 char	*expander(char *input, t_env *env)
 {
 	t_var	var;
-	char	*new_str;
 
 	var.i = -1;
 	var.k = -1;
 	var.size = expanded_size(input, env);
-	new_str = malloc(var.size + 1);
+	var.new_str = malloc(var.size + 1);
 	while (input[++var.i])
 	{
 		if (input[var.i] == '$' && (inside_quotes(input, var.i) == 0
@@ -132,12 +125,12 @@ char	*expander(char *input, t_env *env)
 				continue ;
 			var.j = -1;
 			while (var.str[++var.j])
-				new_str[++var.k] = var.str[var.j];
+				var.new_str[++var.k] = var.str[var.j];
 			free_ptr(var.str);
 		}
 		else
-			new_str[++var.k] = input[var.i];
+			var.new_str[++var.k] = input[var.i];
 	}
-	new_str[++var.k] = '\0';
-	return (new_str);
+	var.new_str[++var.k] = '\0';
+	return (var.new_str);
 }

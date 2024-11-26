@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:38:25 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/25 18:31:14 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:27:50 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Função para verificar se um caractere é um dígito.
-static	bool ft_isnumber(char str)
+static bool	ft_isnumber(char str)
 {
 	if (!str)
 		return (false);
@@ -51,7 +50,7 @@ int	check_exit_args(char **args)
 				if (!ft_isnumber(args[0][i]))
 				{
 					print_error(ERROR_EXIT_DIGIT);
-					return (EXIT_SUCCESS);   
+					return (EXIT_SUCCESS);
 				}
 				else
 					i++;

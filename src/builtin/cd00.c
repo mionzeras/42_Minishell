@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd00.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:28:12 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/25 18:07:35 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:24:33 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_update_env(t_env *env_list, char *name, char *value, int replace)
 t_env	*ft_get_env(t_env *env_list, char *name)
 {
 	t_env	*tmp;
-	
+
 	tmp = env_list;
 	while (tmp)
 	{

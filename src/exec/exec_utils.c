@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:33:26 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/25 20:35:31 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:29:35 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	exec_cmd(char *cmd, char *args, t_env *envp)
 	char	*tmp;
 	char	**cmd_split;
 	char	**env;
-	
+
 	tmp = ft_strjoin(cmd, " ");
 	cmd_arg = ft_strjoin(tmp, args);
 	free_ptr(tmp);

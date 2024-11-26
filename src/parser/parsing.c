@@ -6,16 +6,16 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/25 23:19:07 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:46:44 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void remove_quotes_list(t_organize **program)
+void	remove_quotes_list(t_organize **program)
 {
-	t_organize *tmp;
-	int i;
+	t_organize	*tmp;
+	int			i;
 
 	tmp = *program;
 	while (tmp)
@@ -25,7 +25,7 @@ void remove_quotes_list(t_organize **program)
 		i = ft_strlen(tmp->cmds);
 		printf("size of cmds: %d\n", i);
 		printf("cmds[%d]rmq: %s\n", tmp->list_pos, tmp->cmds);
-		if (tmp->args)	
+		if (tmp->args)
 			tmp->args = remove_quotes(tmp->args);
 		if (tmp->input_file)
 			tmp->input_file = remove_quotes(tmp->input_file);
@@ -39,27 +39,27 @@ void remove_quotes_list(t_organize **program)
 	}
 }
 
-int	check_empty_redir(char **input)
+int	check_empty_redir(char **str)
 {
 	int	i;
 
 	i = 0;
-	while (input[i])
+	while (str[i])
 	{
-		if ((ft_strncmp(input[i], ">", 1) == 0 && !input[i + 1])
-			|| (ft_strncmp(input[i], ">>", 2) == 0 && !input[i + 1])
-			|| (ft_strncmp(input[i], "<", 1) == 0 && !input[i + 1])
-			|| (ft_strncmp(input[i], "<<", 2) == 0 && !input[i + 1]))
+		if ((ft_strncmp(str[i], ">", 1) == 0 && !str[i + 1])
+			|| (ft_strncmp(str[i], ">>", 2) == 0 && !str[i + 1])
+			|| (ft_strncmp(str[i], "<", 1) == 0 && !str[i + 1])
+			|| (ft_strncmp(str[i], "<<", 2) == 0 && !str[i + 1]))
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token `newline'", STDERR);
+			ft_putendl_fd("Syntax error near unexpected token", STDERR);
 			return (1);
 		}
-		if ((ft_strncmp(input[i], ">", 1) == 0 && is_token(input[i + 1][0]))
-			|| (ft_strncmp(input[i], ">>", 2) == 0 && is_token(input[i + 1][0]))
-			|| (ft_strncmp(input[i], "<", 1) == 0 && is_token(input[i + 1][0]))
-			|| (ft_strncmp(input[i], "<<", 2) == 0 && is_token(input[i + 1][0])))
+		if ((ft_strncmp(str[i], ">", 1) == 0 && is_token(str[i + 1][0]))
+			|| (ft_strncmp(str[i], ">>", 2) == 0 && is_token(str[i + 1][0]))
+			|| (ft_strncmp(str[i], "<", 1) == 0 && is_token(str[i + 1][0]))
+			|| (ft_strncmp(str[i], "<<", 2) == 0 && is_token(str[i + 1][0])))
 		{
-			ft_printf("minishell: syntax error near unexpected token `%s'\n", input[i + 1]);
+			ft_putendl_fd("Syntax error near unexpected token", STDERR);
 			return (1);
 		}
 		i++;
@@ -70,7 +70,7 @@ int	check_empty_redir(char **input)
 char	*copy_args(char *dest, char *src)
 {
 	char	*tmp;
-	
+
 	if (!dest)
 	{
 		dest = ft_strdup(src);
@@ -98,7 +98,7 @@ int	process_input(t_organize *program, char **str, t_env *env)
 	int			i;
 	int			list_size;
 	char		**input;
-	t_organize *tmp;
+	t_organize	*tmp;
 
 	i = -1;
 	list_size = 0;
@@ -112,7 +112,7 @@ int	process_input(t_organize *program, char **str, t_env *env)
 	ft_printf("cheguei aqui\n");
 	i = -1;
 	while (input[++i])
-	{	
+	{
 		if (ft_strcmp(input[i], "<") == 0 && input[i + 1])
 		{
 			i++;
@@ -144,7 +144,7 @@ int	process_input(t_organize *program, char **str, t_env *env)
 		{
 			if (input[i + 1] == NULL)
 			{
-				ft_putendl_fd("minishell: syntax error near unexpected token `|'", STDERR);
+				ft_putendl_fd("Syntax error near unexpected token `|'", STDERR);
 				free_array(input);
 				return (1);
 			}

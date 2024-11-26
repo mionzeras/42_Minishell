@@ -6,13 +6,13 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:38:43 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/22 22:21:48 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:30:32 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_exec_builtin(t_organize *program, t_program *mini)
+void	ft_exec_builtin(t_organize *program, t_program *mini)
 {
 	if (ft_strcmp(program->cmds, "echo") == 0)
 		ft_echo(program);
@@ -26,10 +26,9 @@ void ft_exec_builtin(t_organize *program, t_program *mini)
 		print_env_list(mini->env_list);
 	else if (ft_strcmp(program->cmds, "export") == 0)
 		ft_export(mini, program->args);
-
 }
 
-int is_builtin(char *command)
+int	is_builtin(char *command)
 {
 	if (ft_strcmp(command, "echo") == 0)
 		return (1);
@@ -61,9 +60,8 @@ void	redir_pipes(t_organize *program)
 		close(program->fd_out);
 	}
 }
-	
 
-void executor(t_organize *program, t_program *mini)
+void	executor(t_organize *program, t_program *mini)
 {
     t_organize *tmp = program;
     int *fd[2];

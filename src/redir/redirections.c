@@ -6,13 +6,11 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:48:41 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/18 16:25:10 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:47:43 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 void	handle_redir(t_organize *organize)
 {
