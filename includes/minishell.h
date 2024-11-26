@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 16:37:02 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 20:38:47 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@
 # define META_CHARS "<>|"
 # define ON 0
 # define OFF 1
+# define MAIN 0
+# define CHILD 1
+# define HERE_DOC 2
+# define PIPE 3
+# define IGNORE 4
 
 # define PATH_MAX 4096
 # define EXIT_SUCCESS 0
@@ -86,13 +91,7 @@ typedef struct s_env
 typedef struct s_program
 {
 	int				pipes;
-	int				loop;
-	char			**path;
-	char			*user_input;
-	char			*pwd;
-	char			*old_pwd;
 	struct s_env	*env_list;
-	struct s_env	*export_list;
 }		t_program;
 
 //builtin/cd00.c
@@ -147,7 +146,6 @@ void		delete_node(t_env *node);
 void		delete_list(t_env *list);
 void		free_array(char **array);
 void		free_organize(t_organize *program);
-void		free_program(t_program *mini); //old -> free_program(t_program *mini, t_organize *program);
 int			size_without_quotes(char *input);
 
 //error/error.c
@@ -167,10 +165,7 @@ int			exec_cmd(char *cmd, char *args, t_env *envp);
 int			heredoc(char *input, t_env *env);
 
 //initialize/init.c
-void		print_list(t_organize *program);
-void		save_path(t_program *mini, char **envp);
 t_organize	*init_organize(char *input);
-void		init_struct(t_program *mini, char **env);
 
 //loop/loop.c
 int			run_builtin(t_program *mini, t_organize *program, char *input);
@@ -197,6 +192,13 @@ int			process_input(t_organize *program, char **str, t_env *env);
 int			inside_quotes(char *input, int index);
 char		*expand_variable(char *input, int *i, t_env *env);
 char		*expander(char *input, t_env *env);
+
+//signals/signal.c
+void		sigint_handler(int signum);
+void		signals_loop(void);
+
+//signals/signals.c
+void		ft_handle_signals(int id);
 
 //utils/utils.c
 void		free_ptr(char *ptr);

@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 17:18:25 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 20:31:08 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	mini_loop(t_program *mini, int fd1, int fd2)
 	t_organize	*program;
 	char		*input;
 
-	while (mini->loop == 0)
+	while (1)
 	{
 		
 		program = NULL;

@@ -6,7 +6,7 @@
 #    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/11/26 16:37:35 by gcampos-         ###   ########.fr        #
+#    Updated: 2024/11/26 19:09:53 by gcampos-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,8 @@ SRC =	src/builtin/cd00.c \
 		src/parser/parseline.c \
 		src/parser/parsing.c \
 		src/parser/quotes.c \
+		src/signals/signal.c \
+		src/signals/signals.c \
 		src/utils/utils.c \
 		src/utils/utils2.c \
 		src/main.c

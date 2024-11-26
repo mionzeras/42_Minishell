@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:25:00 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 16:29:02 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/26 20:28:57 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,4 @@ void	free_organize(t_organize *program)
 		if (tmp)
 			free(tmp);
 	}
-}
-
-void	free_program(t_program *mini)
-{
-	free_array(mini->path);
-	free_ptr(mini->pwd);
-	free_ptr(mini->old_pwd);
-	delete_list(mini->env_list);
-	delete_list(mini->export_list);
-	if (mini->user_input)
-		free_ptr(mini->user_input);
 }
