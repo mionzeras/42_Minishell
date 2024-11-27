@@ -6,7 +6,7 @@
 #    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/11/26 19:09:53 by gcampos-         ###   ########.fr        #
+#    Updated: 2024/11/27 20:21:22 by gcampos-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,8 @@ SRC =	src/builtin/cd00.c \
 		src/builtin/unset.c \
 		src/clean/clean.c \
 		src/error/error.c \
+		src/exec/execution.c \
+		src/exec/exec_utils.c \
 		src/heredoc/heredoc.c \
 		src/initialize/init.c \
 		src/loop/mini_loop.c \

@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 16:46:44 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:47:28 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ void	remove_quotes_list(t_organize **program)
 		printf("cmds[%d]rmq: %s\n", tmp->list_pos, tmp->cmds);
 		if (tmp->args)
 			tmp->args = remove_quotes(tmp->args);
-		if (tmp->input_file)
-			tmp->input_file = remove_quotes(tmp->input_file);
-		if (tmp->output_file)
-			tmp->output_file = remove_quotes(tmp->output_file);
-		if (tmp->append_file)
-			tmp->append_file = remove_quotes(tmp->append_file);
-		if (tmp->heredoc_dlm)
-			tmp->heredoc_dlm = remove_quotes(tmp->heredoc_dlm);
+		// if (tmp->input_file)
+		// 	tmp->input_file = remove_quotes(tmp->input_file);
+		// if (tmp->output_file)
+		// 	tmp->output_file = remove_quotes(tmp->output_file);
+		// if (tmp->append_file)
+		// 	tmp->append_file = remove_quotes(tmp->append_file);
+		// if (tmp->heredoc_dlm)
+		// 	tmp->heredoc_dlm = remove_quotes(tmp->heredoc_dlm);
 		tmp = tmp->next;
 	}
 }

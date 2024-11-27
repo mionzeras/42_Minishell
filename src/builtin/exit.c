@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:38:25 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/26 16:27:50 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/27 21:33:29 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	ft_exit(t_organize *program, char *str)
 	}
 	else if (!str)
 	{
-		free_organize(program);
+		// free_organize(program);
 		return (EXIT_SUCCESS);
 	}
 	args = ft_new_split(str, ' ');
@@ -80,7 +80,7 @@ int	ft_exit(t_organize *program, char *str)
 		free_array(args);
 		return (EXIT_FAILURE);
 	}
-	free_organize(program);
+	// free_organize(program);
 	free_array(args);
 	return (EXIT_SUCCESS);
 }

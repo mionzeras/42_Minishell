@@ -6,13 +6,13 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 20:31:08 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/27 21:54:17 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	run_builtin(t_program *mini, t_organize *program, char *input)
+int	run_builtin(t_program *mini, t_organize *program)
 {
 	int	exit_return;
 
@@ -29,15 +29,16 @@ int	run_builtin(t_program *mini, t_organize *program, char *input)
 		ft_cd(mini->env_list, program);
 	else if (ft_strncmp(program->cmds, "pwd", 3) == 0)
 		ft_pwd(program);
-	else if (ft_strncmp(program->cmds, "exit", 4) == 0)
-	{
-		exit_return = ft_exit(program, program->args);
-		if (exit_return == EXIT_SUCCESS)
-		{
-			free_ptr(input);
-			return (1);
-		}
-	}
+	// else if (ft_strncmp(program->cmds, "exit", 4) == 0)
+	// {
+	// 	exit_return = ft_exit(program, program->args);
+	// 	if (exit_return == EXIT_SUCCESS)
+	// 	{
+	// 		// free_ptr(input);
+	// 		return (1);
+
+	// 	}
+	// }
 	return (0);
 }
 
@@ -61,7 +62,7 @@ int	mini_loop(t_program *mini, int fd1, int fd2)
 		input = readline("minishell$ ");
 		if (parse_readline(&input, mini->env_list) == 0)
 		{
-			program = init_organize(input);
+			program = init_organize(input, mini);
 			if (parse_organize(program, input, mini->env_list) == 1)
 			{
 				free_organize(program);
@@ -69,9 +70,16 @@ int	mini_loop(t_program *mini, int fd1, int fd2)
 				continue ;
 			}
 			printf("cmds: %s\n", program->cmds);
-			if (run_builtin(mini, program, input))
-				break ;
-			//executor(program, mini);
+			if (ft_strncmp(program->cmds, "exit", 4) == 0)
+			{
+				free_organize(program);
+				free_ptr(input);
+				return (EXIT_SUCCESS);
+			}
+			if (mini->pipes > 0)
+				executor(program, mini);
+			else
+				exec_one_cmd(mini, program);
 			free_organize(program);
 			free_ptr(input);
 		}

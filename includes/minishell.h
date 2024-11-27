@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 20:38:47 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/27 21:47:43 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,6 @@ typedef struct s_organize
 	int					fd_in;
 	int					fd_out;
 	int					list_pos;
-	char				*input_file;
-	char				*output_file;
-	char				*append_file;
-	char				*heredoc_dlm;
 	char				*cmds;
 	char				*args;
 	struct s_organize	*next;
@@ -154,6 +150,7 @@ void		ft_error_cmds(t_organize *program);
 void		ft_error_args(char *str);
 
 //exec/execution.c
+void		exec_one_cmd(t_program *mini, t_organize *program);
 int			is_builtin(char *command);
 void		redir_pipes(t_organize *program);
 void		executor(t_organize *program, t_program *mini);
@@ -165,10 +162,10 @@ int			exec_cmd(char *cmd, char *args, t_env *envp);
 int			heredoc(char *input, t_env *env);
 
 //initialize/init.c
-t_organize	*init_organize(char *input);
+t_organize	*init_organize(char *input, t_program *mini);
 
 //loop/loop.c
-int			run_builtin(t_program *mini, t_organize *program, char *input);
+int			run_builtin(t_program *mini, t_organize *program);
 int			mini_loop(t_program *mini, int fd1, int fd2);
 
 //parser/new_split.c

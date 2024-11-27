@@ -6,31 +6,33 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:38:43 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 16:30:32 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/27 22:43:14 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_exec_builtin(t_organize *program, t_program *mini)
+void	exec_one_cmd(t_program *mini, t_organize *program)
 {
-	if (ft_strcmp(program->cmds, "echo") == 0)
-		ft_echo(program);
-	else if (ft_strcmp(program->cmds, "cd") == 0)
-		ft_cd(mini, program);
-	else if (ft_strcmp(program->cmds, "pwd") == 0)
-		ft_pwd(program);
-	else if (ft_strcmp(program->cmds, "unset") == 0)
-		ft_unset(mini, program);
-	else if (ft_strcmp(program->cmds, "env") == 0)
-		print_env_list(mini->env_list);
-	else if (ft_strcmp(program->cmds, "export") == 0)
-		ft_export(mini, program->args);
+	if (program->fd_in != -1)
+	{
+		dup2(program->fd_in, STDIN);
+		close(program->fd_in);
+	}
+	if (program->fd_out != -1)
+	{
+		dup2(program->fd_out, STDOUT);
+		close(program->fd_out);
+	}
+	if (is_builtin(program->cmds))
+		run_builtin(mini, program);
+	else
+		exec_cmd(program->cmds, program->args, mini->env_list);
 }
 
 int	is_builtin(char *command)
 {
-	if (ft_strcmp(command, "echo") == 0)
+	if (ft_strncmp(command, "echo", 4) == 0)
 		return (1);
 	if (ft_strcmp(command, "cd") == 0)
 		return (1);
@@ -64,10 +66,14 @@ void	redir_pipes(t_organize *program)
 void	executor(t_organize *program, t_program *mini)
 {
     t_organize *tmp = program;
-    int *fd[2];
-    int in_fd = STDIN; // Entrada inicial, geralmente stdin
-    pid_t pid;
+    int 		fd[2];
+    int 		in_fd = STDIN; // Entrada inicial, geralmente stdin
+	int			last;
+    pid_t 		pid;
+	
 
+	//fd = malloc(sizeof(int *) * 2);
+	// last = ft_lstsize    esta recebe t_list, vou refazer para receber t_organize
     while (tmp)
     {
         if (tmp->next && pipe(fd) == -1)
@@ -75,20 +81,34 @@ void	executor(t_organize *program, t_program *mini)
             perror("pipe");
             exit(EXIT_FAILURE);
         }
-		while (tmp)
+		pid = fork();
 		if (pid == 0) // Processo filho
 		{
-			if (tmp->fd_in != -1)
-				dup2(tmp->fd_in, STDIN);
-			else if (in_fd != STDIN)
-			 	dup2(in_fd, STDIN);
-			if (tmp->fd_out != -1)
-				dup2(tmp->fd_out, STDOUT);
-			else if (tmp->next)
-				dup2(fd[1], STDOUT);
+			if (program->list_pos == 0)
+			{
+				close(fd[0]); // Fecha leitura do pipe no filho
+				if (program->fd_in != -1)
+					dup2(program->fd_in, STDIN_FILENO);
+				if (tmp->next && program->fd_out == -1)
+					dup2(fd[1], STDOUT_FILENO);
+				else if (program->fd_out != -1)
+				{
+					dup2(program->fd_out, STDOUT_FILENO);
+					close(fd[1]);
+				}
+			}
+			}
+			else if (program->list_pos == (last - 1))
+			{
+				//abre os fds do ultimo no
+			}
+			else
+			{
+				//abre os fds dos nos do meio
+			}
 			if (is_builtin(tmp->cmds))
 			{
-				ft_exec_builtin(tmp, mini);
+				run_builtin(mini, tmp);
 				exit(0); // Encerra o processo filho após executar o builtin
 			}
 			else

@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:30:46 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 20:38:31 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/27 21:21:33 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,8 @@ t_organize	*new_node(void)
 	new->fd_in = -1;
 	new->fd_out = -1;
 	new->list_pos = 0;
-	new->append_file = NULL;
 	new->args = NULL;
 	new->cmds = NULL;
-	new->heredoc_dlm = NULL;
-	new->input_file = NULL;
-	new->output_file = NULL;
 	new->next = NULL;
 	return (new);
 }
@@ -66,15 +62,14 @@ t_organize	*new_node(void)
 // 	}
 // }
 
-t_organize	*init_organize(char *input)
+t_organize	*init_organize(char *input, t_program *mini)
 {
 	int			i;
-	int			pipes;
 	t_organize	*list;
 
 	i = -1;
-	pipes = pipes_counter(input);
-	while (++i <= pipes)
+	mini->pipes = pipes_counter(input);
+	while (++i <= mini->pipes)
 	{
 		if (i == 0)
 			list = new_node();
