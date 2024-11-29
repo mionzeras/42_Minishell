@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/27 21:47:43 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/29 11:41:10 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ void		redir_pipes(t_organize *program);
 void		executor(t_organize *program, t_program *mini);
 
 //exec/exec_utils.c
+int			ft_list_size(t_organize *program);
 int			exec_cmd(char *cmd, char *args, t_env *envp);
 
 //heredoc/heredoc.c

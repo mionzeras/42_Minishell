@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:38:43 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/27 22:43:14 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/29 12:06:17 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void	exec_one_cmd(t_program *mini, t_organize *program)
 	if (program->fd_in != -1)
 	{
 		dup2(program->fd_in, STDIN);
-		close(program->fd_in);
+		// close(program->fd_in);
 	}
 	if (program->fd_out != -1)
 	{
 		dup2(program->fd_out, STDOUT);
-		close(program->fd_out);
+		// close(program->fd_out);
 	}
 	if (is_builtin(program->cmds))
 		run_builtin(mini, program);
@@ -63,17 +63,31 @@ void	redir_pipes(t_organize *program)
 	}
 }
 
+void	reset_fds(t_organize *program)
+{
+	if (program->fd_in != -1)
+	{
+		dup2(STDIN, program->fd_in);
+		close(program->fd_in);
+	}
+	if (program->fd_out != -1)
+	{
+		dup2(STDOUT, program->fd_out);
+		close(program->fd_out);
+	}
+}
+
 void	executor(t_organize *program, t_program *mini)
 {
     t_organize *tmp = program;
     int 		fd[2];
-    int 		in_fd = STDIN; // Entrada inicial, geralmente stdin
+    // int 		in_fd = STDIN; // Entrada inicial, geralmente stdin
 	int			last;
     pid_t 		pid;
 	
 
 	//fd = malloc(sizeof(int *) * 2);
-	// last = ft_lstsize    esta recebe t_list, vou refazer para receber t_organize
+	last = ft_list_size(program);
     while (tmp)
     {
         if (tmp->next && pipe(fd) == -1)
@@ -82,29 +96,56 @@ void	executor(t_organize *program, t_program *mini)
             exit(EXIT_FAILURE);
         }
 		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
 		if (pid == 0) // Processo filho
 		{
-			if (program->list_pos == 0)
+			printf("estou no filho\n");
+			if (program->list_pos == 0) // Se for o primeiro comando
 			{
-				close(fd[0]); // Fecha leitura do pipe no filho
-				if (program->fd_in != -1)
-					dup2(program->fd_in, STDIN_FILENO);
-				if (tmp->next && program->fd_out == -1)
-					dup2(fd[1], STDOUT_FILENO);
-				else if (program->fd_out != -1)
+				close(fd[0]); // Fecha leitura do pipe de entrada no filho
+				if (program->fd_in != -1) // Se houver redirecionamento de entrada (arquivo)
+					dup2(program->fd_in, STDIN_FILENO); // Redireciona a entrada para o arquivo
+				if (program->fd_out == -1) // Se não houver redirecionamento de saída
+					dup2(fd[1], STDOUT_FILENO); // Redireciona a saída para o pipe
+				else if (program->fd_out != -1) // Se houver redirecionamento de saída (arquivo)
 				{
-					dup2(program->fd_out, STDOUT_FILENO);
-					close(fd[1]);
+					dup2(program->fd_out, STDOUT_FILENO); // Redireciona a saída para o arquivo
+					close(fd[1]); // Fecha escrita do pipe no filho	
 				}
 			}
-			}
-			else if (program->list_pos == (last - 1))
+			else if (program->list_pos == (last -1)) // se for o ultimo comando
 			{
-				//abre os fds do ultimo no
+				close(fd[1]); // Fecha escrita do pipe no filho
+				if (program->fd_in != -1) // Se houver redirecionamento de entrada (arquivo)
+				{
+					dup2(program->fd_in, STDIN_FILENO); // Redireciona a entrada para o arquivo
+					close(fd[0]); // Fecha leitura do pipe de entrada no filho
+				}
+				else
+					dup2(fd[0], STDIN_FILENO); // Redireciona a entrada para o pipe
+				if (program->fd_out != -1) // Se houver redirecionamento de saída (arquivo)
+					dup2(program->fd_out, STDOUT_FILENO); // Redireciona a saída para o arquivo
 			}
-			else
+			else // Se for um comando intermediário
 			{
-				//abre os fds dos nos do meio
+				if (program->fd_in != -1) // Se houver redirecionamento de entrada (arquivo)
+				{
+					dup2(program->fd_in, STDIN_FILENO); // Redireciona a entrada para o arquivo
+					close(fd[0]); // Fecha leitura do pipe de entrada no filho
+				}
+				else
+					dup2(fd[0], STDIN_FILENO); // Redireciona a entrada para o pipe
+				if (program->fd_out != -1) // Se houver redirecionamento de saída (arquivo)
+				{
+					dup2(program->fd_out, STDOUT_FILENO); // Redireciona a saída para o arquivo
+					close(fd[1]); // Fecha escrita do pipe no filho
+				}
+				else
+					dup2(fd[1], STDOUT_FILENO); // Redireciona a saída para o pipe
 			}
 			if (is_builtin(tmp->cmds))
 			{
@@ -116,13 +157,16 @@ void	executor(t_organize *program, t_program *mini)
 		}
 		else // Processo pai
 		{
-			waitpid(pid, NULL, 0); // Aguarda o término do filho
+			printf("estou no pai\n");
+			waitpid(pid, NULL, 0); // Aguarda o processo filho terminar, WNOHANG não bloqueia o pai
+			if (program->fd_in != -1) // Se houver redirecionamento de entrada (arquivo)
+				close(program->fd_in); // Fecha o arquivo de entrada
+			if (program->fd_out != -1) // Se houver redirecionamento de saída (arquivo)
+				close(program->fd_out); // Fecha o arquivo de saída
+			close(fd[0]); // Fecha leitura do pipe no pai
 			close(fd[1]); // Fecha escrita do pipe no pai
-			if (in_fd != STDIN)
-				close(in_fd);
-
-			in_fd = fd[0]; // Configura a entrada para o próximo comando
 		}
+		// reset_fds(program); // Reseta os descritores de arquivo para stdin e stdout
         tmp = tmp->next; // Avança para o próximo comando
     }
 }

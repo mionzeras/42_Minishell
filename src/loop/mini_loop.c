@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/27 21:54:17 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/29 11:54:33 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	run_builtin(t_program *mini, t_organize *program)
 {
-	int	exit_return;
+	// int	exit_return;
 
-	exit_return = 0;
+	// exit_return = 0;
 	if (ft_strncmp(program->cmds, "unset", 5) == 0)
 		ft_unset(mini->env_list, program);
 	else if (ft_strncmp(program->cmds, "export", 6) == 0)

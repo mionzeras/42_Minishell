@@ -6,11 +6,26 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:33:26 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 16:29:35 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/29 11:58:43 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_list_size(t_organize *program)
+{
+	int		i;
+	t_organize	*tmp;
+
+	i = 0;
+	tmp = program;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
 
 void	msg(char *msg, int check, int output)
 {
@@ -95,7 +110,7 @@ int	exec_cmd(char *cmd, char *args, t_env *envp)
 	ft_printf("cmd: %s\n", cmd);
 	if (execve(path, cmd_split, env) == -1)
 		free_ptr(path);
-	free_ptr(path);
+	//free_ptr(path);
 	free_array(cmd_split);
 	return (0);
 }
