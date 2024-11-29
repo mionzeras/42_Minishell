@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:38:43 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/29 12:06:17 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/29 18:41:56 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	exec_one_cmd(t_program *mini, t_organize *program)
 {
+	if (!program->cmds)
+		return ;
 	if (program->fd_in != -1)
 	{
 		dup2(program->fd_in, STDIN);

@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/29 11:54:33 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/29 18:27:44 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	reset_fd_signals(int const fd, int const fd1)
 	dup2(fd1, STDOUT_FILENO);
 }
 
-int	mini_loop(t_program *mini, int fd1, int fd2)
+int	mini_loop(t_program *mini)
 {
 	t_organize	*program;
 	char		*input;
@@ -58,8 +58,13 @@ int	mini_loop(t_program *mini, int fd1, int fd2)
 	{
 		
 		program = NULL;
-		reset_fd_signals(fd1, fd2);
+		// reset_fd_signals(fd1, fd2);
 		input = readline("minishell$ ");
+		if (!input)
+		{
+			ft_putendl_fd("exit", STDOUT);
+			return (EXIT_SUCCESS);
+		}
 		if (parse_readline(&input, mini->env_list) == 0)
 		{
 			program = init_organize(input, mini);

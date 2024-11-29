@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/27 19:47:28 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/29 18:24:04 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,16 +156,18 @@ int	process_input(t_organize *program, char **str, t_env *env)
 		}
 		else
 		{
-			input[i] = remove_quotes(input[i]);
-			tmp->cmds = ft_strdup(input[i]);
-			printf("cmd_split[%d]: %s\n", tmp->list_pos, tmp->cmds);
-			while (input[i + 1] && !is_token(input[i + 1][0]))
+			if (tmp->cmds == NULL)
 			{
-				i++;
+				input[i] = remove_quotes(input[i]);
+				tmp->cmds = ft_strdup(input[i]);
+				printf("cmd_split[%d]: %s\n", tmp->list_pos, tmp->cmds);
+			}
+			else
+			{
 				input[i] = remove_quotes(input[i]);
 				tmp->args = copy_args(tmp->args, input[i]);
+				printf("args_split[%d]: %s\n", tmp->list_pos, tmp->args);
 			}
-			printf("args_split[%d]: %s\n", tmp->list_pos, tmp->args);
 		}
 	}
 	free_array(input);

@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/29 11:41:10 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:57:46 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ t_organize	*init_organize(char *input, t_program *mini);
 
 //loop/loop.c
 int			run_builtin(t_program *mini, t_organize *program);
-int			mini_loop(t_program *mini, int fd1, int fd2);
+int			mini_loop(t_program *mini);
 
 //parser/new_split.c
 char		**ft_new_split(char *s, char c);

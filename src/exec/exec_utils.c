@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:33:26 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/29 11:58:43 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/29 18:28:19 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*find_path(char *cmd, char **envp, int count)
 	free_array(envp_path);
 	if (cmd[0] == '/' && access(cmd, F_OK) == 0)
 		return (ft_strdup(cmd));
-	msg("command not found\n", 1, 2);
+	// ft_error_cmds(cmd);
 	return (NULL);
 }
 
