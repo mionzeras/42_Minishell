@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 19:25:00 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/27 19:51:04 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/30 15:44:56 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,17 @@ void	free_array(char **array)
 	while (array[++i])
 		free(array[i]);
 	free(array);
+}
+
+void	free_program(t_program *mini)
+{
+	t_program	*tmp;
+
+	tmp = mini;
+	if (tmp->env_list)
+		delete_list(tmp->env_list);
+	if (tmp)
+		free(tmp);
 }
 
 void	free_organize(t_organize *program)

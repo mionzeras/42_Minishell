@@ -6,7 +6,7 @@
 /*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:35:08 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/11/25 18:42:42 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/30 15:43:26 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ void	ft_unset(t_env *env_list, t_organize *program)
 	int		i;
 	char	**cmd_args;
 
-	if (program->cmds[5])
-		ft_error_cmds(program);
-	else if (!program->args)
+	if (!program->args)
 		return ;
 	else
 	{

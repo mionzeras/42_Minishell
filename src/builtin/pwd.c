@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:39:16 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/26 16:24:09 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/30 15:43:03 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,19 @@ void	ft_pwd(t_organize *program)
 
 	if (program->args)
 	{
-		printf("%s\n", ERROR_PWD_ARGUMENTS);
-		return ;
+		if (program->args[0] == '-')
+		{
+			ft_error_args(program->args, 127);
+			return ;
+		}
 	}
 	path = getcwd(NULL, 0);
 	if (path)
 	{
 		printf("%s\n", path);
 		free_ptr(path);
+		g_exit_status = 0;
 	}
 	else
-		printf("%s\n", ERROR_PWD_DIRECTORY);
+		print_error(ERROR_PWD_DIRECTORY, 1);
 }

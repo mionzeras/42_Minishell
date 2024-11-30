@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd01.c                                             :+:      :+:    :+:   */
+/*   exit_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/24 16:00:55 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/11/30 15:39:52 by fgomes-c         ###   ########.fr       */
+/*   Created: 2024/11/12 23:38:25 by caliman           #+#    #+#             */
+/*   Updated: 2024/11/30 15:42:40 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	update_env_vars(t_env *env_list, char *dir, int size)
+void	free_and_exit(t_organize *pgr, int status)
 {
-	ft_update_env(env_list, "OLDPWD=", dir, 1);
-	getcwd(dir, size);
-	ft_update_env(env_list, "PWD=", dir, 1);
+	free_organize(pgr);
+	exit(status);
 }
 
-void	handle_home_directory(t_env *env_list)
+void	handle_exit_error(t_organize *program, char **args)
 {
-	t_env	*home;
+	ft_putstr_fd("exit\n", STDERR);
+	print_error(ERROR_EXIT_ARGS, 1);
+	free_array(args);
+	free_organize(program);
+}
 
-	home = ft_get_env(env_list, "HOME");
-	if (home)
-		chdir(home->content + 5);
-	else
-		print_error("HOME not set", 1);
+void	handle_exit_success_args(t_organize *program, char **args)
+{
+	ft_putstr_fd("exit\n", STDERR);
+	ft_error_digit(args[0], 2);
+	free_array(args);
+	free_organize(program);
 }

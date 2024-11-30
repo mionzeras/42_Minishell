@@ -5,12 +5,35 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 23:37:01 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/30 15:03:17 by fgomes-c         ###   ########.fr       */
+/*   Created: 2024/11/15 18:00:51 by gcampos-          #+#    #+#             */
+/*   Updated: 2024/11/30 15:48:04 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+/*
+void	delete_node(t_env *node)
+{
+	free(node->content);
+	free(node);
+}
+
+// void	print_env_list(t_env *list)
+// {
+// 	int		i;
+
+// 	i = 0;
+// 	while (list)
+// 	{
+// 		printf("Node %d:\n", i);
+// 		printf("Node address: %p\n", (void *)list);
+// 		printf("content: %s\n", list->content);
+// 		printf("next: %p\n", (void *)list->next);
+// 		printf("prev: %p\n", (void *)list->prev);
+// 		list = list->next;
+// 		i++;
+// 	}
+// }
 
 void	add_env_node(t_env *node, t_env *new)
 {
@@ -21,6 +44,10 @@ void	add_env_node(t_env *node, t_env *new)
 		last = last->next;
 	last->next = new;
 	new->prev = last;
+	// if(!ft_strcmp(last->content, "PATH")
+	// 	list->prev->next = list->next;
+	// 	free(list->content);
+	// 	free(list);
 }
 
 t_env	*new_env_node(void)
@@ -64,31 +91,4 @@ t_env	*init_env(char **env)
 	}
 	return (head);
 }
-
-void	print_env_list(t_env *list)
-{
-	t_env	*tmp;
-
-	tmp = list;
-	while (tmp)
-	{
-		if (ft_strchr(tmp->content, '='))
-		{
-			ft_putstr_fd(tmp->content, STDOUT);
-			ft_putstr_fd("\n", STDOUT);
-		}
-		tmp = tmp->next;
-	}
-}
-
-void	ft_env(t_env *env_list, t_organize *program)
-{
-	if (program->cmds[3])
-		ft_error_cmds(program->cmds, 127);
-	else if (program->args)
-	{
-		print_error(ERROR_ENV_ARGS, 1);
-	}
-	else
-		print_env_list(env_list);
-}
+*/

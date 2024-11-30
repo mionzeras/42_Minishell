@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:28:50 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/25 20:49:03 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/30 15:40:56 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,7 @@ void	ft_echo(t_organize *program)
 
 	str = program->args;
 	n = 0;
-	if (program->cmds[4])
-		ft_error_cmds(program);
-	else if (!str)
+	if (!str)
 		write(1, "\n", 1);
 	else
 	{
@@ -65,4 +63,5 @@ void	ft_echo(t_organize *program)
 		if (n == 0)
 			write(1, "\n", 1);
 	}
+	g_exit_status = 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parseline.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:24:31 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 16:40:04 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/30 13:00:57 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	parse_readline(char **input, t_env *env)
 {
 	char	*tmp;
 
-	ft_printf("entrei no parseline\n");
 	if (*input && input[0])
 		add_history(*input);
 	if (!*input)
@@ -87,7 +86,6 @@ int	parse_readline(char **input, t_env *env)
 	free_ptr(*input);
 	tmp = fix_redir_spaces(tmp);
 	*input = expander(tmp, env);
-	ft_printf("sai do expander\n");
 	free_ptr(tmp);
 	if (!*input)
 		return (EXIT_FAILURE);

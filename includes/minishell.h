@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/29 17:57:46 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/30 15:36:54 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@
 # define ERROR_CD_HOME "cd: HOME not set"
 # define ERROR_CD_OLDPWD "cd: OLDPWD not set"
 # define ERROR_CD_DIRECTORY "cd: no such file or directory"
+# define ERROR_CD_OPTION "invalid option"
+# define ERROR_ENV_ARGS "env: dont accept arguments"
 # define ERROR_EXIT_ARGS "exit: too many arguments"	
 # define ERROR_EXIT_DIGIT "exit: numeric argument required"
 
@@ -58,20 +60,24 @@ extern int	g_exit_status;
 typedef struct s_var
 {
 	int		i;
-	int 	j;
+	int		j;
 	int		k;
 	int		inside;
 	int		size;
-	char 	c;
+	char	c;
 	char	*new_str;
-	char 	*str;
-} t_var;
+	char	*str;
+}	t_var;
 
 typedef struct s_organize
 {
 	int					fd_in;
 	int					fd_out;
 	int					list_pos;
+	char				*input_file;
+	char				*output_file;
+	char				*append_file;
+	char				*heredoc_dlm;
 	char				*cmds;
 	char				*args;
 	struct s_organize	*next;
@@ -90,10 +96,13 @@ typedef struct s_program
 	struct s_env	*env_list;
 }		t_program;
 
+//builtin/builtin.c
+int			run_builtin(t_program *mini, t_organize *program);
+
 //builtin/cd00.c
 void		ft_cd(t_env *env_list, t_organize *program);
 t_env		*ft_get_env(t_env *env_list, char *name);
-void		ft_update_env(t_env *env_list, char *name, char *value, int replace);
+void		ft_update_env(t_env *env_list, char *name, char *value, int repl);
 
 //builtin/cd01.c
 void		update_env_vars(t_env *env_list, char *dir, int size);
@@ -110,9 +119,13 @@ void		print_env_list(t_env *list);
 void		ft_env(t_env *env_list, t_organize *program);
 
 //builtin/exit.c
-void		free_and_exit(t_organize *pgr, int status);
-int			check_exit_args(char **args);
+void		check_exit_args(char **args);
 int			ft_exit(t_organize *program, char *str);
+
+//builtin/exit_free.c
+void		free_and_exit(t_organize *pgr, int status);
+void		handle_exit_error(t_organize *program, char **args);
+void		handle_exit_success_args(t_organize *program, char **args);
 
 //builtin/export00.c
 int			get_var_len(char *var);
@@ -144,10 +157,16 @@ void		free_array(char **array);
 void		free_organize(t_organize *program);
 int			size_without_quotes(char *input);
 
-//error/error.c
-void		print_error(char *cmd);
-void		ft_error_cmds(t_organize *program);
-void		ft_error_args(char *str);
+//error/error00.c
+void		print_error(char *cmd, int status);
+void		ft_error_cmds(char *cmds, int status);
+void		ft_error_dir(char *dir, int status);
+void		ft_error_args(char *str, int status);
+void		ft_error_opt(char *str, int status);
+
+//error/error01.c
+void		ft_error_digit(char *str, int status);
+void		ft_error_path_cmd(char *cmd, int status);
 
 //exec/execution.c
 void		exec_one_cmd(t_program *mini, t_organize *program);
@@ -166,7 +185,6 @@ int			heredoc(char *input, t_env *env);
 t_organize	*init_organize(char *input, t_program *mini);
 
 //loop/loop.c
-int			run_builtin(t_program *mini, t_organize *program);
 int			mini_loop(t_program *mini);
 
 //parser/new_split.c

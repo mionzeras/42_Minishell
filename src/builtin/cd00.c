@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd00.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:28:12 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/26 16:24:33 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/11/30 15:39:38 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,6 @@ t_env	*ft_get_env(t_env *env_list, char *name)
 	return (NULL);
 }
 
-void	handle_cd_errors(char *arg)
-{
-	if (arg[1])
-		print_error("cd: invalid argument");
-	else if ((arg[0] != '-' && arg[0] != '~'))
-	{
-		printf("arg: %s\n", arg);
-		print_error("cd: no such file or directory");
-	}
-}
-
 bool	can_execute(t_env *env_list, char *arg)
 {
 	t_env	*oldpwd;
@@ -74,7 +63,7 @@ bool	can_execute(t_env *env_list, char *arg)
 			}
 			else
 			{
-				print_error("OLDPWD not set");
+				ft_error_args(ERROR_CD_OLDPWD, 2);
 				return (false);
 			}
 		}
@@ -92,10 +81,9 @@ void	ft_cd(t_env *env_list, t_organize *program)
 	char	dir[PATH_MAX];
 
 	getcwd(dir, sizeof(dir));
-	printf("arg size: %zu\n", ft_strlen(program->args));
 	if (program->args && program->args[0] == '-' && program->args[1] != '\0')
 	{
-		print_error("cd: invalid option");
+		ft_error_opt(program->args, 2);
 		return ;
 	}
 	if (!can_execute(env_list, program->args))
@@ -105,7 +93,7 @@ void	ft_cd(t_env *env_list, t_organize *program)
 			handle_home_directory(env_list);
 			return ;
 		}
-		handle_cd_errors(program->args);
+		ft_error_dir(program->args, 1);
 		return ;
 	}
 	update_env_vars(env_list, dir, sizeof(dir));
