@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:55:43 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/30 16:13:18 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:50:49 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,3 +44,4 @@ void	signals_child(void)
 	signal(SIGINT, child_handler);
 	signal(SIGQUIT, child_handler);
 }
+

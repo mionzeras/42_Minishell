@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd01.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 16:00:55 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/11/30 15:39:52 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:24:45 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ void	handle_home_directory(t_env *env_list)
 	if (home)
 		chdir(home->content + 5);
 	else
-		print_error("HOME not set", 1);
+		print_error("HOME not set");
 }

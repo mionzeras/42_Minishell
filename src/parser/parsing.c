@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/30 13:04:58 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/12/01 20:51:50 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,35 +109,63 @@ int	process_input(t_organize *program, char **str, t_env *env)
 		free_array(input);
 		return (1);
 	}
+	ft_printf("cheguei aqui\n");
 	i = -1;
 	while (input[++i])
 	{
 		if (ft_strcmp(input[i], "<") == 0 && input[i + 1])
 		{
 			i++;
+			if (access(input[i], F_OK) == -1)
+			{
+				ft_putendl_fd("minishell: No such file or directory", STDERR);
+				free_array(input);
+				return (1);
+			}
+			if (tmp->fd_in != -1)
+			{
+				close(tmp->fd_in);
+				tmp->fd_in = -1;
+			}
 			input[i] = remove_quotes(input[i]);
 			tmp->fd_in = open(input[i], O_RDONLY);
-			printf("input_file[%d]: %s\n", tmp->list_pos, input[i]);
+			printf("fd_in[%d]: %d\n", tmp->list_pos, tmp->fd_in);
 		}
 		else if (ft_strcmp(input[i], "<<") == 0 && input[i + 1])
 		{
 			i++;
+			if (tmp->fd_in != -1)
+			{
+				close(tmp->fd_in);
+				tmp->fd_in = -1;
+			}
 			tmp->fd_in = heredoc(input[i], env);
-			printf("heredoc_dlm[%d]: %s\n", tmp->list_pos, input[i]);
+			printf("fd_in[%d]: %d\n", tmp->list_pos, tmp->fd_in);
+			printf("fd_in[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], ">") == 0 && input[i + 1])
 		{
 			i++;
+			if (tmp->fd_out != -1)
+			{
+				close(tmp->fd_out);
+				tmp->fd_out = -1;
+			}
 			input[i] = remove_quotes(input[i]);
 			tmp->fd_out = open(input[i], O_RDWR | O_CREAT | O_TRUNC, 0644);
-			printf("output_file[%d]: %s\n", tmp->list_pos, input[i]);
+			printf("fd_out[%d]: %d\n", tmp->list_pos, tmp->fd_out);
 		}
 		else if (ft_strcmp(input[i], ">>") == 0 && input[i + 1])
 		{
 			i++;
+			if (tmp->fd_in != -1)
+			{
+				close(tmp->fd_in);
+				tmp->fd_in = -1;
+			}
 			input[i] = remove_quotes(input[i]);
 			tmp->fd_out = open(input[i], O_RDWR | O_CREAT | O_APPEND, 0644);
-			printf("append_file[%d]: %s\n", tmp->list_pos, input[i]);
+			printf("fd_out[%d]: %d\n", tmp->list_pos, tmp->fd_out);
 		}
 		else if (ft_strcmp(input[i], "|") == 0)
 		{
@@ -155,18 +183,16 @@ int	process_input(t_organize *program, char **str, t_env *env)
 		}
 		else
 		{
-			if (tmp->cmds == NULL)
+			input[i] = remove_quotes(input[i]);
+			tmp->cmds = ft_strdup(input[i]);
+			printf("cmd_split[%d]: %s\n", tmp->list_pos, tmp->cmds);
+			while (input[i + 1] && !is_token(input[i + 1][0]))
 			{
-				input[i] = remove_quotes(input[i]);
-				tmp->cmds = ft_strdup(input[i]);
-				printf("cmd_split[%d]: %s\n", tmp->list_pos, tmp->cmds);
-			}
-			else
-			{
+				i++;
 				input[i] = remove_quotes(input[i]);
 				tmp->args = copy_args(tmp->args, input[i]);
-				printf("args_split[%d]: %s\n", tmp->list_pos, tmp->args);
 			}
+			printf("args_split[%d]: %s\n", tmp->list_pos, tmp->args);
 		}
 	}
 	free_array(input);

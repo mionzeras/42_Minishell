@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:37:01 by caliman           #+#    #+#             */
-/*   Updated: 2024/11/30 15:03:17 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/11/23 11:43:51 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,9 @@ void	print_env_list(t_env *list)
 void	ft_env(t_env *env_list, t_organize *program)
 {
 	if (program->cmds[3])
-		ft_error_cmds(program->cmds, 127);
+		ft_error_cmds(program);
 	else if (program->args)
-	{
-		print_error(ERROR_ENV_ARGS, 1);
-	}
+		ft_error_args(program->args);
 	else
 		print_env_list(env_list);
 }

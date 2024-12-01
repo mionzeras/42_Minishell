@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 13:10:50 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/27 20:04:51 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/01 20:30:48 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,7 @@ int	heredoc(char *input, t_env *env)
 		process_line(var.i, line, !var.k, env);
 	}
 	free_all(tmp, filename, line);
+	close(var.i);
+	var.i = open(filename, O_RDONLY);
 	return (var.i);
 }
