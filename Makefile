@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+         #
+#    By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 18:12:41 by gcampos-          #+#    #+#              #
-#    Updated: 2024/11/27 20:21:22 by gcampos-         ###   ########.fr        #
+#    Updated: 2024/12/02 18:20:43 by fgomes-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,15 @@ SRC =	src/builtin/cd00.c \
 		src/builtin/echo.c \
 		src/builtin/env.c \
 		src/builtin/exit.c \
+		src/builtin/exit_free.c \
 		src/builtin/export00.c \
 		src/builtin/export01.c \
 		src/builtin/export02.c \
 		src/builtin/pwd.c \
 		src/builtin/unset.c \
 		src/clean/clean.c \
-		src/error/error.c \
+		src/error/error00.c \
+		src/error/error01.c \
 		src/exec/execution.c \
 		src/exec/exec_utils.c \
 		src/heredoc/heredoc.c \

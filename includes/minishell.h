@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/01 21:39:17 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/02 18:22:41 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@
 # define ERROR_CD_HOME "cd: HOME not set"
 # define ERROR_CD_OLDPWD "cd: OLDPWD not set"
 # define ERROR_CD_DIRECTORY "cd: no such file or directory"
+# define ERROR_CD_OPTION "invalid option"
+# define ERROR_ENV_ARGS "env: dont accept arguments"
 # define ERROR_EXIT_ARGS "exit: too many arguments"	
 # define ERROR_EXIT_DIGIT "exit: numeric argument required"
 
@@ -95,10 +97,6 @@ void		ft_cd(t_env *env_list, t_organize *program);
 t_env		*ft_get_env(t_env *env_list, char *name);
 void		ft_update_env(t_env *env_list, char *name, char *value, int replace);
 
-//builtin/cd01.c
-void		update_env_vars(t_env *env_list, char *dir, int size);
-void		handle_home_directory(t_env *env_list);
-
 //builtin/echo.c
 void		ft_echo(t_organize *program);
 
@@ -110,9 +108,15 @@ void		print_env_list(t_env *list);
 void		ft_env(t_env *env_list, t_organize *program);
 
 //builtin/exit.c
-void		free_and_exit(t_organize *pgr, int status);
-int			check_exit_args(char **args);
+bool		arg_is_nbr(char *arg);
+void		check_exit_args(char **args);
+void		handle_single_arg_exit(t_organize *program, char **args);
 int			ft_exit(t_organize *program, char *str);
+
+//builtin/exit_free.c
+void		free_and_exit(t_organize *pgr, int status);
+void		handle_exit_error(t_organize *program, char **args);
+void		handle_exit_success_args(t_organize *program, char **args);
 
 //builtin/export00.c
 int			get_var_len(char *var);
@@ -144,10 +148,16 @@ void		free_array(char **array);
 void		free_organize(t_organize *program);
 int			size_without_quotes(char *input);
 
-//error/error.c
-void		print_error(char *cmd);
-void		ft_error_cmds(t_organize *program);
-void		ft_error_args(char *str);
+//error/error00.c
+void		print_error(char *cmd, int status);
+void		ft_error_cmds(char *cmds, int status);
+void		ft_error_dir(char *dir, int status);
+void		ft_error_args(char *str, int status);
+void		ft_error_opt(char *str, int status);
+
+//error/error01.c
+void	ft_error_digit(char *str, int status);
+void	ft_error_path_cmd(char *cmd, int status);
 
 //exec/execution.c
 void		exec_one_cmd(t_program *mini, t_organize *program);
