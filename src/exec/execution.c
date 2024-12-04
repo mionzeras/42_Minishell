@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:38:43 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/04 22:18:56 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/04 22:34:16 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,35 +147,7 @@ void	reset_fds(int fd1, int fd2, int status)
 // 	}
 // 	else
 // 		dup2(fd[1], STDOUT_FILENO); // Redireciona a saída para o pipe
-// }
 
-// void	chield_process(t_organize *tmp, t_program *mini, int fd[], int last)
-// {	
-// 	if (tmp->list_pos == 0) // Se for o primeiro comando
-// 		exec_first(fd, tmp);
-// 	else if (tmp->list_pos == (last -1)) // se for o ultimo comando
-// 		exec_last(fd, tmp);
-// 	else // Se for um comando intermediário
-// 		exec_middle(fd, tmp);
-// 	if (is_builtin(tmp->cmds))
-// 	{
-// 		printf("estou no builtin\n");
-// 		run_builtin(mini, tmp, fd[0], fd[1]);
-// 		exit(0); // Encerra o processo filho após executar o builtin
-// 	}
-// 	else
-// 		exec_cmd(tmp->cmds, tmp->args, mini->env_list);
-// }
-
-// void	dad_process(t_organize *program, int fd[])
-// {
-// 	if (program->fd_in != -1) // Se houver redirecionamento de entrada (arquivo)
-// 		close(program->fd_in); // Fecha o arquivo de entrada
-// 	if (program->fd_out != -1) // Se houver redirecionamento de saída (arquivo)
-// 		close(program->fd_out); // Fecha o arquivo de saída
-// 	close(fd[0]); // Fecha leitura do pipe no pai
-// 	close(fd[1]); // Fecha escrita do pipe no pai
-// }
 
 //Fim: Funçoes para reduzir a função executor e deixar com 25 linhas
 
@@ -200,7 +172,7 @@ void exec_with_pipes(t_program *mini, t_organize *program)
     t_organize *curr_cmd = program;
     while (curr_cmd)
     {
-		ft_handle_signals(CHILD);
+        ft_handle_signals(CHILD);
         pid = fork();
         if (pid == -1)
         {
@@ -213,20 +185,21 @@ void exec_with_pipes(t_program *mini, t_organize *program)
             if (i > 0) // Não é o primeiro comando
             {
                 dup2(pipes[i - 1][0], STDIN_FILENO); // Ler do pipe anterior
-                close(pipes[i - 1][0]);
             }
             if (i < num_pipes) // Não é o último comando
             {
                 dup2(pipes[i][1], STDOUT_FILENO); // Escrever no pipe atual
-                close(pipes[i][1]);
             }
-			// redir_pipes(curr_cmd);
-            // Fechar os pipes que não são usados neste processo
+
+            // Fechar todos os pipes no processo filho
             for (int j = 0; j < num_pipes; j++)
             {
                 close(pipes[j][0]);
                 close(pipes[j][1]);
             }
+
+            // Redirecionar entrada/saída (se necessário)
+            redir_pipes(curr_cmd);
 
             // Executar comando
             if (!exec_cmd(curr_cmd->cmds, curr_cmd->args, mini->env_list))
@@ -236,6 +209,8 @@ void exec_with_pipes(t_program *mini, t_organize *program)
                 exit(EXIT_FAILURE);
             }
         }
+
+        // Processo pai
         curr_cmd = curr_cmd->next; // Próximo comando
         i++;
     }
@@ -248,66 +223,5 @@ void exec_with_pipes(t_program *mini, t_organize *program)
     }
 
     // Esperar todos os processos filhos
-    for (i = 0; i < mini->pipes; i++)
-        wait(NULL);
+    while (wait(NULL) > 0);
 }
-
-
-//Processo Filho: copia de segurança para reduzir a função executor
-
-/*
-if (program->list_pos == 0) // Se for o primeiro comando
-			{
-				exec_first(fd, program);
-			// 	close(fd[0]); // Fecha leitura do pipe de entrada no filho
-			// 	if (program->fd_in != -1) // Se houver redirecionamento de entrada (arquivo)
-			// 		dup2(program->fd_in, STDIN_FILENO); // Redireciona a entrada para o arquivo
-			// 	if (program->fd_out == -1) // Se não houver redirecionamento de saída
-			// 		dup2(fd[1], STDOUT_FILENO); // Redireciona a saída para o pipe
-			// 	else if (program->fd_out != -1) // Se houver redirecionamento de saída (arquivo)
-			// 	{
-			// 		dup2(program->fd_out, STDOUT_FILENO); // Redireciona a saída para o arquivo
-			// 		close(fd[1]); // Fecha escrita do pipe no filho	
-			// 	}
-			}
-			else if (program->list_pos == (last -1)) // se for o ultimo comando
-			{
-				exec_last(fd, program);
-				// close(fd[1]); // Fecha escrita do pipe no filho
-				// if (program->fd_in != -1) // Se houver redirecionamento de entrada (arquivo)
-				// {
-				// 	dup2(program->fd_in, STDIN_FILENO); // Redireciona a entrada para o arquivo
-				// 	close(fd[0]); // Fecha leitura do pipe de entrada no filho
-				// }
-				// else
-				// 	dup2(fd[0], STDIN_FILENO); // Redireciona a entrada para o pipe
-				// if (program->fd_out != -1) // Se houver redirecionamento de saída (arquivo)
-				// 	dup2(program->fd_out, STDOUT_FILENO); // Redireciona a saída para o arquivo
-			}
-			else // Se for um comando intermediário
-			{
-				exec_middle(fd, program);
-				// if (program->fd_in != -1) // Se houver redirecionamento de entrada (arquivo)
-				// {
-				// 	dup2(program->fd_in, STDIN_FILENO); // Redireciona a entrada para o arquivo
-				// 	close(fd[0]); // Fecha leitura do pipe de entrada no filho
-				// }
-				// else
-				// 	dup2(fd[0], STDIN_FILENO); // Redireciona a entrada para o pipe
-				// if (program->fd_out != -1) // Se houver redirecionamento de saída (arquivo)
-				// {
-				// 	dup2(program->fd_out, STDOUT_FILENO); // Redireciona a saída para o arquivo
-				// 	close(fd[1]); // Fecha escrita do pipe no filho
-				// }
-				// else
-				// 	dup2(fd[1], STDOUT_FILENO); // Redireciona a saída para o pipe
-			}
-			if (is_builtin(tmp->cmds))
-			{
-				printf("estou no builtin\n");
-				run_builtin(mini, tmp);
-				exit(0); // Encerra o processo filho após executar o builtin
-			}
-			else
-				exec_cmd(tmp->cmds, tmp->args, mini->env_list);
-*/

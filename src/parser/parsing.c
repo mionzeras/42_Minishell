@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/02 23:16:28 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/12/04 22:33:39 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,8 @@ void	remove_quotes_list(t_organize **program)
 		if (tmp->cmds)
 			tmp->cmds = remove_quotes(tmp->cmds);
 		i = ft_strlen(tmp->cmds);
-		printf("size of cmds: %d\n", i);
-		printf("cmds[%d]rmq: %s\n", tmp->list_pos, tmp->cmds);
 		if (tmp->args)
 			tmp->args = remove_quotes(tmp->args);
-		// if (tmp->input_file)
-		// 	tmp->input_file = remove_quotes(tmp->input_file);
-		// if (tmp->output_file)
-		// 	tmp->output_file = remove_quotes(tmp->output_file);
-		// if (tmp->append_file)
-		// 	tmp->append_file = remove_quotes(tmp->append_file);
-		// if (tmp->heredoc_dlm)
-		// 	tmp->heredoc_dlm = remove_quotes(tmp->heredoc_dlm);
 		tmp = tmp->next;
 	}
 }
@@ -128,7 +118,6 @@ int	process_input(t_organize *program, char **str, t_env *env)
 			}
 			input[i] = remove_quotes(input[i]);
 			tmp->fd_in = open(input[i], O_RDONLY);
-			printf("input_file[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], "<<") == 0 && input[i + 1])
 		{
@@ -139,7 +128,6 @@ int	process_input(t_organize *program, char **str, t_env *env)
 				tmp->fd_in = -1;
 			}
 			tmp->fd_in = heredoc(input[i], env);
-			printf("fd_in[%d]: %d\n", tmp->list_pos, tmp->fd_in);
 		}
 		else if (ft_strcmp(input[i], ">") == 0 && input[i + 1])
 		{
@@ -151,7 +139,6 @@ int	process_input(t_organize *program, char **str, t_env *env)
 			}
 			input[i] = remove_quotes(input[i]);
 			tmp->fd_out = open(input[i], O_RDWR | O_CREAT | O_TRUNC, 0644);
-			printf("output_file[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], ">>") == 0 && input[i + 1])
 		{
@@ -163,7 +150,6 @@ int	process_input(t_organize *program, char **str, t_env *env)
 			}
 			input[i] = remove_quotes(input[i]);
 			tmp->fd_out = open(input[i], O_RDWR | O_CREAT | O_APPEND, 0644);
-			printf("append_file[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], "|") == 0)
 		{
@@ -175,8 +161,7 @@ int	process_input(t_organize *program, char **str, t_env *env)
 			}
 			tmp = tmp->next;
 			list_size++;
-			tmp->list_pos = list_size;
-			printf("\n");
+			tmp->list_pos = list_size;	
 			continue ;
 		}
 		else
@@ -185,13 +170,11 @@ int	process_input(t_organize *program, char **str, t_env *env)
 			{
 				input[i] = remove_quotes(input[i]);
 				tmp->cmds = ft_strdup(input[i]);
-				printf("cmd_split[%d]: %s\n", tmp->list_pos, tmp->cmds);
 			}
 			else
 			{
 				input[i] = remove_quotes(input[i]);
 				tmp->args = copy_args(tmp->args, input[i]);
-				printf("args_split[%d]: %s\n", tmp->list_pos, tmp->args);
 			}
 		}
 	}
@@ -206,6 +189,5 @@ int	parse_organize(t_organize *program, char *str, t_env *env)
 		print_error("syntax error with open quotes", 2); //verificar texto e codigo de erro (2 ou 258?)
 		return (1);
 	}
-	printf("user_input: %s\n", str);
 	return (process_input(program, &str, env));
 }
