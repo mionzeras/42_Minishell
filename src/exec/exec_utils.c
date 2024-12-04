@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:33:26 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/04 21:59:55 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/04 23:08:09 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ int	exec_cmd(char *cmd, char *args, t_env *envp)
 	tmp = ft_strjoin(cmd, " ");
 	cmd_arg = ft_strjoin(tmp, args);
 	free_ptr(tmp);
-	printf("cmd_arg: %s\n", cmd_arg);
 	cmd_split = ft_split(cmd_arg, ' ');
 	free_ptr(cmd_arg);
 	env = ft_getenv(envp);

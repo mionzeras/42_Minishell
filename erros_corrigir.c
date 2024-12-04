@@ -29,3 +29,12 @@ Linhas para corrigir erro:
 . 113, 114, 115
 
 */
+
+
+
+
+
+// quando usa um comando com pipe, depois o ctrl C buga
+//Try ctrl-C after running a blocking command like cat without arguments or grep "something".
+
+//Try ctrl-\ after running a blocking command like cat without arguments or grep "something".

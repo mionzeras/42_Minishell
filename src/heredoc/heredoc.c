@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 13:10:50 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/04 22:12:51 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/04 23:04:13 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	heredoc(char *input, t_env *env)
 	tmp = remove_quotes(tmp);
 	filename = generate_filename(h);
 	var.i = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	printf("fd_out: %d\n", var.i);
 	if (var.i < 0)
 		return (free_ptr(tmp), free_ptr(filename),
 			perror("Error opening file"), -1);

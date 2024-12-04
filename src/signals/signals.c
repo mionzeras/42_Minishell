@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 19:03:47 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 19:03:57 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/04 23:23:26 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	fork_signal(int signum)
 {
 	if (signum == SIGINT)
 		write(STDERR_FILENO, "\n", 1);
-	else if (signum == SIGQUIT)
-		write(STDERR_FILENO, "Quit (core dumped)\n", 19);
 }
 
 void	pipe_signal(int signum)
@@ -55,7 +53,7 @@ void	ft_handle_signals(int id)
 	{
 		signal(SIGINT, fork_signal);
 		signal(SIGQUIT, fork_signal);
-		signal(SIGPIPE, pipe_signal);
+		// signal(SIGPIPE, pipe_signal);
 	}
 	else if (id == HERE_DOC)
 	{
