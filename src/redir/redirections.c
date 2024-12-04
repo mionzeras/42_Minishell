@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:48:41 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/11/26 16:47:43 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/01 13:59:35 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	handle_redir(t_organize *organize)
 			fd[0] = open(tmp->input_file, O_RDONLY);
 			if (fd[0] < 0)
 			{
-				ft_printf("minishell: %s: %s\n", tmp->input_file, strerror(errno));
+				ft_printf("minishell: %s: %s\n", tmp->input_file, strerror(errno)); //verificar texto e codigo de erro
 				return ;
 			}
 			dup2(fd[0], STDIN);
@@ -36,7 +36,7 @@ void	handle_redir(t_organize *organize)
 			fd[1] = open(tmp->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (fd[1] < 0)
 			{
-				ft_printf("minishell: %s: %s\n", tmp->output_file, strerror(errno));
+				ft_printf("minishell: %s: %s\n", tmp->output_file, strerror(errno)); //verificar texto e codigo de erro
 				return ;
 			}
 			dup2(fd[1], STDOUT);
@@ -47,7 +47,7 @@ void	handle_redir(t_organize *organize)
 			fd[1] = open(tmp->append_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (fd[1] < 0)
 			{
-				ft_printf("minishell: %s: %s\n", tmp->append_file, strerror(errno));
+				ft_printf("minishell: %s: %s\n", tmp->append_file, strerror(errno)); //verificar texto e codigo de erro
 				return ;
 			}
 			dup2(fd[1], STDOUT);

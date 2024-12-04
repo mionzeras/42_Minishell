@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:33:26 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/01 21:27:24 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/02 22:27:12 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	ft_list_size(t_organize *program)
 {
-	int		i;
 	t_organize	*tmp;
+	int			i;
 
 	i = 0;
 	tmp = program;
@@ -86,7 +86,7 @@ char	*find_path(char *cmd, char **envp, int count)
 	free_array(envp_path);
 	if (cmd[0] == '/' && access(cmd, F_OK) == 0)
 		return (ft_strdup(cmd));
-	msg("command not found\n", 1, 2);
+	ft_error_path_cmd(cmd, 127);
 	return (NULL);
 }
 
@@ -106,11 +106,14 @@ int	exec_cmd(char *cmd, char *args, t_env *envp)
 	env = ft_getenv(envp);
 	path = find_path(cmd, env, -1);
 	if (!path)
-		free_ptr(path);
-	ft_printf("cmd: %s\n", cmd);
+	{
+		free_array(cmd_split);
+		free_array(env);
+		// free_ptr(path);
+		return (0);
+	}
 	if (execve(path, cmd_split, env) == -1)
 		free_ptr(path);
-	//free_ptr(path);
 	free_array(cmd_split);
 	return (0);
 }

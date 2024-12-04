@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/02 18:22:41 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/12/03 23:54:54 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@
 # define ERROR_CD_DIRECTORY "cd: no such file or directory"
 # define ERROR_CD_OPTION "invalid option"
 # define ERROR_ENV_ARGS "env: dont accept arguments"
+# define ERROR_ENV_DIRECTORY "no such file or directory"
 # define ERROR_EXIT_ARGS "exit: too many arguments"	
 # define ERROR_EXIT_DIGIT "exit: numeric argument required"
 
@@ -60,14 +61,14 @@ extern int	g_exit_status;
 typedef struct s_var
 {
 	int		i;
-	int 	j;
+	int		j;
 	int		k;
 	int		inside;
 	int		size;
-	char 	c;
+	char	c;
 	char	*new_str;
-	char 	*str;
-} t_var;
+	char	*str;
+}	t_var;
 
 typedef struct s_organize
 {
@@ -92,10 +93,17 @@ typedef struct s_program
 	struct s_env	*env_list;
 }		t_program;
 
+//builtin/builtin.c
+int			run_builtin(t_program *mini, t_organize *program, int fd1, int fd2);
+
 //builtin/cd00.c
 void		ft_cd(t_env *env_list, t_organize *program);
 t_env		*ft_get_env(t_env *env_list, char *name);
-void		ft_update_env(t_env *env_list, char *name, char *value, int replace);
+void		ft_update_env(t_env *env_list, char *name, char *value, int repl);
+
+//builtin/cd01.c
+// void		update_env_vars(t_env *env_list, char *dir, int size);
+// void		handle_home_directory(t_env *env_list);
 
 //builtin/echo.c
 void		ft_echo(t_organize *program);
@@ -108,9 +116,7 @@ void		print_env_list(t_env *list);
 void		ft_env(t_env *env_list, t_organize *program);
 
 //builtin/exit.c
-bool		arg_is_nbr(char *arg);
 void		check_exit_args(char **args);
-void		handle_single_arg_exit(t_organize *program, char **args);
 int			ft_exit(t_organize *program, char *str);
 
 //builtin/exit_free.c
@@ -156,15 +162,19 @@ void		ft_error_args(char *str, int status);
 void		ft_error_opt(char *str, int status);
 
 //error/error01.c
-void	ft_error_digit(char *str, int status);
-void	ft_error_path_cmd(char *cmd, int status);
+void		ft_error_digit(char *str, int status);
+void		ft_error_path_cmd(char *cmd, int status);
+void		ft_error_env_dir(char *dir, int status);
 
 //exec/execution.c
-void		exec_one_cmd(t_program *mini, t_organize *program);
+void		exec_one_cmd(t_program *mini, t_organize *program, int fd1, int fd2);
+void		redirect_io(t_organize *program, int pipe[], int status);
+void		execute_pipeline(t_program *mini, t_organize *program_list, int fd1, int fd2);
 int			is_builtin(char *command);
-void		redir_pipes(t_organize *program);
-void		reset_fds(t_organize *program);
-void		executor(t_organize *program, t_program *mini);
+void		reset_fds(int fd1, int fd2, int status);
+// void		redir_pipes(t_organize *program);
+// void		executor(t_organize *program, t_program *mini);
+void		exec_cmd_list(t_program *mini, t_organize *program_list, int fd1, int fd2);
 
 //exec/exec_utils.c
 int			ft_list_size(t_organize *program);
@@ -177,7 +187,6 @@ int			heredoc(char *input, t_env *env);
 t_organize	*init_organize(char *input, t_program *mini);
 
 //loop/loop.c
-int			run_builtin(t_program *mini, t_organize *program);
 int			mini_loop(t_program *mini, int fd1, int fd2);
 
 //parser/new_split.c

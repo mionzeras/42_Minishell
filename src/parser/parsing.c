@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/01 20:51:50 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/03 21:11:07 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	check_empty_redir(char **str)
 			|| (ft_strncmp(str[i], "<", 1) == 0 && !str[i + 1])
 			|| (ft_strncmp(str[i], "<<", 2) == 0 && !str[i + 1]))
 		{
-			ft_putendl_fd("Syntax error near unexpected token", STDERR);
+			print_error("Syntax error near unexpected token", 2); //verificar texto e codigo de erro (2 ou 258?)
 			return (1);
 		}
 		if ((ft_strncmp(str[i], ">", 1) == 0 && is_token(str[i + 1][0]))
@@ -59,7 +59,7 @@ int	check_empty_redir(char **str)
 			|| (ft_strncmp(str[i], "<", 1) == 0 && is_token(str[i + 1][0]))
 			|| (ft_strncmp(str[i], "<<", 2) == 0 && is_token(str[i + 1][0])))
 		{
-			ft_putendl_fd("Syntax error near unexpected token", STDERR);
+			print_error("Syntax error near unexpected token", 2); //verificar texto e codigo de erro (2 ou 258?)
 			return (1);
 		}
 		i++;
@@ -109,16 +109,15 @@ int	process_input(t_organize *program, char **str, t_env *env)
 		free_array(input);
 		return (1);
 	}
-	ft_printf("cheguei aqui\n");
 	i = -1;
 	while (input[++i])
 	{
 		if (ft_strcmp(input[i], "<") == 0 && input[i + 1])
 		{
 			i++;
-			if (access(input[i], F_OK) == -1)
+			if (access(input[i], F_OK) != 0)
 			{
-				ft_putendl_fd("minishell: No such file or directory", STDERR);
+				print_error("No such file or directory", 2); //verificar texto e codigo de erro (2 ou 258?)
 				free_array(input);
 				return (1);
 			}
@@ -129,7 +128,7 @@ int	process_input(t_organize *program, char **str, t_env *env)
 			}
 			input[i] = remove_quotes(input[i]);
 			tmp->fd_in = open(input[i], O_RDONLY);
-			printf("fd_in[%d]: %d\n", tmp->list_pos, tmp->fd_in);
+			printf("input_file[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], "<<") == 0 && input[i + 1])
 		{
@@ -141,7 +140,6 @@ int	process_input(t_organize *program, char **str, t_env *env)
 			}
 			tmp->fd_in = heredoc(input[i], env);
 			printf("fd_in[%d]: %d\n", tmp->list_pos, tmp->fd_in);
-			printf("fd_in[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], ">") == 0 && input[i + 1])
 		{
@@ -153,25 +151,25 @@ int	process_input(t_organize *program, char **str, t_env *env)
 			}
 			input[i] = remove_quotes(input[i]);
 			tmp->fd_out = open(input[i], O_RDWR | O_CREAT | O_TRUNC, 0644);
-			printf("fd_out[%d]: %d\n", tmp->list_pos, tmp->fd_out);
+			printf("output_file[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], ">>") == 0 && input[i + 1])
 		{
 			i++;
-			if (tmp->fd_in != -1)
+			if (tmp->fd_out != -1)
 			{
-				close(tmp->fd_in);
-				tmp->fd_in = -1;
+				close(tmp->fd_out);
+				tmp->fd_out = -1;
 			}
 			input[i] = remove_quotes(input[i]);
 			tmp->fd_out = open(input[i], O_RDWR | O_CREAT | O_APPEND, 0644);
-			printf("fd_out[%d]: %d\n", tmp->list_pos, tmp->fd_out);
+			printf("append_file[%d]: %s\n", tmp->list_pos, input[i]);
 		}
 		else if (ft_strcmp(input[i], "|") == 0)
 		{
 			if (input[i + 1] == NULL)
 			{
-				ft_putendl_fd("Syntax error near unexpected token `|'", STDERR);
+				print_error("syntax error near unexpected token '|'", 2); //verificar texto e codigo de erro (2 ou 258?)
 				free_array(input);
 				return (1);
 			}
@@ -183,16 +181,18 @@ int	process_input(t_organize *program, char **str, t_env *env)
 		}
 		else
 		{
-			input[i] = remove_quotes(input[i]);
-			tmp->cmds = ft_strdup(input[i]);
-			printf("cmd_split[%d]: %s\n", tmp->list_pos, tmp->cmds);
-			while (input[i + 1] && !is_token(input[i + 1][0]))
+			if (tmp->cmds == NULL)
 			{
-				i++;
+				input[i] = remove_quotes(input[i]);
+				tmp->cmds = ft_strdup(input[i]);
+				// printf("cmd_split[%d]: %s\n", tmp->list_pos, tmp->cmds);
+			}
+			else
+			{
 				input[i] = remove_quotes(input[i]);
 				tmp->args = copy_args(tmp->args, input[i]);
+				// printf("args_split[%d]: %s\n", tmp->list_pos, tmp->args);
 			}
-			printf("args_split[%d]: %s\n", tmp->list_pos, tmp->args);
 		}
 	}
 	free_array(input);
@@ -203,9 +203,9 @@ int	parse_organize(t_organize *program, char *str, t_env *env)
 {
 	if (inside_quotes(str, ft_strlen(str)) != 0)
 	{
-		ft_putendl_fd("minishell: syntax error with open quotes", STDERR);
+		print_error("syntax error with open quotes", 2); //verificar texto e codigo de erro (2 ou 258?)
 		return (1);
 	}
-	printf("user_input: %s\n", str);
+	// printf("user_input: %s\n", str);
 	return (process_input(program, &str, env));
 }

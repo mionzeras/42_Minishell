@@ -6,7 +6,7 @@
 /*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 20:25:27 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/11/30 15:49:04 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:23:31 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ void	ft_error_path_cmd(char *cmd, int status)
 	ft_putstr_fd(cmd, STDERR);
 	ft_putstr_fd(": command not found", STDERR);
 	ft_putstr_fd("\n", STDERR);
+	g_exit_status = status;
+	return ;
+}
+void	ft_error_env_dir(char *dir, int status)
+{
+	ft_putstr_fd("env: '", STDERR);
+	ft_putstr_fd(dir, STDERR);
+	ft_putstr_fd("': No such file or directory\n", STDERR);
 	g_exit_status = status;
 	return ;
 }

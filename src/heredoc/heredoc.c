@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 13:10:50 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/01 20:30:48 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/02 23:21:59 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	heredoc(char *input, t_env *env)
 	tmp = remove_quotes(tmp);
 	filename = generate_filename(h);
 	var.i = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	printf("fd_out: %d\n", var.i);
 	if (var.i < 0)
 		return (free_ptr(tmp), free_ptr(filename),
 			perror("Error opening file"), -1);
@@ -69,8 +70,11 @@ int	heredoc(char *input, t_env *env)
 			break ;
 		process_line(var.i, line, !var.k, env);
 	}
-	free_all(tmp, filename, line);
 	close(var.i);
-	var.i = open(filename, O_RDONLY);
-	return (var.i);
+	var.j = open(filename, O_RDONLY);
+	if (var.j < 0)
+		return (perror("Error opening file"), -1);
+	printf("fd_in: %d\n", var.j);
+	free_all(tmp, filename, line);
+	return (var.j);
 }
