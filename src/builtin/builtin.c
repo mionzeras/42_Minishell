@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 18:15:33 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/12/03 23:14:53 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/12/04 21:44:45 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	run_builtin(t_program *mini, t_organize *program, int fd1, int fd2)
 	if (ft_strcmp(program->cmds, "unset") == 0)
 		ft_unset(mini->env_list, program);
 	else if (ft_strcmp(program->cmds, "export") == 0)
-		ft_export(mini->env_list, program->args);
+		ft_export(mini, program->args);
 	else if (ft_strcmp(program->cmds, "env") == 0)
 		ft_env(mini->env_list, program);
 	else if (ft_strcmp(program->cmds, "echo") == 0)

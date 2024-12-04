@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 13:10:50 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/02 23:21:59 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/12/04 22:12:51 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	heredoc(char *input, t_env *env)
 	var.j = open(filename, O_RDONLY);
 	if (var.j < 0)
 		return (perror("Error opening file"), -1);
-	printf("fd_in: %d\n", var.j);
 	free_all(tmp, filename, line);
 	return (var.j);
 }

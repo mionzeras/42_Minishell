@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:38:43 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/04 18:25:06 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/04 22:18:56 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	exec_one_cmd(t_program *mini, t_organize *program, int fd1, int fd2)
 		run_builtin(mini, program, fd1, fd2);
 	else
 	{
+		ft_handle_signals(CHILD);
 		pid = fork();
 		if (pid == -1)
 		{
@@ -199,6 +200,7 @@ void exec_with_pipes(t_program *mini, t_organize *program)
     t_organize *curr_cmd = program;
     while (curr_cmd)
     {
+		ft_handle_signals(CHILD);
         pid = fork();
         if (pid == -1)
         {
@@ -218,7 +220,7 @@ void exec_with_pipes(t_program *mini, t_organize *program)
                 dup2(pipes[i][1], STDOUT_FILENO); // Escrever no pipe atual
                 close(pipes[i][1]);
             }
-			redir_pipes(curr_cmd);
+			// redir_pipes(curr_cmd);
             // Fechar os pipes que não são usados neste processo
             for (int j = 0; j < num_pipes; j++)
             {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export00.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:32:32 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/12/03 22:35:54 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/12/04 21:46:55 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ void	update_env_node(t_env *tmp, char *var)
 	tmp->content = ft_strdup(var);
 }
 
-void	update_or_add_env_node(t_env **env_list, char *var, int replace)
+void	update_or_add_env_node(t_program *mini, char *var, int replace)
 {
 	t_env	*tmp;
 	int		var_len;
 
 	var_len = get_var_len(var);
-	tmp = *env_list;
+	tmp = mini->env_list;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->content, var, var_len) == 0
@@ -49,10 +49,10 @@ void	update_or_add_env_node(t_env **env_list, char *var, int replace)
 		}
 		tmp = tmp->next;
 	}
-	add_env_node(*env_list, new_env_node_with_content(var));
+	add_env_node(mini->env_list, new_env_node_with_content(var));
 }
 
-void	handle_export_args(t_env *env_list, char **args)
+void	handle_export_args(t_program *mini, char **args)
 {
 	int		i;
 	char	*var;
@@ -63,20 +63,20 @@ void	handle_export_args(t_env *env_list, char **args)
 	{
 		var = ft_strdup(args[i]);
 		replace = ft_strchr(var, '=') != NULL;
-		update_or_add_env_node(&(env_list), var, replace);
+		update_or_add_env_node(mini, var, replace);
 		free_ptr(var);
 		i++;
 	}
 }
 
-void	ft_export(t_env *env_list, char *input)
+void	ft_export(t_program *mini, char *input)
 {
 	char	**args;
 
 	args = ft_split(input, ' ');
 	if (!args)
 	{
-		print_sorted_env_list(env_list);
+		print_sorted_env_list(mini->env_list);
 		return ;
 	}
 	else if (ft_strcmp(args[0], "=") == 0)
@@ -89,7 +89,7 @@ void	ft_export(t_env *env_list, char *input)
 		}
 		return ;
 	}
-	handle_export_args(env_list, args);
+	handle_export_args(mini, args);
 	if (args)
 	{
 		free_array(args);

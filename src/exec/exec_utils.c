@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:33:26 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/02 22:27:12 by fgomes-c         ###   ########.fr       */
+/*   Updated: 2024/12/04 21:59:55 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	**ft_getenv(t_env *env)
 
 	tmp = env;
 	i = 0;
-	while (tmp->next)
+	while (tmp)
 	{
 		i++;
 		tmp = tmp->next;
@@ -52,7 +52,7 @@ char	**ft_getenv(t_env *env)
 		return (NULL);
 	i = 0;
 	tmp = env;
-	while (tmp->next)
+	while (tmp)
 	{
 		ret[i] = ft_strdup(tmp->content);
 		tmp = tmp->next;
@@ -62,12 +62,28 @@ char	**ft_getenv(t_env *env)
 	return (ret);
 }
 
+int nopath(char **envp)
+{
+	while (*envp)
+	{
+		if (ft_strnstr(*envp, "PATH=", 5))
+			return (0);
+		envp++;
+	}
+	return (1);
+}
+
 char	*find_path(char *cmd, char **envp, int count)
 {
 	char	*part_path;
 	char	*cmd_path;
 	char	**envp_path;
 
+	if (nopath(envp))
+	{
+		ft_error_path_cmd(cmd, 127);
+		return (NULL);
+	}
 	while (!ft_strnstr(*envp, "PATH=", 5))
 		envp++;
 	envp_path = ft_split(*envp + 5, ':');
@@ -101,6 +117,7 @@ int	exec_cmd(char *cmd, char *args, t_env *envp)
 	tmp = ft_strjoin(cmd, " ");
 	cmd_arg = ft_strjoin(tmp, args);
 	free_ptr(tmp);
+	printf("cmd_arg: %s\n", cmd_arg);
 	cmd_split = ft_split(cmd_arg, ' ');
 	free_ptr(cmd_arg);
 	env = ft_getenv(envp);

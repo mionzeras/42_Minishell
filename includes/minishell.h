@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/04 18:19:38 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/04 21:45:59 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,9 @@ void		handle_exit_success_args(t_organize *program, char **args);
 //builtin/export00.c
 int			get_var_len(char *var);
 void		update_env_node(t_env *tmp, char *var);
-void		update_or_add_env_node(t_env **env_list, char *var, int replace);
-void		handle_export_args(t_env *env_list, char **args);
-void		ft_export(t_env *env_list, char *input);
+void		update_or_add_env_node(t_program *mini, char *var, int replace);
+void		handle_export_args(t_program *mini, char **args);
+void		ft_export(t_program *mini, char *input);
 
 //builtin/export01.c
 void		sort_env_array(char **env_array, int count);
