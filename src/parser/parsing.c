@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 21:39:34 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/03 21:11:07 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/02 23:16:28 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,13 +185,13 @@ int	process_input(t_organize *program, char **str, t_env *env)
 			{
 				input[i] = remove_quotes(input[i]);
 				tmp->cmds = ft_strdup(input[i]);
-				// printf("cmd_split[%d]: %s\n", tmp->list_pos, tmp->cmds);
+				printf("cmd_split[%d]: %s\n", tmp->list_pos, tmp->cmds);
 			}
 			else
 			{
 				input[i] = remove_quotes(input[i]);
 				tmp->args = copy_args(tmp->args, input[i]);
-				// printf("args_split[%d]: %s\n", tmp->list_pos, tmp->args);
+				printf("args_split[%d]: %s\n", tmp->list_pos, tmp->args);
 			}
 		}
 	}
@@ -206,6 +206,6 @@ int	parse_organize(t_organize *program, char *str, t_env *env)
 		print_error("syntax error with open quotes", 2); //verificar texto e codigo de erro (2 ou 258?)
 		return (1);
 	}
-	// printf("user_input: %s\n", str);
+	printf("user_input: %s\n", str);
 	return (process_input(program, &str, env));
 }

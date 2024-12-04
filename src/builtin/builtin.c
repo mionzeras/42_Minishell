@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 18:15:33 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/12/03 21:27:00 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/03 23:14:53 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int	run_builtin(t_program *mini, t_organize *program, int fd1, int fd2)
 	else if (ft_strcmp(program->cmds, "exit") == 0)
 	{
 		exit_return = ft_exit(program, program->args);
-		delete_list(mini->env_list);
 		close(fd1);
 		close(fd2);
+		delete_list(mini->env_list);
 		handle_exit(exit_return);
 	}
 	else

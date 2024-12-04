@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 15:01:15 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/03 22:15:31 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:19:46 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,10 @@ int	mini_loop(t_program *mini, int fd1, int fd2)
 				continue ;
 			}
 			free_ptr(input);
-			execute_pipeline(mini, program, fd1, fd2);
-			// if (mini->pipes > 0)
-			// 	exec_cmd_list(mini, program, fd1, fd2);
-			// else
-			// 	exec_one_cmd(mini, program, fd1, fd2);
+			if (mini->pipes > 0)
+				exec_with_pipes(mini, program);
+			else
+				exec_one_cmd(mini, program, fd1, fd2);
 			free_organize(program);
 			// delete_list(mini->env_list);
 		}

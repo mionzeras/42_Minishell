@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export00.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomes-c <fgomes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:32:32 by fgomes-c          #+#    #+#             */
-/*   Updated: 2024/11/26 16:25:46 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/03 22:35:54 by fgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,11 @@ void	ft_export(t_env *env_list, char *input)
 	if (!args)
 	{
 		print_sorted_env_list(env_list);
+		return ;
+	}
+	else if (ft_strcmp(args[0], "=") == 0)
+	{
+		ft_error_exp_equal(args[0], 1);
 		if (args)
 		{
 			free_array(args);

@@ -6,96 +6,28 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:38:43 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/03 23:58:31 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:25:06 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void setup_redirections(t_organize *cmd, int pipe_read, int pipe_write)
+void	exec_one_cmd(t_program *mini, t_organize *program, int fd1, int fd2)
 {
-	// Redireciona entrada
-	if (cmd->fd_in != -1)
-		dup2(cmd->fd_in, STDIN_FILENO);
-	else if (pipe_read != -1)
-		dup2(pipe_read, STDIN_FILENO);
-
-	// Redireciona saída
-	if (cmd->fd_out != -1)
-		dup2(cmd->fd_out, STDOUT_FILENO);
-	else if (pipe_write != -1)
-		dup2(pipe_write, STDOUT_FILENO);
-}
-
-
-void close_unused_fds(int fd_in, int fd_out, int pipe_read, int pipe_write)
-{
-	if (fd_in != -1 && fd_in != STDIN_FILENO)
-		close(fd_in);
-	if (fd_out != -1 && fd_out != STDOUT_FILENO)
-		close(fd_out);
-	if (pipe_read != -1 && pipe_read != STDIN_FILENO)
-		close(pipe_read);
-	if (pipe_write != -1 && pipe_write != STDOUT_FILENO)
-		close(pipe_write);
-}
-
-
-// void	exec_one_cmd(t_program *mini, t_organize *program, int fd1, int fd2)
-// {
-// 	pid_t	pid;
+	pid_t	pid;
 	
-// 	if (!program->cmds)
-// 		return ;
-// 	if (program->fd_in != -1)
-// 	{
-// 		printf("tem redirecionamento de entrada\n");
-// 		printf("fd_in: %d\n", program->fd_in);
-// 		dup2(program->fd_in, STDIN);
-// 		close(program->fd_in);
-// 	}
-// 	if (program->fd_out != -1)
-// 	{
-// 		printf("tem redirecionamento de saida\n");
-// 		printf("fd_out: %d\n", program->fd_out);
-// 		dup2(program->fd_out, STDOUT);
-// 		close(program->fd_out);
-// 	}
-// 	if (is_builtin(program->cmds))
-// 		run_builtin(mini, program, fd1, fd2);
-// 	else
-// 	{
-// 		pid = fork();
-// 		if (pid == -1)
-// 		{
-// 			perror("fork");
-// 			exit(EXIT_FAILURE);
-// 		}
-// 		if (pid == 0)
-// 		{
-// 			if (!exec_cmd(program->cmds, program->args, mini->env_list))
-// 			{
-// 				free_organize(program);
-// 				delete_list(mini->env_list);
-// 				reset_fds(fd1, fd2, 1);
-// 				exit(EXIT_FAILURE);
-// 			}
-// 		}
-// 		else
-// 		{
-// 			waitpid(pid, NULL, 0);
-// 		}
-// 	}
-// 	reset_fds(fd1, fd2, 0);
-// }
-
-void exec_one_cmd(t_program *mini, t_organize *program, int fd1, int fd2)
-{
-	pid_t pid;
-
 	if (!program->cmds)
-		return;
-
+		return ;
+	if (program->fd_in != -1)
+	{
+		dup2(program->fd_in, STDIN);
+		close(program->fd_in);
+	}
+	if (program->fd_out != -1)
+	{
+		dup2(program->fd_out, STDOUT);
+		close(program->fd_out);
+	}
 	if (is_builtin(program->cmds))
 		run_builtin(mini, program, fd1, fd2);
 	else
@@ -106,191 +38,21 @@ void exec_one_cmd(t_program *mini, t_organize *program, int fd1, int fd2)
 			perror("fork");
 			exit(EXIT_FAILURE);
 		}
-		if (pid == 0) // Processo filho
+		if (pid == 0)
 		{
 			if (!exec_cmd(program->cmds, program->args, mini->env_list))
 			{
-				perror("execve");
 				free_organize(program);
 				delete_list(mini->env_list);
 				reset_fds(fd1, fd2, 1);
 				exit(EXIT_FAILURE);
 			}
 		}
-		else // Processo pai
-		{
+		else
 			waitpid(pid, NULL, 0);
-		}
 	}
-
-	reset_fds(fd1, fd2, 0); // Restaura FDs para o próximo comando
+	reset_fds(fd1, fd2, 0);
 }
-
-void	reset_pipe(int pipe[])
-{
-	close(pipe[0]);
-	close(pipe[1]);
-}
-
-void	redirect_io(t_organize *program, int pipe[], int status)
-{
-	if (program->list_pos == 0)
-	{
-		if (status == 1)
-			close(pipe[0]);
-		if (program->fd_in != -1)
-			dup2(program->fd_in, STDIN_FILENO);
-		else if (program->fd_out != -1)
-		{
-			dup2(program->fd_out, STDOUT_FILENO);
-			if (status == 1)
-				close(pipe[1]);
-		}
-		else if (program->fd_out == -1 && program->next && status == 1)
-			dup2(pipe[1], STDOUT_FILENO);
-	}
-	else if (program->list_pos == (ft_list_size(program) - 1))
-	{
-		if (status == 1)
-			close(pipe[1]);
-		if (program->fd_in != -1)
-		{
-			dup2(program->fd_in, STDIN_FILENO);
-			if (status == 1)
-				close(pipe[0]);
-		}
-		else if (program->fd_in == -1 && status == 1)
-			dup2(pipe[0], STDIN_FILENO);
-		if (program->fd_out != -1)
-			dup2(program->fd_out, STDOUT_FILENO);
-	}
-	else
-	{
-		if (program->fd_in != -1)
-		{
-			dup2(program->fd_in, STDIN_FILENO);
-			if (status == 1)
-				close(pipe[0]);
-		}
-		else if (program->fd_in == -1 && status == 1)
-			dup2(pipe[0], STDIN_FILENO);
-		if (program->fd_out != -1)
-		{
-			dup2(program->fd_out, STDOUT_FILENO);
-			if (status == 1)
-				close(pipe[1]);
-		}
-		else
-			dup2(pipe[1], STDOUT_FILENO);
-	}
-}
-
-void execute_pipeline(t_program *mini, t_organize *program_list, int fd1, int fd2)
-{
-    int pipe_fds[2];
-    pid_t pid;
-
-    while (program_list)
-    {
-        // Configura pipes, se necessário
-        if (program_list->next)
-        {
-            if (pipe(pipe_fds) == -1)
-            {
-                perror("pipe");
-                exit(EXIT_FAILURE);
-            }
-            // program_list->fd_out = pipe_fds[1];
-            // program_list->next->fd_in = pipe_fds[0];
-        }
-		if (program_list->next)
-        	redirect_io(program_list, pipe_fds, 1);
-		else
-			redirect_io(program_list, pipe_fds, 0);
-		if (is_builtin(program_list->cmds))
-		{
-			run_builtin(mini, program_list, fd1, fd2);
-			program_list = program_list->next;
-			continue ;
-		}
-        pid = fork();
-        if (pid == -1)
-        {
-            perror("fork");
-            exit(EXIT_FAILURE);
-        }
-        if (pid == 0) // Processo filho
-        {
-            if (!exec_cmd(program_list->cmds, program_list->args, mini->env_list))
-            {
-                free_organize(program_list);
-                delete_list(mini->env_list);
-                reset_fds(fd1, fd2, 1);
-                exit(EXIT_FAILURE);
-            }
-        }
-        else // Processo pai
-        {
-            if (program_list->fd_out != -1)
-                close(program_list->fd_out);
-
-            waitpid(pid, NULL, 0);
-        }
-		if (program_list->fd_in != -1)
-			close(program_list->fd_in);
-		if (program_list->fd_out != -1)
-			close(program_list->fd_out);
-		if (program_list->next)
-			reset_pipe(pipe_fds);
-        program_list = program_list->next;
-    }
-    reset_fds(fd1, fd2, 0);
-}
-
-// void execute_pipeline(t_program *mini, t_organize *program_list, int fd1, int fd2)
-// {
-// 	int pipe_fds[2];
-// 	int prev_fd = -1;
-
-// 	while (program_list)
-// 	{
-// 		// Configura pipes, se necessário
-// 		if (program_list->next)
-// 		{
-// 			if (pipe(pipe_fds) == -1)
-// 			{
-// 				perror("pipe");
-// 				exit(EXIT_FAILURE);
-// 			}
-// 		}
-// 		// Redireciona entradas/saídas
-// 		if (prev_fd != -1)
-// 		{
-// 			dup2(prev_fd, STDIN_FILENO);
-// 			close(prev_fd);
-// 		}
-// 		if (program_list->next)
-// 			dup2(pipe_fds[1], STDOUT_FILENO);
-
-// 		// Executa comando
-// 		exec_one_cmd(mini, program_list, fd1, fd2);
-
-// 		// Atualiza FDs para o próximo comando
-// 		if (program_list->next)
-// 			close(pipe_fds[1]);
-// 		prev_fd = pipe_fds[0];
-
-// 		program_list = program_list->next;
-// 	}
-
-// 	// // Fecha o último FD do pipe
-// 	// if (prev_fd != -1)
-// 	// 	close(prev_fd);
-
-// 	// Restaura FDs originais
-// 	reset_fds(fd1, fd2, 1);
-// }
-
 
 int	is_builtin(char *command)
 {
@@ -311,19 +73,19 @@ int	is_builtin(char *command)
 	return (0);
 }
 
-// void	redir_pipes(t_organize *program)
-// {
-// 	if (program->fd_in != -1)
-// 	{
-// 		dup2(program->fd_in, STDIN);
-// 		close(program->fd_in);
-// 	}
-// 	if (program->fd_out != -1)
-// 	{
-// 		dup2(program->fd_out, STDOUT);
-// 		close(program->fd_out);
-// 	}
-// }
+void	redir_pipes(t_organize *program)
+{
+	if (program->fd_in != -1)
+	{
+		dup2(program->fd_in, STDIN);
+		close(program->fd_in);
+	}
+	if (program->fd_out != -1)
+	{
+		dup2(program->fd_out, STDOUT);
+		close(program->fd_out);
+	}
+}
 
 void	reset_fds(int fd1, int fd2, int status)
 {
@@ -414,105 +176,78 @@ void	reset_fds(int fd1, int fd2, int status)
 // 	close(fd[1]); // Fecha escrita do pipe no pai
 // }
 
-// //Fim: Funçoes para reduzir a função executor e deixar com 25 linhas
+//Fim: Funçoes para reduzir a função executor e deixar com 25 linhas
 
-
-
-
-// void	executor(t_organize *program, t_program *mini)
-// {
-// 	t_organize	*tmp;
-// 	pid_t		pid;
-// 	int			fd[2];
-// 	int			last;
-// 	//int		in_fd = STDIN; // Entrada inicial, geralmente stdin
-
-// 	//fd = malloc(sizeof(int *) * 2);
-// 	tmp = program;
-// 	last = ft_list_size(program);
-// 	while (tmp)
-// 	{
-// 		if (tmp->next && pipe(fd) == -1)
-// 		{
-// 			perror("pipe");
-// 			exit(EXIT_FAILURE);
-// 		}
-// 		pid = fork();
-// 		if (pid == -1)
-// 		{
-// 			perror("fork");
-// 			exit(EXIT_FAILURE);
-// 		}
-// 		if (pid == 0) // Processo filho
-// 		{
-// 			printf("estou no filho\n");
-// 			chield_process(tmp, mini, fd, last);
-// 		}
-// 		else // Processo pai
-// 		{
-// 			printf("estou no pai\n");
-// 			waitpid(pid, NULL, 0); // Aguarda o processo filho terminar, WNOHANG não bloqueia o pai
-// 			dad_process(program, fd);
-// 		}
-// 		// reset_fds(program); // Reseta os descritores de arquivo para stdin e stdout
-// 		tmp = tmp->next; // Avança para o próximo comando
-// 	}
-// }
-
-void exec_cmd_list(t_program *mini, t_organize *program_list, int fd1, int fd2)
+void exec_with_pipes(t_program *mini, t_organize *program)
 {
-	int pipe_fds[2] = {-1, -1};
-	int prev_pipe_read = -1;
-	pid_t pid;
+    int i = 0;
+    int num_pipes = mini->pipes;
+    int pipes[num_pipes][2]; // Array de pipes
+    pid_t pid;
 
-	while (program_list)
-	{
-		// Cria pipe para o próximo comando, se necessário
-		if (program_list->next && pipe(pipe_fds) == -1)
-		{
-			perror("pipe");
-			exit(EXIT_FAILURE);
-		}
+    // Criar os pipes necessários
+    for (i = 0; i < num_pipes; i++)
+    {
+        if (pipe(pipes[i]) == -1)
+        {
+            perror("pipe");
+            exit(EXIT_FAILURE);
+        }
+    }
 
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
+    i = 0;
+    t_organize *curr_cmd = program;
+    while (curr_cmd)
+    {
+        pid = fork();
+        if (pid == -1)
+        {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+        if (pid == 0) // Processo filho
+        {
+            // Configuração dos pipes
+            if (i > 0) // Não é o primeiro comando
+            {
+                dup2(pipes[i - 1][0], STDIN_FILENO); // Ler do pipe anterior
+                close(pipes[i - 1][0]);
+            }
+            if (i < num_pipes) // Não é o último comando
+            {
+                dup2(pipes[i][1], STDOUT_FILENO); // Escrever no pipe atual
+                close(pipes[i][1]);
+            }
+			redir_pipes(curr_cmd);
+            // Fechar os pipes que não são usados neste processo
+            for (int j = 0; j < num_pipes; j++)
+            {
+                close(pipes[j][0]);
+                close(pipes[j][1]);
+            }
 
-		if (pid == 0) // Processo filho
-		{
-			setup_redirections(program_list, prev_pipe_read, pipe_fds[1]);
-			close_unused_fds(program_list->fd_in, program_list->fd_out, prev_pipe_read, pipe_fds[1]);
-			if (is_builtin(program_list->cmds))
-				run_builtin(mini, program_list, fd1, fd2);
-			else if (!exec_cmd(program_list->cmds, program_list->args, mini->env_list))
-			{
-				free_organize(program_list);
-				delete_list(mini->env_list);
-				exit(EXIT_FAILURE);
-			}
-			exit(EXIT_SUCCESS);
-		}
+            // Executar comando
+            if (!exec_cmd(curr_cmd->cmds, curr_cmd->args, mini->env_list))
+            {
+                free_organize(program);
+                delete_list(mini->env_list);
+                exit(EXIT_FAILURE);
+            }
+        }
+        curr_cmd = curr_cmd->next; // Próximo comando
+        i++;
+    }
 
-		// Processo pai
-		close(pipe_fds[1]); // Fecha lado de escrita do pipe
-		if (prev_pipe_read != -1)
-			close(prev_pipe_read); // Fecha lado de leitura do pipe anterior
+    // Fechar todos os pipes no processo pai
+    for (i = 0; i < num_pipes; i++)
+    {
+        close(pipes[i][0]);
+        close(pipes[i][1]);
+    }
 
-		prev_pipe_read = pipe_fds[0]; // Atualiza lado de leitura para o próximo comando
-		pipe_fds[0] = pipe_fds[1] = -1;
-
-		program_list = program_list->next;
-	}
-
-	// Fecha o último pipe
-	if (prev_pipe_read != -1)
-		close(prev_pipe_read);
-
-	// Aguarda todos os processos filhos
-	while (wait(NULL) > 0);
+    // Esperar todos os processos filhos
+    for (i = 0; i < mini->pipes; i++)
+        wait(NULL);
 }
 
 

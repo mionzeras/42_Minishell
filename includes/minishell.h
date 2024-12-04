@@ -6,7 +6,7 @@
 /*   By: gcampos- <gcampos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:26:57 by gcampos-          #+#    #+#             */
-/*   Updated: 2024/12/03 23:54:54 by gcampos-         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:19:38 by gcampos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,10 @@ typedef struct s_organize
 	int					fd_in;
 	int					fd_out;
 	int					list_pos;
+	char				*input_file;
+	char				*output_file;
+	char				*append_file;
+	char				*heredoc_dlm;
 	char				*cmds;
 	char				*args;
 	struct s_organize	*next;
@@ -121,7 +125,7 @@ int			ft_exit(t_organize *program, char *str);
 
 //builtin/exit_free.c
 void		free_and_exit(t_organize *pgr, int status);
-void		handle_exit_error(t_organize *program, char **args);
+void		handle_exit_error();
 void		handle_exit_success_args(t_organize *program, char **args);
 
 //builtin/export00.c
@@ -165,16 +169,15 @@ void		ft_error_opt(char *str, int status);
 void		ft_error_digit(char *str, int status);
 void		ft_error_path_cmd(char *cmd, int status);
 void		ft_error_env_dir(char *dir, int status);
+void		ft_error_exp_equal(char *dir, int status);
 
 //exec/execution.c
 void		exec_one_cmd(t_program *mini, t_organize *program, int fd1, int fd2);
-void		redirect_io(t_organize *program, int pipe[], int status);
-void		execute_pipeline(t_program *mini, t_organize *program_list, int fd1, int fd2);
 int			is_builtin(char *command);
 void		reset_fds(int fd1, int fd2, int status);
 // void		redir_pipes(t_organize *program);
 // void		executor(t_organize *program, t_program *mini);
-void		exec_cmd_list(t_program *mini, t_organize *program_list, int fd1, int fd2);
+void 		exec_with_pipes(t_program *mini, t_organize *program);
 
 //exec/exec_utils.c
 int			ft_list_size(t_organize *program);
